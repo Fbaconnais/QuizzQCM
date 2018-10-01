@@ -8,14 +8,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Promotion implements Serializable{
 	 
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private String id;
 	private String libelle;
 	
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getLibelle() {
@@ -31,7 +31,7 @@ public class Promotion implements Serializable{
 		super();
 		this.libelle = libelle;
 	}
-	public Promotion(int id, String libelle) {
+	public Promotion(String id, String libelle) {
 		super();
 		this.id = id;
 		this.libelle = libelle;

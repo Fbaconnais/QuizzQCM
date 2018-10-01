@@ -15,47 +15,56 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="well login-box">
-					<form action="login" method="post">
-						<h2>Authentification</h2>
-						<br> <br>
-						<c:if test="${sessionScope.profilCon === \"erreur\"}">
+				<c:choose>
+					<c:when test="${!empty sessionScope.erreur}">
 						<div class="row justify-content-lg-center">
-						<h2> Erreur d'authentification, réessayez </h2>
+							<h1>Une erreur est survenue, merci de nous contacter en nous
+								donnant le code suivant :</h1>
 						</div>
-						<br>
-						<br>
-						</c:if>
-						
-						
-						<div class="row justify-content-lg-center">
-							<div class="form-group col-lg-8 ">
-								<label for="username-email">E-mail</label> <input
-									id="username-email" placeholder="E-mail" type="email"
-									class="form-control" name="email"/>
-							</div>
+						<div class="row justify-content-lg-center">${sessionScope.erreur}</div>
+					</c:when>
+					<c:otherwise>
+						<div class="well login-box">
+							<form action="login" method="post">
+								<h2>Authentification</h2>
+								<br> <br>
+
+								<c:if test="${sessionScope.profilCon == \"erreur\"}">
+									<div class="row justify-content-lg-center">
+										<h2 style="color: red">Erreur d'authentification,
+											réessayez</h2>
+									</div>
+									<br>
+									<br>
+								</c:if>
+
+
+								<div class="row justify-content-lg-center">
+									<div class="form-group col-lg-8 ">
+										<label for="username-email">E-mail</label> <input
+											id="username-email" placeholder="E-mail" type="email"
+											class="form-control" name="email" />
+									</div>
+								</div>
+								<div class="row justify-content-lg-center">
+									<div class="form-group col-lg-8 ">
+										<label for="password">Mot de passe</label> <input
+											id="password" placeholder="Mot de passe" type="text"
+											class="form-control" name="password" />
+									</div>
+								</div>
+
+								<div class="row justify-content-lg-center">
+									<input type="submit" class="btn btn-success btn-login-submit"
+										value="Valider" />
+								</div>
+							</form>
 						</div>
-						<div class="row justify-content-lg-center">
-							<div class="form-group col-lg-8 ">
-								<label for="password">Mot de passe</label> <input id="password"
-									placeholder="Mot de passe" type="text" class="form-control" name="password"/>
-							</div>
-						</div>
-
-						<div class="row justify-content-lg-center">
-							<input type="submit" class="btn btn-success btn-login-submit"
-								value="Valider" />
-						</div>
-				</div>
-			</div>
-			</form>
-		</div>
-	</div>
-	</div>
-	</div>
+					</c:otherwise>
+				</c:choose>
 
 
 
 
-	<%@include file="./finBody.html"%>
+				<%@include file="./finBody.html"%>
 </html>

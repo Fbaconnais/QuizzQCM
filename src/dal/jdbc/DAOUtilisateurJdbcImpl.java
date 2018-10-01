@@ -9,6 +9,7 @@ import java.util.List;
 
 import bo.Candidat;
 import bo.Collaborateur;
+import bo.Profil;
 import bo.Promotion;
 import bo.Utilisateur;
 import dal.ConnectionProvider;
@@ -18,33 +19,27 @@ import dal.DAOUtilisateur;
 public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 	private Connection conn = null;
-	String selectOne = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.codeProfil,p.libelle,"
-			+ "pr.codePromo,pr.libelle" + " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) "
-			+ "join PROMOTION pr on (u.codePromo = pr.codePromo)" + " where u.idUtilisateur=?";
+	String selectOne = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.codeProfil,p.libelle as plibelle," + "u.codePromo"
+			+ " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) "
+			+ " where u.idUtilisateur=?";
 
-	String selectAll = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.libelle,"
-			+ "pr.libelle" + " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) "
-			+ "join PROMOTION pr on (u.codePromo = pr.codePromo)";
+	String selectAll = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.libelle as plibelle,"
+			+ "u.codePromo" + " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) ";
+			
 	
-	String selectUserByEmail = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.codeProfil,p.libelle,"
-			+ "pr.codePromo,pr.libelle" + " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) "
-			+ "join PROMOTION pr on (u.codePromo = pr.codePromo)" + " where u.email=?";
+	String selectUserByEmail = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.codeProfil,p.libelle as plibelle,"
+			+ "u.codePromo" + " from UTILISATEUR as u join PROFIL as p on (u.codeProfil = p.codeProfil) "
+		 + " where u.email=?";
 
 	String remove = "DELETE FROM UTILISATEUR where idUtilisateur=?";
 	String add = "INSERT INTO UTILISATEUR (nom,prenom,email,password,codeProfil,codePromo) VALUES (?,?,?,?,?,?)";
 	String update = "UPDATE UTILISATEUR SET nom=?,prenom=?,email=?,password=?,codeProfil=?,codePromo=? WHERE idUtilisateur=?";
-	String authentification = "SELECT p.libelle FROM UTILISATEUR u JOIN PROFIL p ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
+	String authentification = "SELECT libelle FROM PROFIL p JOIN UTILISATEUR u ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
 	
 	public DAOUtilisateurJdbcImpl() {
 	}
 
-	private void closeConnection(Connection conn) throws DALException {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- Fermeture connection", e);
-		}
-	}
+	
 
 	public Utilisateur add(Utilisateur data) throws DALException {
 		PreparedStatement rqt = null;
@@ -58,7 +53,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setInt(5, data.getProfil().getId());
 			if (data.getProfil().getLibelle().equals("candidat libre")
 					|| data.getProfil().getLibelle().equals("stagiaire")) {
-				rqt.setInt(6, ((Candidat) data).getPromotion().getId());
+				rqt.setString(6, ((Candidat) data).getPromotion().getId());
 			} else {
 				rqt.setInt(6, 0);
 			}
@@ -74,7 +69,11 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL-add", e);
 		} finally {
-			closeConnection(conn);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
 		}
 
 		return data;
@@ -90,26 +89,31 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setInt(1, id);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
-				if (rs.getString("p.libelle").equals("candidat libre")
-						|| rs.getString("p.libelle").equals("stagiaire")) {
+				if (rs.getString("plibelle").equals("candidat libre")
+						|| rs.getString("plibelle").equals("stagiaire")) {
 					user = new Candidat();
 					Promotion p = new Promotion();
-					p.setId(rs.getInt(rs.getInt("pr.codePromo")));
-					p.setLibelle(rs.getString(rs.getString("pr.libelle")));
+					p.setId(rs.getString("codePromo"));
+					((Candidat)user).setPromotion(p);
 				} else {
 					user = new Collaborateur();
 				}
-
-				user.setIdUtilisateur(rs.getInt("u.idUtilisateur"));
-				user.setNom(rs.getString("u.nom"));
-				user.setPrenom(rs.getString("u.prenom"));
-				user.setEmail(rs.getString("u.email"));
+				Profil p = new Profil(rs.getInt("codeProfil"), rs.getString("plibelle"));
+				user.setProfil(p);
+				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
+				user.setNom(rs.getString("nom"));
+				user.setPrenom(rs.getString("prenom"));
+				user.setEmail(rs.getString("email"));
 			}
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- select one", e);
+			throw new DALException("ERREUR DAL- select one "+e.getMessage()+e.getStackTrace().toString(), e);
 		} finally {
-			closeConnection(conn);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
 		}
 
 		return user;
@@ -130,7 +134,11 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL - Remove", e);
 		} finally {
-			closeConnection(conn);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
 		}
 
 	}
@@ -150,7 +158,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setInt(5, data.getProfil().getId());
 			if (data.getProfil().getLibelle().equals("candidat libre")
 					|| data.getProfil().getLibelle().equals("stagiaire")) {
-				rqt.setInt(6, ((Candidat) data).getPromotion().getId());
+				rqt.setString(6, ((Candidat) data).getPromotion().getId());
 			} else {
 				rqt.setInt(6, 0);
 			}
@@ -158,7 +166,11 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL - updata", e);
 		} finally {
-			closeConnection(conn);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
 		}
 
 	}
@@ -174,14 +186,12 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(2, password);
 			rs = rqt.executeQuery();
 			if (rs.next()) {
-				message = rs.getString("p.libelle");
+				message = rs.getString("libelle");
 			} 
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- authentification", e);
-		} finally {
-			closeConnection(conn);
-		}
+			throw new DALException("ERREUR DAL- authentification" +e.getMessage(), e);
+		} 
 		return message;
 	}
 
@@ -191,30 +201,37 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		Utilisateur user = null;
 		try {
 			conn = ConnectionProvider.getCnx();
-			rqt = conn.prepareStatement(selectOne);
+			rqt = conn.prepareStatement(selectUserByEmail);
 			rqt.setString(1, email);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
-				if (rs.getString("p.libelle").equals("candidat libre")
-						|| rs.getString("p.libelle").equals("stagiaire")) {
+				if (rs.getString("plibelle").equals("candidat libre")
+						|| rs.getString("plibelle").equals("stagiaire")) {
 					user = new Candidat();
 					Promotion p = new Promotion();
-					p.setId(rs.getInt(rs.getInt("pr.codePromo")));
-					p.setLibelle(rs.getString(rs.getString("pr.libelle")));
+					p.setId(rs.getString("codePromo"));
+					((Candidat)user).setPromotion(p);
 				} else {
 					user = new Collaborateur();
 				}
-
-				user.setIdUtilisateur(rs.getInt("u.idUtilisateur"));
-				user.setNom(rs.getString("u.nom"));
-				user.setPrenom(rs.getString("u.prenom"));
-				user.setEmail(rs.getString("u.email"));
+				Profil p = new Profil(rs.getInt("codeProfil"), rs.getString("plibelle"));
+				user.setProfil(p);
+				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
+				user.setNom(rs.getString("nom"));
+				user.setPrenom(rs.getString("prenom"));
+				user.setEmail(email);
 			}
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- select one", e);
+			e.printStackTrace();
+			throw new DALException("ERREUR DAL- select one "+e.getMessage(), e);
+		
 		} finally {
-			closeConnection(conn);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
 		}
 
 		return user;
