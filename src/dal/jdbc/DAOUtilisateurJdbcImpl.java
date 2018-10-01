@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import bo.Candidat;
 import bo.Utilisateur;
 import dal.ConnectionProvider;
 import dal.DALException;
@@ -38,25 +39,27 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		}
 	}
 
-	
-		
-
-	public Utilisateur add(Utilisateur data) {
+	public Utilisateur add(Utilisateur data) throws DALException {
 		PreparedStatement rqt = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(add, Statement.RETURN_GENERATED_KEYS);
-			rqt.setString(1,data.getNom());
+			rqt.setString(1, data.getNom());
 			rqt.setString(2, data.getPrenom());
 			rqt.setString(3, data.getEmail());
 			rqt.setString(4, data.getPassword());
-			rqt.setInt(5, data.);
+			rqt.setInt(5, data.getProfil().getId());
+			if (data.getProfil().getLibelle().equals("candidat libre") || data.getProfil().getLibelle().equals("stagiaire")) {
+				rqt.setInt(6, ((Candidat) data).getPromotion().getId());
+			} else {
+				rqt.setInt(6, 0);
+			}
 			int nbRows = rqt.executeUpdate();
 			if (nbRows == 1) {
 				ResultSet rs = rqt.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
-					data.setNoAdherent(id);
+					data.setIdUtilisateur(id);
 				}
 			}
 
@@ -69,7 +72,6 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 		return data;
 	}
-	
 
 	public Utilisateur selectOne(int id) {
 		// TODO Auto-generated method stub
@@ -83,12 +85,12 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 	public void remove(int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void update(Utilisateur data) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String Authentification(String email, String password) {

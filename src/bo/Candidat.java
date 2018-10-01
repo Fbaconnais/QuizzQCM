@@ -12,7 +12,7 @@ public class Candidat extends Utilisateur {
 	
 
 	public Candidat() {
-		this.getProfil().setLibelle("candidat");
+		
 	}
 
 	public Candidat(int idUtilisateur, String nom, String prenom, String email, String password) {
