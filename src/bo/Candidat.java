@@ -7,15 +7,12 @@ public class Candidat extends Utilisateur {
 
 	
 	private static final long serialVersionUID = 1L;
-	private static final String PROFIL = "candidat";
+	private Promotion promotion;
 	
-	public static String getProfil() {
-		return PROFIL;
-	}
+	
 
 	public Candidat() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.getProfil().setLibelle("candidat");
 	}
 
 	public Candidat(int idUtilisateur, String nom, String prenom, String email, String password) {
@@ -26,6 +23,19 @@ public class Candidat extends Utilisateur {
 	public Candidat(String nom, String prenom, String email, String password) {
 		super(nom, prenom, email, password);
 		// TODO Auto-generated constructor stub
+	}
+
+	public Promotion getPromotion() {
+		return promotion;
+	}
+
+	public void setPromotion(Promotion promotion) {
+		this.promotion = promotion;
+	}
+
+	public Candidat(Promotion promotion) {
+		super();
+		this.promotion = promotion;
 	}
 	
 	

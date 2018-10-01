@@ -4,12 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import bo.Utilisateur;
+import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOUtilisateur;
-import dal.ConnectionProvider;
 
 public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
@@ -37,7 +38,9 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		}
 	}
 
-	@Override
+	
+		
+
 	public Utilisateur add(Utilisateur data) {
 		PreparedStatement rqt = null;
 		try {
@@ -46,8 +49,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(1,data.getNom());
 			rqt.setString(2, data.getPrenom());
 			rqt.setString(3, data.getEmail());
-			rqt.setString(4, data.getCp());
-			rqt.setString(5, data.getVille());
+			rqt.setString(4, data.getPassword());
+			rqt.setInt(5, data.);
 			int nbRows = rqt.executeUpdate();
 			if (nbRows == 1) {
 				ResultSet rs = rqt.getGeneratedKeys();
@@ -66,32 +69,28 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 		return data;
 	}
+	
 
-	@Override
 	public Utilisateur selectOne(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public List<Utilisateur> selectAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void remove(int id) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
-	@Override
 	public void update(Utilisateur data) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
-	@Override
 	public String Authentification(String email, String password) {
 		// TODO Auto-generated method stub
 		return null;

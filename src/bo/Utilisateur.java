@@ -15,6 +15,10 @@ public abstract class Utilisateur implements Serializable{
 	private String prenom;
 	private String email;
 	private String password;
+	private Profil profil;
+	
+	
+	
 	public int getIdUtilisateur() {
 		return idUtilisateur;
 	}
@@ -62,6 +66,21 @@ public abstract class Utilisateur implements Serializable{
 		this.prenom = prenom;
 		this.email = email;
 		this.password = password;
+	}
+	public Profil getProfil() {
+		return profil;
+	}
+	public void setProfil(Profil profil) {
+		this.profil = profil;
+	}
+	public Utilisateur(int idUtilisateur, String nom, String prenom, String email, String password, Profil profil) {
+		super();
+		this.idUtilisateur = idUtilisateur;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.password = password;
+		this.profil = profil;
 	}
 	
 	
