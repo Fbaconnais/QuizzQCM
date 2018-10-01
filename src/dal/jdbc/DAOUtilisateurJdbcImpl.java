@@ -25,6 +25,10 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	String selectAll = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.libelle,"
 			+ "pr.libelle" + " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) "
 			+ "join PROMOTION pr on (u.codePromo = pr.codePromo)";
+	
+	String selectUserByEmail = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.codeProfil,p.libelle,"
+			+ "pr.codePromo,pr.libelle" + " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) "
+			+ "join PROMOTION pr on (u.codePromo = pr.codePromo)" + " where u.email=?";
 
 	String remove = "DELETE FROM UTILISATEUR where idUtilisateur=?";
 	String add = "INSERT INTO UTILISATEUR (nom,prenom,email,password,codeProfil,codePromo) VALUES (?,?,?,?,?,?)";
@@ -171,9 +175,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rs = rqt.executeQuery();
 			if (rs.next()) {
 				message = rs.getString("p.libelle");
-			} else {
-				message = "Erreur";
-			}
+			} 
 
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL- authentification", e);
@@ -181,6 +183,41 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			closeConnection(conn);
 		}
 		return message;
+	}
+
+	public Utilisateur getUserByEmail(String email) throws DALException {
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		Utilisateur user = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(selectOne);
+			rqt.setString(1, email);
+			rs = rqt.executeQuery();
+			while (rs.next()) {
+				if (rs.getString("p.libelle").equals("candidat libre")
+						|| rs.getString("p.libelle").equals("stagiaire")) {
+					user = new Candidat();
+					Promotion p = new Promotion();
+					p.setId(rs.getInt(rs.getInt("pr.codePromo")));
+					p.setLibelle(rs.getString(rs.getString("pr.libelle")));
+				} else {
+					user = new Collaborateur();
+				}
+
+				user.setIdUtilisateur(rs.getInt("u.idUtilisateur"));
+				user.setNom(rs.getString("u.nom"));
+				user.setPrenom(rs.getString("u.prenom"));
+				user.setEmail(rs.getString("u.email"));
+			}
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- select one", e);
+		} finally {
+			closeConnection(conn);
+		}
+
+		return user;
 	}
 
 }

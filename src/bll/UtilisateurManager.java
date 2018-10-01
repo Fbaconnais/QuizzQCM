@@ -70,4 +70,17 @@ public class UtilisateurManager {
 		}
 	}
 	
+	public Utilisateur getUserByEmail(String email) throws BLLException{
+		Utilisateur user = null;
+		
+		try {
+			user = DAO.getUserByEmail(email);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		
+		
+		return user;
+	}
+	
 }
