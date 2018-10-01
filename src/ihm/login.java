@@ -55,6 +55,11 @@ public class login extends HttpServlet {
 		} else {
 			switch (user.getProfil().getLibelle()) {
 				case "candidat libre":
+				case "stagiaire":
+					request.getRequestDispatcher("candidat").forward(request, response);
+				default :
+					request.getRequestDispatcher("collaborateur").forward(request, response);
+					
 			}
 		}
 	}
