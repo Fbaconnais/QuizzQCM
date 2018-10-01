@@ -6,16 +6,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@include file="./entete.html"%>
-<title>QCM - Login</title>
+<%@include file="../entete.html"%>
+<title>QCM - Accueil collaborateur</title>
 </head>
 <body>
-<%@include file="./debutBody.html"%>
+<%@include file="../debutBody.html"%>
 
 
 
 
 
 
-<%@include file="./finBody.html"%>
+<%@include file="../finBody.html"%>
 </html>
