@@ -2,9 +2,6 @@ package dal;
 
 import bo.Epreuve;
 
-public class DAOEpreuve {
+public interface DAOEpreuve extends DAOGeneric<Epreuve> {
 
-	public interface DAOEpreuvre extends DAOGeneric<Epreuve> {
-		
-	}
 }
