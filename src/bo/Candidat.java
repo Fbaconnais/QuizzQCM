@@ -1,5 +1,8 @@
 package bo;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="Candidat")
 public class Candidat extends Utilisateur {
 
 	
