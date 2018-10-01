@@ -16,7 +16,7 @@ public class Epreuve implements Serializable {
 	private Date dateFinValidite;
 	private int tempsEcoule;
 	private String etat;
-	private int noteCandidat;
+	private float noteCandidat;
 	private String niveauCandidat;
 
 	private final int NOTE_MAXIMUM = 20;
@@ -77,12 +77,12 @@ public class Epreuve implements Serializable {
 		this.etat = etat;
 	}
 
-	public int getNoteCandidat() {
+	public float getNoteCandidat() {
 		return noteCandidat;
 	}
 
-	public void setNoteCandidat(int noteCandidat) {
-		this.noteCandidat = noteCandidat;
+	public void setNoteCandidat(float f) {
+		this.noteCandidat = f;
 	}
 
 	public int getNOTE_MAXIMUM() {

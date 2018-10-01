@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import bo.Epreuve;
+import bo.Test;
 import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOEpreuve;
@@ -15,11 +16,11 @@ import dal.DAOEpreuve;
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	private Connection conn = null;
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.libelle," + "t.description," + "t.duree," + "u.nom,"
-			+ "u.prenom," + "u.email," + "FROM Epreuve e join Test t on (e.idTest = t.idTest)" + "where e.idEpreuve=?";
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.duree," + "u.nom,"
+			+ "u.prenom," + "u.email," + "FROM Epreuve e join Test t on (e.idTest = t.idTest)" + "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)" + "where e.idEpreuve=?";
 	String selectAll = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.libelle," + "t.description," + "t.duree," + "u.nom,"
-			+ "u.prenom," + "u.email," + "FROM Epreuve e join Test t on (e.idTest = t.idTest)";
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.duree," + "u.nom,"
+			+ "u.prenom," + "u.email," + "FROM Epreuve e join Test t on (e.idTest = t.idTest)" + "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)";
 
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
 	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?)";
@@ -66,12 +67,25 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Epreuve epreuve = null;
+		Test test = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectOne);
 			rqt.setInt(1, id);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
+				test = new Test();
+				epreuve = new Epreuve();
+				test.setIdTest(rs.getInt("t.idTest"));
+				
+				epreuve.setIdEpreuve(rs.getInt("e.idEpreuve"));
+				epreuve.setDateDebutValidite(rs.getDate("e.dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getDate("e.dateFinValidite"));
+				epreuve.setTempsEcoule(rs.getInt("e.tempsEcoule"));
+				epreuve.setEtat(rs.getString("e.etat"));
+				epreuve.setNoteCandidat(rs.getFloat("e.note_obtenue"));
+				epreuve.setNiveauCandidat(rs.getString("e.niveau_obtenu"));
 				
 			}
 		}
