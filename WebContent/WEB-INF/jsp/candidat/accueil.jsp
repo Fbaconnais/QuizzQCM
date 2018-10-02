@@ -10,12 +10,11 @@
 <title>QCM - Accueil candidat</title>
 </head>
 <body>
-<%@include file="../debutBody.html"%>
+	<%@include file="../debutBody.html"%>
 
 
 
 
 
-
-<%@include file="../finBody.html"%>
+	<%@include file="../finBody.html"%>
 </html>

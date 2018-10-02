@@ -14,6 +14,7 @@ import bo.Test;
 import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOEpreuve;
+import dal.DAOFactory;
 
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	private Connection conn = null;
@@ -86,23 +87,23 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				user = new Candidat();
 				epreuve = new Epreuve();
 
-				test.setIdTest(rs.getInt("t.idTest"));
-				test.setLibelle(rs.getString("t.libelle"));
-				test.setDescription(rs.getString("t.description"));
-				test.setDuree(rs.getInt("t.duree"));
+				test.setIdTest(rs.getInt("idTest"));
+				test.setLibelle(rs.getString("libelle"));
+				test.setDescription(rs.getString("description"));
+				test.setDuree(rs.getInt("duree"));
 
-				user.setIdUtilisateur(rs.getInt("u.idUtilisateur"));
-				user.setNom(rs.getString("u.nom"));
-				user.setPrenom(rs.getString("u.prenom"));
-				user.setEmail(rs.getString("u.email"));
+				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
+				user.setNom(rs.getString("nom"));
+				user.setPrenom(rs.getString("prenom"));
+				user.setEmail(rs.getString("email"));
 
-				epreuve.setIdEpreuve(rs.getInt("e.idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getDate("e.dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getDate("e.dateFinValidite"));
-				epreuve.setTempsEcoule(rs.getInt("e.tempsEcoule"));
-				epreuve.setEtat(rs.getString("e.etat"));
-				epreuve.setNoteCandidat(rs.getFloat("e.note_obtenue"));
-				epreuve.setNiveauCandidat(rs.getString("e.niveau_obtenu"));
+				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
+				epreuve.setDateDebutValidite(rs.getDate("dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getDate("dateFinValidite"));
+				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
+				epreuve.setEtat(rs.getString("etat"));
+				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
+				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
 				epreuve.setTest(test);
 				epreuve.setCandidat(user);
 			}
@@ -124,18 +125,23 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		Statement stmt = null;
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
 		Epreuve epreuve = new Epreuve();
+		Test test = null;
 		
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(selectAll);
 			while(rs.next()){
-				epreuve.setIdEpreuve(rs.getInt("e.idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getDate("e.dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getDate("e.dateFinValidite"));
-				epreuve.setTempsEcoule(rs.getInt("e.tempsEcoule"));
-				epreuve.setEtat(rs.getString("e.etat"));
-				epreuve.setNoteCandidat(rs.getFloat("e.note_obtenue"));
-				epreuve.setNiveauCandidat(rs.getString("e.niveau_obtenu"));
+				DAOTest DAOtest = DAOFactory.getDAOTest();
+				test = new Test();
+				test = DAOtest.selectOne(rs.getInt("idTest"));
+				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
+				epreuve.setDateDebutValidite(rs.getDate("dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getDate("dateFinValidite"));
+				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
+				epreuve.setEtat(rs.getString("etat"));
+				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
+				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
+				epreuve.setTest(test);
 				listeEpreuves.add(epreuve);
 			}
 			
