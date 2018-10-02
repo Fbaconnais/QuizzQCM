@@ -6,42 +6,41 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import bo.Candidat;
-import bo.Collaborateur;
-import bo.Profil;
-import bo.Promotion;
+import bo.Test;
 import bo.Theme;
-import bo.Utilisateur;
 import dal.ConnectionProvider;
 import dal.DALException;
-import dal.DAOTheme;
 
-public class DAOThemeJdbcImpl implements DAOTheme {
-
+public class DAOTestJdbcImpl implements DAOTest {
 	private Connection conn = null;
-	String selectOne = "SELECT libelle FROM THEME WHERE idTheme=?";
+	String selectOne = "SELECT * FROM TEST WHERE idTest=?";
 	
 	
 	@Override
-	public Theme add(Theme data) throws DALException {
+	public Test add(Test data) throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Theme selectOne(int id) throws DALException {
+	public Test selectOne(int id) throws DALException {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
-		Theme theme = null;
+		Test test = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectOne);
 			rqt.setInt(1, id);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
-				theme = new Theme();
-				theme.setIdTheme(id);
-				theme.setLibelle(rs.getString("libelle"));
+				test = new Test();
+				test.setIdTest(id);
+				test.setLibelle(rs.getString("libelle"));
+				test.setDescription(rs.getString("description"));
+				test.setDuree(rs.getInt("duree"));
+				test.setSeuil_bas(rs.getInt("seuil_bas"));
+				test.setSeuil_haut(rs.getInt("seuil_haut"));
+			
 			}
 
 		} catch (SQLException e) {
@@ -54,11 +53,11 @@ public class DAOThemeJdbcImpl implements DAOTheme {
 			}
 		}
 
-		return theme;
+		return test;
 	}
 
 	@Override
-	public List<Theme> selectAll() throws DALException {
+	public List<Test> selectAll() throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -66,13 +65,13 @@ public class DAOThemeJdbcImpl implements DAOTheme {
 	@Override
 	public void remove(int id) throws DALException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void update(Theme data) throws DALException {
+	public void update(Test data) throws DALException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

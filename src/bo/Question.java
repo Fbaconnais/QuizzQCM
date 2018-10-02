@@ -13,7 +13,8 @@ public class Question implements Serializable{
 	private String media;
 	private int points;
 	private Theme theme;
-	private Proposition proposition;
+	
+	
 	public int getIdQuestion() {
 		return idQuestion;
 	}
@@ -44,26 +45,21 @@ public class Question implements Serializable{
 	public void setTheme(Theme theme) {
 		this.theme = theme;
 	}
-	public Proposition getProposition() {
-		return proposition;
-	}
-	public void setProposition(Proposition proposition) {
-		this.proposition = proposition;
-	}
-	public Question(String enonce, String media, int points, Theme theme, Proposition proposition) {
+	
+	public Question(String enonce, String media, int points, Theme theme) {
 		this.enonce = enonce;
 		this.media = media;
 		this.points = points;
 		this.theme = theme;
-		this.proposition = proposition;
+
 	}
-	public Question(int idQuestion, String enonce, String media, int points, Theme theme, Proposition proposition) {
+	public Question(int idQuestion, String enonce, String media, int points, Theme theme) {
 		this.idQuestion = idQuestion;
 		this.enonce = enonce;
 		this.media = media;
 		this.points = points;
 		this.theme = theme;
-		this.proposition = proposition;
+
 	}
 	public Question() {
 	}
