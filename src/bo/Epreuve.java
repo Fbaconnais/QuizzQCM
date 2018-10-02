@@ -98,11 +98,11 @@ public class Epreuve implements Serializable {
 	}
 
 	public Epreuve() {
-		super();
+
 	}
 
 	public Epreuve(int idEpreuve, Candidat candidat, Test test, Date dateDebutValidite, Date dateFinValidite) {
-		super();
+
 		this.idEpreuve = idEpreuve;
 		this.candidat = candidat;
 		this.test = test;
@@ -111,7 +111,7 @@ public class Epreuve implements Serializable {
 	}
 
 	public Epreuve(Candidat candidat, Test test, Date dateDebutValidite, Date dateFinValidite) {
-		super();
+
 		this.candidat = candidat;
 		this.test = test;
 		this.dateDebutValidite = dateDebutValidite;

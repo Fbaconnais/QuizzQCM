@@ -4,19 +4,20 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="Promotion")
-public class Promotion implements Serializable{
-	 
+
+@XmlRootElement(name = "Theme")
+public class Theme implements Serializable{
+
+
 	private static final long serialVersionUID = 1L;
-	private String id;
+	private int idTheme;
 	private String libelle;
 	
-	
-	public String getId() {
-		return id;
+	public int getIdTheme() {
+		return idTheme;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setIdTheme(int idTheme) {
+		this.idTheme = idTheme;
 	}
 	public String getLibelle() {
 		return libelle;
@@ -24,19 +25,18 @@ public class Promotion implements Serializable{
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
-	public Promotion() {
-		
-	}
-	public Promotion(String libelle) {
-		
-		this.libelle = libelle;
-	}
-	public Promotion(String id, String libelle) {
-		
-		this.id = id;
-		this.libelle = libelle;
-	}
+	public Theme(String libelle) {
 	
+		this.libelle = libelle;
+	}
+	public Theme(int idTheme, String libelle) {
+		
+		this.idTheme = idTheme;
+		this.libelle = libelle;
+	}
+	public Theme() {
+	
+	}
 	
 	
 }
