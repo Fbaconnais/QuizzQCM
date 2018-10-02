@@ -36,7 +36,7 @@
 				<c:forEach var="epreuve" items="${sessionScope.listeEpreuves}">
 					<div class="card" style="width: auto;">
 						<img class="card-img-top"
-							src="https://www.apollo-formation.com/wp-content/uploads/plsql.png"
+							src="${epreuve.test.logoLangage }"
 							alt="Card image cap">
 						<div class="card-body">
 							<h5 class="card-title">${epreuve.test.libelle }</h5>

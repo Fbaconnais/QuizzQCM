@@ -35,7 +35,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur) WHERE u.idUtilisateur=?";
 
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
-	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?)";
+	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur, logo_langage) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
 	String update = "UPDATE Epreuve SET dateDedutValidite=?, dateFinValidite=?, tempsEcoule=?, etat=?, note_obtenue=?, niveau_obtenu=?, idTest=?, idUtilisateur=?";
 
 	private void closeConnection(Connection conn) throws DALException {
@@ -45,7 +45,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			throw new DALException("ERREUR DAL- Fermeture connection", e);
 		}
 	}
-
+	
 	public Epreuve add(Epreuve data) throws DALException {
 		PreparedStatement rqt = null;
 		try {
