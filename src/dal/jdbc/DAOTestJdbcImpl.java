@@ -10,6 +10,7 @@ import bo.Test;
 import bo.Theme;
 import dal.ConnectionProvider;
 import dal.DALException;
+import dal.DAOTest;
 
 public class DAOTestJdbcImpl implements DAOTest {
 	private Connection conn = null;

@@ -15,18 +15,24 @@ import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOEpreuve;
 import dal.DAOFactory;
+import dal.DAOTest;
 
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	private Connection conn = null;
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.duree,"
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.logo_langage," + "t.duree,"
 			+ "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email,"
 			+ "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)" + "where e.idEpreuve=?";
 	String selectAll = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.duree,"
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.logo_langage," + "t.description," + "t.duree,"
 			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)";
+	
+	String selectAllByIDProfil = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.logo_langage," + "t.libelle," + "t.description," + "t.duree,"
+			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
+			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur) WHERE u.idUtilisateur=?";
 
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
 	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?)";
@@ -91,6 +97,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				test.setLibelle(rs.getString("libelle"));
 				test.setDescription(rs.getString("description"));
 				test.setDuree(rs.getInt("duree"));
+				test.setLogoLangage(rs.getString("logo_langage"));
 
 				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
 				user.setNom(rs.getString("nom"));
@@ -131,6 +138,39 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			conn = ConnectionProvider.getCnx();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(selectAll);
+			while(rs.next()){
+				DAOTest DAOtest = DAOFactory.getDAOTest();
+				test = new Test();
+				epreuve = new Epreuve();
+				test = DAOtest.selectOne(rs.getInt("idTest"));
+				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
+				epreuve.setDateDebutValidite(rs.getDate("dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getDate("dateFinValidite"));
+				epreuve.setEtat(rs.getString("etat"));
+				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
+				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
+				epreuve.setTest(test);
+				listeEpreuves.add(epreuve);
+			}
+			
+		} catch (SQLException e) {
+			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
+		}
+		return listeEpreuves;
+	}
+	
+	public List<Epreuve> selectAllByIDProfil(int id) throws DALException {
+		ResultSet rs = null;
+		PreparedStatement rqt = null;
+		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
+		Epreuve epreuve = null;
+		Test test = null;
+		
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(selectAllByIDProfil);
+			rqt.setInt(1, id);
+			rs = rqt.executeQuery();
 			while(rs.next()){
 				DAOTest DAOtest = DAOFactory.getDAOTest();
 				test = new Test();

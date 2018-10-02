@@ -13,6 +13,7 @@ import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOFactory;
 import dal.DAOSectionTest;
+import dal.DAOTest;
 import dal.DAOTheme;
 
 public class DAOSectionTestJdbcImpl implements DAOSectionTest {

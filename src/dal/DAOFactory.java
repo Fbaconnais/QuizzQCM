@@ -4,7 +4,6 @@ import dal.jdbc.DAOEpreuveJdbcImpl;
 import dal.jdbc.DAOQuestionJdbcImpl;
 import dal.jdbc.DAOQuestionTirageJdbcImpl;
 import dal.jdbc.DAOSectionTestJdbcImpl;
-import dal.jdbc.DAOTest;
 import dal.jdbc.DAOTestJdbcImpl;
 import dal.jdbc.DAOThemeJdbcImpl;
 import dal.jdbc.DAOUtilisateurJdbcImpl;

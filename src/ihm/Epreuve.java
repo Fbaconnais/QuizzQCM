@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bll.BLLException;
 import bll.EpreuveManager;
+import bo.Utilisateur;
 
 
 @WebServlet("/epreuve")
@@ -22,8 +23,8 @@ public class Epreuve extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EpreuveManager EpreuveMger = EpreuveManager.getMger();
 		try {
-			Integer compteur = 0;
-			listeEpreuves = EpreuveMger.selectAllEpreuves();
+			int id = ((Utilisateur)request.getSession().getAttribute("user")).getIdUtilisateur(); 
+			listeEpreuves = EpreuveMger.selectAllEpreuvesByIDUser(id);
 			request.getSession().setAttribute("listeEpreuves", listeEpreuves);
 			request.getRequestDispatcher("/WEB-INF/jsp/candidat/choixEpreuve.jsp").forward(request, response);
 		} catch (BLLException e) {

@@ -61,4 +61,13 @@ public class EpreuveManager {
 		return listeEpreuves;
 	}
 
+	public List<Epreuve> selectAllEpreuvesByIDUser(int id) throws BLLException {
+		List<Epreuve> listeEpreuves = null;
+		try {
+			listeEpreuves = DAO.selectAllByIDProfil(id);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		return listeEpreuves;
+	}
 }

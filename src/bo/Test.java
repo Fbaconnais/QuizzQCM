@@ -13,6 +13,15 @@ public class Test implements Serializable {
 	private int duree;
 	private int seuil_haut;
 	private int seuil_bas;
+	private String logoLangage;
+
+	public String getLogoLangage() {
+		return logoLangage;
+	}
+
+	public void setLogoLangage(String logoLangage) {
+		this.logoLangage = logoLangage;
+	}
 
 	public Test() {
 		super();
