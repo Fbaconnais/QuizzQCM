@@ -70,7 +70,7 @@ public class login extends HttpServlet {
 		if (request.getSession().getAttribute("erreur") != null) {
 			response.sendRedirect("erreur");
 		} else {
-			if (user.getProfil().getLibelle() != null)
+			if (user.getProfil().getLibelle().equals("stagiaire") || user.getProfil().getLibelle().equals("candidat libre"))
 
 				response.sendRedirect("candidat");
 			else {
