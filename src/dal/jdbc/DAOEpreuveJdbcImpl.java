@@ -20,9 +20,9 @@ import dal.DAOTest;
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	private Connection conn = null;
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.logo_langage," + "t.duree,"
-			+ "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email,"
-			+ "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
+			+ "e.note_obtenue," + "e.tempsEcoule," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.logo_langage," + "t.duree,"
+			+ "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email"
+			+ " FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)" + "where e.idEpreuve=?";
 	String selectAll = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
 			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.logo_langage," + "t.description," + "t.duree,"

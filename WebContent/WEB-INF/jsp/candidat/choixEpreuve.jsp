@@ -48,7 +48,7 @@
 									${epreuve.dateFinValidite }</li>
 							</ul>
 							<br>
-							<a href="#" class="btn btn-primary">Participer à l'épreuve</a>
+							<a href="/QuizzQCM/test?id=${epreuve.idEpreuve}" class="btn btn-primary">Participer à l'épreuve</a>
 						</div>
 					</div>
 					<br>
