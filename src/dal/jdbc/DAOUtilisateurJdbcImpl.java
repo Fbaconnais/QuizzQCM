@@ -19,27 +19,24 @@ import dal.DAOUtilisateur;
 public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 	private Connection conn = null;
-	String selectOne = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.codeProfil,p.libelle as plibelle," + "u.codePromo"
-			+ " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) "
-			+ " where u.idUtilisateur=?";
+	String selectOne = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email,"
+			+ "p.codeProfil,p.libelle as plibelle," + "u.codePromo"
+			+ " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) " + " where u.idUtilisateur=?";
 
 	String selectAll = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.libelle as plibelle,"
 			+ "u.codePromo" + " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) ";
-			
-	
-	String selectUserByEmail = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email," + "p.codeProfil,p.libelle as plibelle,"
-			+ "u.codePromo" + " from UTILISATEUR as u join PROFIL as p on (u.codeProfil = p.codeProfil) "
-		 + " where u.email=?";
+
+	String selectUserByEmail = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email,"
+			+ "p.codeProfil,p.libelle as plibelle," + "u.codePromo"
+			+ " from UTILISATEUR as u join PROFIL as p on (u.codeProfil = p.codeProfil) " + " where u.email=?";
 
 	String remove = "DELETE FROM UTILISATEUR where idUtilisateur=?";
 	String add = "INSERT INTO UTILISATEUR (nom,prenom,email,password,codeProfil,codePromo) VALUES (?,?,?,?,?,?)";
 	String update = "UPDATE UTILISATEUR SET nom=?,prenom=?,email=?,password=?,codeProfil=?,codePromo=? WHERE idUtilisateur=?";
 	String authentification = "SELECT libelle FROM PROFIL p JOIN UTILISATEUR u ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
-	
+
 	public DAOUtilisateurJdbcImpl() {
 	}
-
-	
 
 	public Utilisateur add(Utilisateur data) throws DALException {
 		PreparedStatement rqt = null;
@@ -51,8 +48,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(3, data.getEmail());
 			rqt.setString(4, data.getPassword());
 			rqt.setInt(5, data.getProfil().getId());
-			if (data.getProfil().getLibelle().equals("candidat libre")
-					|| data.getProfil().getLibelle().equals("stagiaire")) {
+			if (data.getProfil().getLibelle().equals("stagiaire")) {
 				rqt.setString(6, ((Candidat) data).getPromotion().getId());
 			} else {
 				rqt.setInt(6, 0);
@@ -89,12 +85,13 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setInt(1, id);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
-				if (rs.getString("plibelle").equals("candidat libre")
-						|| rs.getString("plibelle").equals("stagiaire")) {
+				if (rs.getString("plibelle").equals("candidat libre") || rs.getString("plibelle").equals("stagiaire")) {
 					user = new Candidat();
-					Promotion p = new Promotion();
-					p.setId(rs.getString("codePromo"));
-					((Candidat)user).setPromotion(p);
+					if (rs.getString("plibelle").equals("stagiaire")) {
+						Promotion p = new Promotion();
+						p.setId(rs.getString("codePromo"));
+						((Candidat) user).setPromotion(p);
+					}
 				} else {
 					user = new Collaborateur();
 				}
@@ -107,7 +104,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			}
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- select one "+e.getMessage()+e.getStackTrace().toString(), e);
+			throw new DALException("ERREUR DAL- select one " + e.getMessage() + e.getStackTrace().toString(), e);
 		} finally {
 			try {
 				conn.close();
@@ -156,8 +153,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(3, data.getEmail());
 			rqt.setString(4, data.getPassword());
 			rqt.setInt(5, data.getProfil().getId());
-			if (data.getProfil().getLibelle().equals("candidat libre")
-					|| data.getProfil().getLibelle().equals("stagiaire")) {
+			if (data.getProfil().getLibelle().equals("stagiaire")) {
 				rqt.setString(6, ((Candidat) data).getPromotion().getId());
 			} else {
 				rqt.setInt(6, 0);
@@ -187,11 +183,11 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rs = rqt.executeQuery();
 			if (rs.next()) {
 				message = rs.getString("libelle");
-			} 
+			}
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- authentification" +e.getMessage(), e);
-		} 
+			throw new DALException("ERREUR DAL- authentification" + e.getMessage(), e);
+		}
 		return message;
 	}
 
@@ -205,12 +201,13 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(1, email);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
-				if (rs.getString("plibelle").equals("candidat libre")
-						|| rs.getString("plibelle").equals("stagiaire")) {
+				if (rs.getString("plibelle").equals("candidat libre") || rs.getString("plibelle").equals("stagiaire")) {
 					user = new Candidat();
-					Promotion p = new Promotion();
-					p.setId(rs.getString("codePromo"));
-					((Candidat)user).setPromotion(p);
+					if (rs.getString("plibelle").equals("stagiaire")) {
+						Promotion p = new Promotion();
+						p.setId(rs.getString("codePromo"));
+						((Candidat) user).setPromotion(p);
+					}
 				} else {
 					user = new Collaborateur();
 				}
@@ -224,8 +221,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DALException("ERREUR DAL- select one "+e.getMessage(), e);
-		
+			throw new DALException("ERREUR DAL- select one " + e.getMessage(), e);
+
 		} finally {
 			try {
 				conn.close();
