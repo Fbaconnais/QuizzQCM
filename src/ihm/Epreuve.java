@@ -22,6 +22,7 @@ public class Epreuve extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EpreuveManager EpreuveMger = EpreuveManager.getMger();
 		try {
+			Integer compteur = 0;
 			listeEpreuves = EpreuveMger.selectAllEpreuves();
 			request.getSession().setAttribute("listeEpreuves", listeEpreuves);
 			request.getRequestDispatcher("/WEB-INF/jsp/candidat/choixEpreuve.jsp").forward(request, response);

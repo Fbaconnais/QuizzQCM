@@ -21,11 +21,11 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
 			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.duree,"
 			+ "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email,"
-			+ "FROM Epreuve e join Test t on (e.idTest = t.idTest)"
+			+ "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)" + "where e.idEpreuve=?";
 	String selectAll = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
 			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.duree,"
-			+ "u.nom," + "u.prenom," + "u.email," + "FROM Epreuve e join Test t on (e.idTest = t.idTest)"
+			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)";
 
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
@@ -124,20 +124,21 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		ResultSet rs = null;
 		Statement stmt = null;
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
-		Epreuve epreuve = new Epreuve();
+		Epreuve epreuve = null;
 		Test test = null;
 		
 		try {
+			conn = ConnectionProvider.getCnx();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(selectAll);
 			while(rs.next()){
 				DAOTest DAOtest = DAOFactory.getDAOTest();
 				test = new Test();
+				epreuve = new Epreuve();
 				test = DAOtest.selectOne(rs.getInt("idTest"));
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
 				epreuve.setDateDebutValidite(rs.getDate("dateDedutValidite"));
 				epreuve.setDateFinValidite(rs.getDate("dateFinValidite"));
-				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
 				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
