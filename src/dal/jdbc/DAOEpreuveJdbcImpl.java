@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import bo.Candidat;
@@ -119,8 +120,29 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	}
 
 	public List<Epreuve> selectAll() throws DALException {
-
-		return null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
+		Epreuve epreuve = new Epreuve();
+		
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(selectAll);
+			while(rs.next()){
+				epreuve.setIdEpreuve(rs.getInt("e.idEpreuve"));
+				epreuve.setDateDebutValidite(rs.getDate("e.dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getDate("e.dateFinValidite"));
+				epreuve.setTempsEcoule(rs.getInt("e.tempsEcoule"));
+				epreuve.setEtat(rs.getString("e.etat"));
+				epreuve.setNoteCandidat(rs.getFloat("e.note_obtenue"));
+				epreuve.setNiveauCandidat(rs.getString("e.niveau_obtenu"));
+				listeEpreuves.add(epreuve);
+			}
+			
+		} catch (SQLException e) {
+			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
+		}
+		return listeEpreuves;
 	}
 
 	public void remove(int id) throws DALException {
