@@ -10,7 +10,11 @@
 <title>QCM - Erreur</title>
 </head>
 <body>
-<%@include file="../debutBody.html"%>
-
-<%@include file="../finBody.html"%>
+	<%@include file="../debutBody.html"%>
+	<div class="row justify-content-lg-center">
+		<h1>Une erreur est survenue, merci de nous contacter en nous
+			donnant le code suivant :</h1>
+	</div>
+	<div class="row justify-content-lg-center">${sessionScope.erreur}</div>
+	<%@include file="../finBody.html"%>
 </html>

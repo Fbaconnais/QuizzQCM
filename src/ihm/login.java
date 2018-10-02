@@ -34,7 +34,7 @@ public class login extends HttpServlet {
 		if (application.getAttribute("erreur") == null) {
 			request.getSession().setAttribute("erreur", null);
 		}
-		request.getSession().setAttribute("auth", null);
+		request.getSession().setAttribute("profilCon", null);
 		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 	}
 
@@ -69,7 +69,7 @@ public class login extends HttpServlet {
 		}
 		
 		if (request.getSession().getAttribute("erreur") != null) {
-			request.getRequestDispatcher("/WEB-INF/jsp/erreur/affichageMessageErreur.jsp");
+			response.sendRedirect("erreur");
 		} else {
 			
 			switch (user.getProfil().getLibelle()) {

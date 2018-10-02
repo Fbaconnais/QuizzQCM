@@ -14,7 +14,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-lg-12">
 				<c:choose>
 					<c:when test="${!empty sessionScope.erreur}">
 						<div class="row justify-content-lg-center">
@@ -63,8 +63,10 @@
 					</c:otherwise>
 				</c:choose>
 
+			</div>
+		</div>
+	</div>
 
 
-
-				<%@include file="./finBody.html"%>
+	<%@include file="./finBody.html"%>
 </html>
