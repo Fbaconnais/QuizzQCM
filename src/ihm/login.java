@@ -20,12 +20,12 @@ import bo.Utilisateur;
 public class login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ServletContext application;
-	
+
 	@Override
-		public void init() throws ServletException {
-		 application = this.getServletContext();
+	public void init() throws ServletException {
+		application = this.getServletContext();
 		application.setAttribute("erreur", null);
-		}
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,30 +61,22 @@ public class login extends HttpServlet {
 				user = Mger.getUserByEmail(email);
 				request.getSession().setAttribute("user", user);
 
-
 			} catch (BLLException e) {
 
 				request.getSession().setAttribute("erreur", e.getMessage());
 			}
 		}
-		
+
 		if (request.getSession().getAttribute("erreur") != null) {
 			response.sendRedirect("erreur");
 		} else {
-			
-			switch (user.getProfil().getLibelle()) {
-			case "candidat libre":
-			
-			case "stagiaire":
+			if (user.getProfil().getLibelle() != null)
 
 				response.sendRedirect("candidat");
-				break;
-			default:
+			else {
 				response.sendRedirect("collaborateur");
-				break;
-
 			}
+
 		}
 	}
-
 }
