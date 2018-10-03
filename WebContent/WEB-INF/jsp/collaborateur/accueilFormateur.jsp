@@ -21,36 +21,29 @@
 		<div class="collapse navbar-collapse justify-content-md-center"
 			id="navbarsExample08">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="#">
+				<li class="nav-item active"><a class="nav-link" href="collaborateur">
 						Accueil Formateur <span class="sr-only">(current)</span>
 				</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="questions">Gestion
+				<li class="nav-item"><a class="nav-link" href="collaborateur/questions">Gestion
 						questions</a></li>
-				<li class="nav-item"><a class="nav-link" href="themes">Gestion
+				<li class="nav-item"><a class="nav-link" href="collaborateur/themes">Gestion
 						thèmes</a></li>
-				<li class="nav-item"><a class="nav-link" href="tests">Gestion
+				<li class="nav-item"><a class="nav-link" href="collaborateur/tests">Gestion
 						tests</a></li>
 			</ul>
 		</div>
 	</nav>
 
-	<%@include file="../debutBody.html"%>
+	<%@include file="./debutBody.jsp"%>
+
 	
-	<div class="row">
-		<div class="col col-lg-4">
-		<div class="row"><h1>${sessionScope.user.nom}</h1></div>
-		<div class="row"><h1>${sessionScope.user.prenom}</h1></div>
-		<div class="row"><a href="modif"><button>Modifier vos informations</button></a></div>
-		<div class="row"><a href="deconnection"><button>Déconnection</button></a></div>
 		
-		</div>
-	
-	</div>
 	
 
 
 
 
-	<%@include file="../finBody.html"%>
+
+	<%@include file="./finBody.html"%>
 </html>
