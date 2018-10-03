@@ -21,6 +21,7 @@ public class Test extends HttpServlet{
 		int id = Integer.parseInt(request.getParameter("id"));
 		try {
 			qtMger.genererTest(id);
+			
 			request.getRequestDispatcher("/WEB-INF/jsp/candidat/test.jsp").forward(request, response);
 		} catch (BLLException e) {
 			e.printStackTrace();
