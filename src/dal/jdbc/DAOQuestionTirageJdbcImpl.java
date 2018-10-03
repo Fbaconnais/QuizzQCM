@@ -21,7 +21,7 @@ import dal.DAOQuestionTirage;
 public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 	private Connection conn = null;
 	private String generationTest = "{call genererTest(?,?)}";
-	private String getQuestionsDansLordre = "SELECT * FROM QUESTION_TIRAGE ORDER BY numordre ASC WHERE idEpreuve=?";
+	private String getQuestionsDansLordre = "SELECT * FROM QUESTION_TIRAGE WHERE idEpreuve=? ORDER BY numordre ASC ";
 	
 	
 	@Override
