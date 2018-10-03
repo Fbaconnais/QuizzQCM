@@ -17,7 +17,7 @@
 	crossorigin="anonymous"></script>
 <link rel="shortcut icon" href="./images/logo.ico">
 <div class="card bg-dark text-white">
-	<img src="${pageContext.request.contextPath}/images/collabo/banniere.png" class="img-fluid card-img"
+	<img src="${pageContext.request.contextPath}/images/banniere.png" class="img-fluid card-img"
 		alt="Responsive image">
 </div>
 <br>
