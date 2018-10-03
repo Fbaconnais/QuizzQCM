@@ -1,4 +1,4 @@
-package ihm;
+package ihm.candidat;
 
 import java.io.IOException;
 
