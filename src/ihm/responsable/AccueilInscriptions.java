@@ -35,7 +35,7 @@ public class AccueilInscriptions extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/jsp/erreur/autorisation.jsp").forward(request, response);
 		} else {
 	
-			request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/accueilinscriptions.jsp")
+			request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/accueilinscription.jsp")
 					.forward(request, response);
 		}
 	}

@@ -68,7 +68,7 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 			
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- select one " + e.getMessage() + e.getStackTrace().toString(), e);
+			throw new DALException("ERREUR DAL- generation test " + e.getMessage() + e.getStackTrace().toString(), e);
 		} finally {
 			try {
 				conn.close();

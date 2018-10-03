@@ -1,5 +1,8 @@
 package bll;
 
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import bo.Promotion;
@@ -61,5 +64,32 @@ private DAOPromotion DAO;
 		}
 		
 		return liste;
+	}
+	
+	public void inscrirePromoATest(String codePromo, int idTest,String dateDebutValidite,String dateFinValidite) throws BLLException{
+		String dateDebut[] = dateDebutValidite.split("-");
+		String dateFin[] = dateFinValidite.split("-");
+		Date datedebut = getDateViaString(dateDebut);
+		Date datefin = getDateViaString(dateFin);
+		
+		try {
+			DAO.inscrirePromoATest(codePromo, idTest, datedebut, datefin);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		
+		
+		
+	}
+	private Date getDateViaString (String[] string) {
+		int year = Integer.parseInt(string[0]);
+		int month = Integer.parseInt(string[1])-1;
+		int day = Integer.parseInt(string[2]);
+		Calendar cal = new GregorianCalendar();
+		cal.set(year, month, day);
+		Long time = cal.getTimeInMillis();
+		Date date = new Date(time);
+		
+		return date;
 	}
 }

@@ -77,7 +77,7 @@ public class DAOTestJdbcImpl implements DAOTest {
 				test.setLibelle(rs.getString("libelle"));
 				test.setDescription(rs.getString("description"));
 				test.setDuree(rs.getInt("duree"));
-				test.setLogoLangage(rs.getString("logoLangage"));
+				test.setLogoLangage(rs.getString("logo_langage"));
 				test.setSeuil_bas(rs.getInt("seuil_bas"));
 				test.setSeuil_haut(rs.getInt("seuil_haut"));
 				liste.add(test);

@@ -1,6 +1,8 @@
 package ihm.responsable;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,12 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import bll.BLLException;
 import bll.PromotionManager;
 import bll.TestManager;
-import dal.DALException;
-import dal.DAOFactory;
-import dal.DAOPromotion;
-import dal.DAOTest;
+import bo.Promotion;
+import bo.Test;
 
-@WebServlet("/inscription")
+@WebServlet("/collaborateur/inscription")
 public class InscriptionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -23,96 +23,129 @@ public class InscriptionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action;
+		String url = null;
 		if (request.getParameter("action") != null) {
 			action = request.getParameter("action");
 			switch (action) {
 			case "stagiaire":
-				newStagiaire(request, response);
+				url = newStagiaire(request, response);
 				break;
 			case "promotion":
-				newpromotion(request, response);
+				url = newpromotion(request, response);
 				break;
 			case "stagiairepromo":
-				newStagiairePromo(request, response);
+				url = newStagiairePromo(request, response);
 				break;
 			case "candidattest":
-				newCandidatTest(request, response);
+				url = newCandidatTest(request, response);
 				break;
 			case "promotest":
-				newPromoTest(request, response);
+				url = newPromoTest(request, response);
 				break;
 			}
 		} else if (request.getSession().getAttribute("actionEnCours") != null) {
 			action = (String) request.getSession().getAttribute("actionEnCours");
 			switch (action) {
 			case "stagiaire":
-				newStagiaire(request, response);
+				url = newStagiaire(request, response);
 				break;
 			case "promotion":
-				newpromotion(request, response);
+				url = newpromotion(request, response);
 				break;
 			case "stagiairepromo":
-				newStagiairePromo(request, response);
+				url = newStagiairePromo(request, response);
 				break;
 			case "candidattest":
-				newCandidatTest(request, response);
+				url = newCandidatTest(request, response);
 				break;
 			case "promotest":
-				newPromoTest(request, response);
+				url = newPromoTest(request, response);
 				break;
 			}
 		} else {
-			request.getRequestDispatcher("collaborateur").forward(request, response);
+			url = "collaborateur";
 		}
+		
+		request.getRequestDispatcher(url).forward(request, response);
+		
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String url=null;
+		String action = request.getParameter("action");
+		switch (action) {
+		case "promotest" :
+			int idTest = Integer.parseInt(request.getParameter("myhidden"));
+			String codePromo = request.getParameter("promo");
+			String dateDebutValidite = request.getParameter("dateDebutValidite");
+			String dateFinValidite = request.getParameter("dateFinValidite");
+			PromotionManager promoMger = PromotionManager.getMger();
+			try {
+				promoMger.inscrirePromoATest(codePromo,idTest,dateDebutValidite, dateFinValidite);
+				request.getSession().setAttribute("messageValidation", "Requête exécutée");
+				url = "collaborateur";
+			} catch (BLLException e) {
+				request.getSession().setAttribute("erreur", e.getMessage());
+				url = "/WEB-INF/jsp/erreur/affichageMessageErreur.jsp";
+			}
+			break;
+		}
+		
+		request.getRequestDispatcher(url).forward(request, response);
+		
 	}
 
-	private void newPromoTest(HttpServletRequest request, HttpServletResponse response)
+	
+	
+	
+	
+	
+	
+	
+	private String newPromoTest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		TestManager testMger = TestManager.getMger();
 		PromotionManager promoMger = PromotionManager.getMger();
 		
 		
 		try {
-			request.getSession().setAttribute("promos", promoMger.selectAllPromos());
-			request.getSession().setAttribute("tests", testMger.selectAllTests());
+			List<Promotion> listePromos = promoMger.selectAllPromos();
+			List<Test> listeTests = testMger.selectAllTests();
+			request.getSession().setAttribute("promos", listePromos);
+			request.getSession().setAttribute("tests", listeTests);
 		} catch (BLLException e) {
 			request.getSession().setAttribute("erreur", e.getMessage());
-			response.sendRedirect("erreur");
+			return "/WEB-INF/jsp/erreur/affichageMessageErreur.jsp";
 		}
 				
-		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/inscription/newPromoTest.jsp").forward(request, response);
+		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newPromoTest.jsp";
 
 	}
 
-	private void newCandidatTest(HttpServletRequest request, HttpServletResponse response)
+	private String newCandidatTest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/inscription/newCandidatTest.jsp").forward(request, response);
+		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newCandidatTest.jsp";
 
 	}
 
-	private void newStagiairePromo(HttpServletRequest request, HttpServletResponse response)
+	private String newStagiairePromo(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/inscription/newStagiaireInPromo.jsp").forward(request, response);
+		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newStagiaireInPromo.jsp";
 
 	}
 
-	private void newpromotion(HttpServletRequest request, HttpServletResponse response)
+	private String newpromotion(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/inscription/newPromotion.jsp").forward(request, response);
+		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newPromotion.jsp";
 
 	}
 
-	private void newStagiaire(HttpServletRequest request, HttpServletResponse response)
+	private String newStagiaire(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/inscription/newStagiaire.jsp").forward(request, response);
+		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newStagiaire.jsp";
 
 	}
 

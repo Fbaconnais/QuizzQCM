@@ -1,6 +1,8 @@
 package dal.jdbc;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bo.Candidat;
-import bo.Profil;
 import bo.Promotion;
 import bo.Utilisateur;
 import dal.ConnectionProvider;
@@ -21,11 +22,12 @@ import dal.DAOUtilisateur;
 public class DAOPromotionJdbcImpl implements DAOPromotion{
 	
 	Connection conn;
-	String add = "INSERT INTO PROMOTION (codePromo,libelle) VALUES (?,?)";
-	String remove = "DELETE FROM PROMOTION where codePromo=?";
-	String update = "UPDATE PROMOTION SET libelle=? where codePromo=?";
-	String selectOne = "Select libelle from PROMOTION where codePromo=?";
-	String selectAll = "Select * from PROMOTION ORDER BY codePromo";
+	private String add = "INSERT INTO PROMOTION (codePromo,libelle) VALUES (?,?)";
+	private String remove = "DELETE FROM PROMOTION where codePromo=?";
+	private String update = "UPDATE PROMOTION SET libelle=? where codePromo=?";
+	private String selectOne = "Select libelle from PROMOTION where codePromo=?";
+	private String selectAll = "Select * from PROMOTION ORDER BY codePromo";
+	private String inscrirePromoATest = "{call inscrirePromoATest(?,?,?,?)}";
 	
 	@Override
 	public Promotion add(Promotion data) throws DALException {
@@ -71,7 +73,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion{
 				
 				promo = new Promotion();
 				promo.setId(rs.getString("codePromo"));
-				promo.setLibelle(rs.getString("prlibelle"));
+				promo.setLibelle(rs.getString("libelle"));
 				liste.add(promo);
 			}
 
@@ -171,6 +173,32 @@ public class DAOPromotionJdbcImpl implements DAOPromotion{
 			}
 		}
 		return promo;
+	}
+
+	@Override
+	public void inscrirePromoATest(String codePromo, int idTest, Date dateDebut, Date dateFin) throws DALException {
+CallableStatement call = null;
+		
+		try {
+			conn = ConnectionProvider.getCnx();
+			call = conn.prepareCall(inscrirePromoATest);
+			call.setString(1, codePromo);
+			call.setInt(2, idTest);
+			call.setDate(3,dateDebut);
+			call.setDate(4, dateFin);
+			call.executeUpdate();
+			
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- inscription promotion a test " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		
 	}
 
 }
