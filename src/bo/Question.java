@@ -1,6 +1,7 @@
 package bo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,10 +12,23 @@ public class Question implements Serializable{
 	private int idQuestion;
 	private String enonce;
 	private String media;
+	private String typeMedia;
 	private int points;
 	private Theme theme;
+	private List<Proposition> propositions;
 	
-	
+	public String getTypeMedia() {
+		return typeMedia;
+	}
+	public void setTypeMedia(String typeMedia) {
+		this.typeMedia = typeMedia;
+	}
+	public List<Proposition> getPropositions() {
+		return propositions;
+	}
+	public void setPropositions(List<Proposition> propositions) {
+		this.propositions = propositions;
+	}
 	public int getIdQuestion() {
 		return idQuestion;
 	}

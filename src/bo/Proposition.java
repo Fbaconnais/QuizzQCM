@@ -10,7 +10,7 @@ public class Proposition implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int idProposition;
 	private String enonce;
-	private Question question;
+	private int idQuestion;
 	private Boolean estBonne;
 
 	public int getIdProposition() {
@@ -29,12 +29,12 @@ public class Proposition implements Serializable {
 		this.enonce = enonce;
 	}
 
-	public Question getQuestion() {
-		return question;
+	public int getIdQuestion() {
+		return idQuestion;
 	}
 
-	public void setQuestion(Question question) {
-		this.question = question;
+	public void setIdQuestion(int idQuestion) {
+		this.idQuestion = idQuestion;
 	}
 
 	public Boolean getEstBonne() {
@@ -45,16 +45,10 @@ public class Proposition implements Serializable {
 		this.estBonne = estBonne;
 	}
 
-	public Proposition(String enonce, Question question, Boolean estBonne) {
+	public Proposition(String enonce, int idQuestion, Boolean estBonne) {
+		super();
 		this.enonce = enonce;
-		this.question = question;
-		this.estBonne = estBonne;
-	}
-
-	public Proposition(int idProposition, String enonce, Question question, Boolean estBonne) {
-		this.idProposition = idProposition;
-		this.enonce = enonce;
-		this.question = question;
+		this.idQuestion = idQuestion;
 		this.estBonne = estBonne;
 	}
 

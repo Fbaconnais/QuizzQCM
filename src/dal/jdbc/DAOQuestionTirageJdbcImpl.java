@@ -11,15 +11,12 @@ import java.util.List;
 import bo.Epreuve;
 import bo.Question;
 import bo.QuestionTirage;
-import bo.SectionTest;
-import bo.Theme;
 import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOEpreuve;
 import dal.DAOFactory;
 import dal.DAOQuestion;
 import dal.DAOQuestionTirage;
-import dal.DAOSectionTest;
 
 public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 	private Connection conn = null;

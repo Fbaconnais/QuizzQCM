@@ -10,7 +10,25 @@
 <title>QCM - Epreuve</title>
 </head>
 <body>
-
+	<c:forEach var="test" items="${sessionScope.listeEpreuves}">
+		<div class="card" style="width: auto;">
+			<img class="card-img-top" src="${epreuve.test.logoLangage }"
+				alt="Card image cap">
+			<div class="card-body">
+				<h5 class="card-title">${epreuve.test.libelle }</h5>
+				<p class="card-text">${epreuve.test.description }</p>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Date de début:
+						${epreuve.dateDebutValidite }</li>
+					<li class="list-group-item">Date de fin:
+						${epreuve.dateFinValidite }</li>0
+				</ul>
+				<br> <a href="/QuizzQCM/test?id=${epreuve.idEpreuve}"
+					class="btn btn-primary">Participer à l'épreuve</a>
+			</div>
+		</div>
+		<br>
+	</c:forEach>
 
 
 	<%@include file="../finBody.html"%>
