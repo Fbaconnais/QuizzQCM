@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bll.BLLException;
+import bll.PromotionManager;
+import bll.TestManager;
 import dal.DALException;
 import dal.DAOFactory;
 import dal.DAOPromotion;
@@ -72,8 +75,18 @@ public class InscriptionServlet extends HttpServlet {
 
 	private void newPromoTest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		DAOTest DAOTest = DAOFactory.getDAOTest();
-		DAOPromotion DAOPromo = DAOFactory.getDAOPromotion();
+		TestManager testMger = TestManager.getMger();
+		PromotionManager promoMger = PromotionManager.getMger();
+		
+		
+		try {
+			request.getSession().setAttribute("promos", promoMger.selectAllPromos());
+			request.getSession().setAttribute("tests", testMger.selectAllTests());
+		} catch (BLLException e) {
+			request.getSession().setAttribute("erreur", e.getMessage());
+			response.sendRedirect("erreur");
+		}
+		
 		
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/inscription/newPromoTest.jsp").forward(request, response);

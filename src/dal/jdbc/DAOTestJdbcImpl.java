@@ -4,10 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import bo.Test;
-import bo.Theme;
 import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOTest;
@@ -15,6 +16,7 @@ import dal.DAOTest;
 public class DAOTestJdbcImpl implements DAOTest {
 	private Connection conn = null;
 	String selectOne = "SELECT * FROM TEST WHERE idTest=?";
+	String selectAll = "SELECT * FROM TEST";
 	
 	
 	@Override
@@ -60,8 +62,37 @@ public class DAOTestJdbcImpl implements DAOTest {
 
 	@Override
 	public List<Test> selectAll() throws DALException {
-		// TODO Auto-generated method stub
-		return null;
+		Statement rqt = null;
+		ResultSet rs = null;
+		List<Test> liste = new ArrayList<Test>();
+		Test test = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.createStatement();
+			rs = rqt.executeQuery(selectAll);
+			while (rs.next()) {
+				
+				test = new Test();
+				test.setIdTest(rs.getInt("idTest"));
+				test.setLibelle(rs.getString("libelle"));
+				test.setDescription(rs.getString("description"));
+				test.setDuree(rs.getInt("duree"));
+				test.setLogoLangage(rs.getString("logoLangage"));
+				test.setSeuil_bas(rs.getInt("seuil_bas"));
+				test.setSeuil_haut(rs.getInt("seuil_haut"));
+				liste.add(test);
+			}
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- select all test " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return liste;
 	}
 
 	@Override
