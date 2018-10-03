@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="./CSS/ButtonTest.css">
 <head>
 <meta charset="UTF-8">
-<%@include file="../entete.html"%>
+<%@include file="../entete.jsp"%>
 <title>QCM - Choix de l'épreuve</title>
 </head>
 <body>

@@ -11,7 +11,7 @@
 <head>
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
 <meta charset="UTF-8">
-<%@include file="../entete.html"%>
+<%@include file="../entete.jsp"%>
 <title>QCM - Accueil candidat</title>
 </head>
 <body>
