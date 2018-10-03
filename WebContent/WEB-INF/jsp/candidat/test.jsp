@@ -10,46 +10,36 @@
 <title>QCM - Epreuve</title>
 </head>
 <body>
-<ul class="list-group">
-  <a href="#" class="list-group-item active">
-    <span class="glyphicon glyphicon-chevron-right pull-right"></span>
-      Question 1
-  </a>
-  <a href="#" class="list-group-item">
-    <span class="glyphicon glyphicon-chevron-right pull-right"></span>
-
-      Question 2
-  </a>
-  <a href="#" class="list-group-item">
-    <span class="glyphicon glyphicon-chevron-right pull-right"></span>
-      Question 3
-  </a>
-  <a href="#" class="list-group-item">
-    <span class="glyphicon glyphicon-chevron-right pull-right"></span>
-      Question 4
-  </a>
-</ul>
-
-<%-- 	<c:forEach var="question" items="${sessionScope.listeEpreuves}"> --%>
-<!-- 		<div class="card" style="width: auto;"> -->
-<%-- 			<img class="card-img-top" src="${epreuve.test.logoLangage }" --%>
-<!-- 				alt="Card image cap"> -->
-<!-- 			<div class="card-body"> -->
-<%-- 				<h5 class="card-title">${epreuve.test.libelle }</h5> --%>
-<%-- 				<p class="card-text">${epreuve.test.description }</p> --%>
-<!-- 				<ul class="list-group list-group-flush"> -->
-<!-- 					<li class="list-group-item">Date de début: -->
-<%-- 						${epreuve.dateDebutValidite }</li> --%>
-<!-- 					<li class="list-group-item">Date de fin: -->
-<%-- 						${epreuve.dateFinValidite }</li>0 --%>
-<!-- 				</ul> -->
-<%-- 				<br> <a href="/QuizzQCM/test?id=${epreuve.idEpreuve}" --%>
-<!-- 					class="btn btn-primary">Participer à l'épreuve</a> -->
+<%int compteurQuestion = 0; %>
+	<c:if test="${ sessionScope.listeQuestionsTirages.size()==0 }">
+		<h3 style="color: red;">Une erreur est survenue, aucune question
+			n'a pu être retournée.</h3>
+	</c:if>
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" date-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+<c:forEach var="questionTirage"	items="${sessionScope.listeQuestionsTirages}">
+<a href="" class="btn btn-info"><%out.write(compteurQuestion);%></a>
+</c:forEach>
+</button>
+</div>
+</div>
+</nav>
+<%-- 		<c:forEach var="questionTirage" --%>
+<%-- 			items="${sessionScope.listeQuestionsTirages}"> --%>
+<!-- 			<div class="card"> -->
+<%-- 				<div class="card-body">${questionTirage.question.enonce }</div> --%>
+<!-- 				<div class="card-footer"> -->
+<!-- 					<ul> -->
+<%-- 						<c:forEach var="proposition" --%>
+<%-- 							items="${questionTirage.question.propositions}"> --%>
+<%-- 							<li>${proposition.enonce}</li> --%>
+<%-- 						</c:forEach> --%>
+<!-- 					</ul> -->
+<!-- 				</div> -->
 <!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 		<br> -->
-<%-- 	</c:forEach> --%>
-
+<%-- 		</c:forEach> --%>
 
 	<%@include file="../finBody.html"%>
 </html>

@@ -17,7 +17,7 @@ import dal.DAOQuestion;
 public class DAOQuestionJdbcImpl implements DAOQuestion {
 	private Connection conn = null;
 	private String selectAllByIDQuestion = "SELECT * FROM Proposition WHERE idQuestion=?";
-	private String selectOne = "SELECT" + "q.idQuestion," + "q.enonce," + "q.media," + "q.type_media," + "q.points,"
+	private String selectOne = "SELECT " + "q.idQuestion," + "q.enonce," + "q.media," + "q.type_media," + "q.points,"
 			+ "t.idTheme," + "t.libelle " + "FROM Question q JOIN Theme t on (q.idTheme = t.idTheme) "
 			+ "WHERE idQuestion=?";
 
