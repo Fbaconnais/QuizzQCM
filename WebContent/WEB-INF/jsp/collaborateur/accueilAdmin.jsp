@@ -7,9 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <%@include file="./entete.html"%> 
-<title>QCM - Accueil collaborateur</title>
+<title>QCM - Accueil admin</title>
 </head>
 <body>
+
+
 <%@include file="../debutBody.html"%>
 <div class="row justify-content-lg-center"><h1>Bienvenue à vous cher collabo(rateur)</h1></div>
 

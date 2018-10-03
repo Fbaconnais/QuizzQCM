@@ -37,7 +37,8 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
 	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur, logo_langage) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
 	String update = "UPDATE Epreuve SET dateDedutValidite=?, dateFinValidite=?, tempsEcoule=?, etat=?, note_obtenue=?, niveau_obtenu=?, idTest=?, idUtilisateur=?";
-
+	String selectIdTestViaIdEpreuve = "SELECT idTest FROM EPREUVE where idEpreuve=?";
+	
 	private void closeConnection(Connection conn) throws DALException {
 		try {
 			conn.close();
@@ -234,5 +235,32 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				throw new DALException("Erreur fermeture de connection", e);
 			}
 		}
+	}
+
+	@Override
+	public int getIdTestViaIdEpreuve(int idEpreuve) throws DALException {
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		int idTest = 0;
+
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(selectIdTestViaIdEpreuve);
+			rqt.setInt(1, idEpreuve);
+			rs = rqt.executeQuery();
+			if (rs.next()) {
+		
+				idTest = rs.getInt("idTest");
+			}
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- getIdTestViaIdEpreuve " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return idTest;
 	}
 }

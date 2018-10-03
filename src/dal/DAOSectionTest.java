@@ -1,9 +1,11 @@
 	package dal;
 
+import java.util.List;
+
 import bo.SectionTest;
-import bo.Theme;
 
 public interface DAOSectionTest extends DAOGeneric<SectionTest> {
-	public Theme getThemeViaIdTest(int idTest) throws DALException;
+	public List<SectionTest> getListeSectionTestViaIdTest(int idTest) throws DALException;
 	public SectionTest getSectionTestViaIdThemeAndIdTest(int idTest, int idTheme) throws DALException;
+	
 }

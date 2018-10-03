@@ -4,13 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import bo.Epreuve;
 import bo.SectionTest;
 import bo.Test;
 import bo.Theme;
 import dal.ConnectionProvider;
 import dal.DALException;
+import dal.DAOEpreuve;
 import dal.DAOFactory;
 import dal.DAOSectionTest;
 import dal.DAOTest;
@@ -18,13 +22,10 @@ import dal.DAOTheme;
 
 public class DAOSectionTestJdbcImpl implements DAOSectionTest {
 	private Connection conn = null;
-	
-	String selectThemeViaIdTest = "SELECT idTheme FROM SECTION_TEST where idTest=?";
+
+	String selectThemeViaIdTest = "SELECT nbQuestionsATirer,idTheme FROM SECTION_TEST where idTest=?";
 	String selectSectionTestViaIdTestAndIdTheme = "SELECT nbQuestionATirer FROM SECTION_TEST where (idTest=? AND idTheme=?)";
-	
-	
-	
-	
+
 	@Override
 	public SectionTest add(SectionTest data) throws DALException {
 		// TODO Auto-generated method stub
@@ -56,18 +57,28 @@ public class DAOSectionTestJdbcImpl implements DAOSectionTest {
 	}
 
 	@Override
-	public Theme getThemeViaIdTest(int idTest) throws DALException {
+	public List<SectionTest> getListeSectionTestViaIdTest(int idTest) throws DALException {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Theme theme = null;
+		Test test = null;
+		List<SectionTest> liste = new ArrayList<SectionTest>();
+		SectionTest sectionTest = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectThemeViaIdTest);
 			rqt.setInt(1, idTest);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
-				DAOTheme dao = DAOFactory.getDAOTheme();
-				theme = dao.selectOne(rs.getInt("idTheme"));
+				theme = new Theme();
+				theme.setIdTheme(rs.getInt("idTheme"));
+				test = new Test();
+				test.setIdTest(idTest);
+				sectionTest = new SectionTest();
+				sectionTest.setNbQuestionsATirer(rs.getInt("nbQuestionsATirer"));
+				sectionTest.setTest(test);
+				sectionTest.setTheme(theme);
+				liste.add(sectionTest);
 			}
 
 		} catch (SQLException e) {
@@ -79,7 +90,7 @@ public class DAOSectionTestJdbcImpl implements DAOSectionTest {
 				throw new DALException("Erreur fermeture de connection", e);
 			}
 		}
-		return theme;
+		return liste;
 	}
 
 	@Override
@@ -117,5 +128,6 @@ public class DAOSectionTestJdbcImpl implements DAOSectionTest {
 		}
 		return sectionTest;
 	}
+
 
 }

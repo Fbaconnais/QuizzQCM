@@ -60,6 +60,7 @@ public class login extends HttpServlet {
 			try {
 				user = Mger.getUserByEmail(email);
 				request.getSession().setAttribute("user", user);
+				request.getSession().setAttribute("profilCon", user.getProfil().getLibelle());
 
 			} catch (BLLException e) {
 

@@ -49,7 +49,7 @@
 								<div class="row justify-content-lg-center">
 									<div class="form-group col-lg-8 ">
 										<label for="password">Mot de passe</label> <input
-											id="password" placeholder="Mot de passe" type="text"
+											id="password" placeholder="Mot de passe" type="password"
 											class="form-control" name="password" />
 									</div>
 								</div>

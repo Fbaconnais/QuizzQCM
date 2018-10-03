@@ -23,7 +23,7 @@ import dal.DAOSectionTest;
 
 public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 	private Connection conn = null;
-	private String generationTest = "{call genererTest(?,?,?)}";
+	private String generationTest = "{call genererTest(?,?)}";
 	private String getQuestionsDansLordre = "SELECT * FROM QUESTION_TIRAGE ORDER BY numordre ASC WHERE idEpreuve=?";
 	
 	
@@ -58,24 +58,15 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 	}
 
 	@Override
-	public void generationTest(int idEpreuve) throws DALException {
+	public void generationTest(int idTest,int idEpreuve) throws DALException {
 		CallableStatement call = null;
-		Epreuve epreuve = null;
-		Theme theme = null;
-		SectionTest sectionTest = null;
-		DAOEpreuve DAOEpreuve = DAOFactory.getDAOEpreuve();
-		DAOSectionTest DAOSectionTest = DAOFactory.getDAOSectionTest();
-
 		
 		try {
 			conn = ConnectionProvider.getCnx();
 			call = conn.prepareCall(generationTest);
-			epreuve = DAOEpreuve.selectOne(idEpreuve);
-			theme = DAOSectionTest.getThemeViaIdTest(epreuve.getTest().getIdTest());
-			sectionTest = DAOSectionTest.getSectionTestViaIdThemeAndIdTest(epreuve.getTest().getIdTest(), theme.getIdTheme());
-			call.setInt(1, theme.getIdTheme());
-			call.setInt(2, sectionTest.getNbQuestionsATirer());
-			call.setInt(3, idEpreuve);
+			
+			call.setInt(1, idTest);
+			call.setInt(2, idEpreuve);
 			call.executeUpdate();
 			
 
