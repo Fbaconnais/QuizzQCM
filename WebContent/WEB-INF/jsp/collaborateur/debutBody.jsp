@@ -1,21 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <div class="container text-center">
-		<div class="row justify-content-md-center">
-			<div class="col col-lg-11 text-center">
-			<div class="col col-lg-"">
+	<div class="row">
+		<div class="col col-lg-3 text-center">
+			<br>
 			<div class="row">
 				<h1>${sessionScope.user.nom}</h1>
 			</div>
 			<div class="row">
 				<h1>${sessionScope.user.prenom}</h1>
 			</div>
+			<br>
 			<div class="row">
-				<a href="collaborateur/modif"><button>Modifier vos informations</button></a>
+				<a href="${pageContext.request.contextPath}/collaborateur/modif"><button>Modifier vos
+						informations</button></a>
 			</div>
+			<br>
 			<div class="row">
-				<a href="deconnection"><button>Déconnection</button></a>
+				<a href="${pageContext.request.contextPath}/deconnection"><button>Déconnection</button></a>
 			</div>
 
 		</div>
-		<div class="col col-lg-9">
+		

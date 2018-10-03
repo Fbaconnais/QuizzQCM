@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @WebServlet("/collaborateur/resultats")
-public class consultation extends HttpServlet {
+public class AccueilConsultation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override

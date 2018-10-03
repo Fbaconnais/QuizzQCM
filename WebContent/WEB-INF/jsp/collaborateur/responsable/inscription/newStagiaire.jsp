@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@include file="../entete.jsp"%>
+<%@include file="../../entete.jsp"%>
 <title>gestions des inscriptions</title>
 </head>
 <body>
@@ -20,19 +20,25 @@
 		<div class="collapse navbar-collapse justify-content-md-center"
 			id="navbarsExample08">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur">
+				<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/collaborateur">
 						Accueil Responsable </a></li>
 
 				<li class="nav-item active"><a class="nav-link"
-					href="inscriptions">Gestion des inscriptions<span
+					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion des inscriptions<span
 						class="sr-only">(current)</span></a></li>
-				<li class="nav-item"><a class="nav-link" href="resultats">Consultation
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
 						des resultats</a></li>
 
 			</ul>
 		</div>
 	</nav>
-	<%@include file="../debutBody.jsp"%>
+	<%@include file="../../debutBody.jsp"%>
 
-	<%@include file="../finBody.html"%>
+
+
+
+
+
+	<%@include file="../../finBody.html"%>
 </html>

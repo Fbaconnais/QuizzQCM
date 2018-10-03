@@ -25,7 +25,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion{
 	String remove = "DELETE FROM PROMOTION where codePromo=?";
 	String update = "UPDATE PROMOTION SET libelle=? where codePromo=?";
 	String selectOne = "Select libelle from PROMOTION where codePromo=?";
-	String selectAll = "Select * from PROMOTION";
+	String selectAll = "Select * from PROMOTION ORDER BY codePromo";
 	
 	@Override
 	public Promotion add(Promotion data) throws DALException {

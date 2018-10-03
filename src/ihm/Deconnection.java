@@ -16,8 +16,8 @@ public class Deconnection extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().setAttribute("profilCon", null);
-		request.getSession().setAttribute("user", null);
+		request.getSession().removeAttribute("profilCon");
+		request.getSession().removeAttribute("user");
 	
 		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 	}
