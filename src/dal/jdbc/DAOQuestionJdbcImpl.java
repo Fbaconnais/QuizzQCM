@@ -14,11 +14,13 @@ import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOQuestion;
 
-public class DAOQuestionJdbcImpl implements DAOQuestion{
+public class DAOQuestionJdbcImpl implements DAOQuestion {
 	private Connection conn = null;
 	private String selectAllByIDQuestion = "SELECT * FROM Proposition WHERE idQuestion=?";
-	private String selectOne = "SELECT" + "q.idQuestion," + "q.enonce," + "q.media," + "q.type_media," + "q.points," + "t.idTheme," + "t.libelle " + "FROM Question q JOIN Theme t on (q.idTheme = t.idTheme) " + "WHERE idQuestion=?";
-	
+	private String selectOne = "SELECT" + "q.idQuestion," + "q.enonce," + "q.media," + "q.type_media," + "q.points,"
+			+ "t.idTheme," + "t.libelle " + "FROM Question q JOIN Theme t on (q.idTheme = t.idTheme) "
+			+ "WHERE idQuestion=?";
+
 	@Override
 	public Question add(Question data) throws DALException {
 		// TODO Auto-generated method stub
@@ -31,26 +33,29 @@ public class DAOQuestionJdbcImpl implements DAOQuestion{
 		Theme theme = null;
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
-		
-		
+		List<Proposition> listePropositions = null;
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectOne);
 			rqt.setInt(1, id);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
+				listePropositions = selectAllByIDQuestion(rs.getInt("idQuestion"));
 				theme = new Theme();
 				question = new Question();
 
 				theme.setIdTheme(rs.getInt("idTheme"));
 				theme.setLibelle(rs.getString("libelle"));
-				
+
 				question.setIdQuestion(rs.getInt("idQuestion"));
 				question.setEnonce(rs.getString("enonce"));
 				question.setMedia(rs.getString("media"));
 				question.setTypeMedia(rs.getString("type_media"));
 				question.setPoints(rs.getInt("points"));
+				question.setPropositions(listePropositions);
 				question.setTheme(theme);
+
 			}
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL- select one " + e.getMessage() + e.getStackTrace().toString(), e);
@@ -61,7 +66,7 @@ public class DAOQuestionJdbcImpl implements DAOQuestion{
 				throw new DALException("Erreur fermeture de connection", e);
 			}
 		}
-		
+
 		return question;
 	}
 
@@ -74,13 +79,13 @@ public class DAOQuestionJdbcImpl implements DAOQuestion{
 	@Override
 	public void remove(int id) throws DALException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void update(Question data) throws DALException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -89,7 +94,7 @@ public class DAOQuestionJdbcImpl implements DAOQuestion{
 		List<Proposition> propositions = null;
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
-		
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectAllByIDQuestion);
@@ -104,8 +109,9 @@ public class DAOQuestionJdbcImpl implements DAOQuestion{
 				prop.setIdQuestion(rs.getInt("idQuestion"));
 				propositions.add(prop);
 			}
-		}catch (SQLException e) {
-			throw new DALException ("ERREUR DAL- Select All By ID Question " + e.getMessage() + e.getStackTrace().toString(), e);
+		} catch (SQLException e) {
+			throw new DALException(
+					"ERREUR DAL- Select All By ID Question " + e.getMessage() + e.getStackTrace().toString(), e);
 		} finally {
 			try {
 				conn.close();
@@ -113,7 +119,7 @@ public class DAOQuestionJdbcImpl implements DAOQuestion{
 				throw new DALException("Erreur fermeture de connection", e);
 			}
 		}
-		
+
 		return propositions;
 	}
 
