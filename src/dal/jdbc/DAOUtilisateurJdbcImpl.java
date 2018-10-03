@@ -5,12 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import bo.Candidat;
 import bo.Collaborateur;
 import bo.Profil;
 import bo.Promotion;
+import bo.SectionTest;
+import bo.Test;
+import bo.Theme;
 import bo.Utilisateur;
 import dal.ConnectionProvider;
 import dal.DALException;
@@ -32,8 +36,10 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 	String remove = "DELETE FROM UTILISATEUR where idUtilisateur=?";
 	String add = "INSERT INTO UTILISATEUR (nom,prenom,email,password,codeProfil,codePromo) VALUES (?,?,?,?,?,?)";
-	String update = "UPDATE UTILISATEUR SET nom=?,prenom=?,email=?,password=?,codeProfil=?,codePromo=? WHERE idUtilisateur=?";
+	String update = "UPDATE UTILISATEUR SET nom=?,prenom=?,email=?,codeProfil=?,codePromo=? WHERE idUtilisateur=?";
 	String authentification = "SELECT libelle FROM PROFIL p JOIN UTILISATEUR u ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
+	String selectUsersByCodePromo = "SELECT u.idUtilisateur,u.nom,u.prenom,u.email,u.codeProfil,p.libelle as plibelle,pr.libelle as prlibelle FROM UTILISATEUR u JOIN PROFIL p on (u.codeProfil = p.codeProfil) JOIN PROMOTION pr ON (u.codePromo = pr.codePromo) WHERE codePromo=?";
+	String setPassword = "UPDATE UTILISATEUR SET password=? where idUtilisateur=?";
 
 	public DAOUtilisateurJdbcImpl() {
 	}
@@ -151,12 +157,11 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(1, data.getNom());
 			rqt.setString(2, data.getPrenom());
 			rqt.setString(3, data.getEmail());
-			rqt.setString(4, data.getPassword());
-			rqt.setInt(5, data.getProfil().getId());
+			rqt.setInt(4, data.getProfil().getId());
 			if (data.getProfil().getLibelle().equals("stagiaire")) {
-				rqt.setString(6, ((Candidat) data).getPromotion().getId());
+				rqt.setString(5, ((Candidat) data).getPromotion().getId());
 			} else {
-				rqt.setInt(6, 0);
+				rqt.setInt(5, 0);
 			}
 			rqt.executeUpdate();
 		} catch (SQLException e) {
@@ -232,6 +237,70 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		}
 
 		return user;
+	}
+
+	@Override
+	public List<Utilisateur> getUsersByCodePromo(String codePromo) throws DALException {
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		Candidat user = null;
+		Profil profil = null;
+		List<Utilisateur> liste = new ArrayList<Utilisateur>();
+		Promotion promo = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(selectUsersByCodePromo);
+			rqt.setString(1, codePromo);
+			rs = rqt.executeQuery();
+			while (rs.next()) {
+				user = new Candidat();
+				promo = new Promotion();
+				promo.setId(rs.getString("codePromo"));
+				promo.setLibelle(rs.getString("prlibelle"));
+				user.setPromotion(promo);
+				profil = new Profil(rs.getInt("codeProfil"), rs.getString("plibelle"));
+				user.setProfil(profil);
+				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
+				user.setNom(rs.getString("nom"));
+				user.setPrenom(rs.getString("prenom"));
+				user.setEmail(rs.getString("email"));
+				liste.add(user);
+			}
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- select one " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return liste;
+	}
+
+	@Override
+	public void updatePassword(int id, String password) throws DALException {
+		PreparedStatement rqt = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(setPassword);
+
+			rqt.setString(1, password);
+			rqt.setInt(2, id);
+			
+			rqt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Erreur DAL - updata", e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+
+
 	}
 
 }

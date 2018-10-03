@@ -33,15 +33,15 @@ public class login extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		application = this.getServletContext();
 		if (request.getSession().getAttribute("profilCon") != null) {
-			switch ((String)request.getSession().getAttribute("profilCon")) {
+			switch ((String) request.getSession().getAttribute("profilCon")) {
 			case "candidat libre":
 			case "stagiaire":
 				request.getRequestDispatcher("/WEB-INF/jsp/candidat/accueil.jsp").forward(request, response);
-				break;	
+				break;
 			case "formateur":
-				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp").forward(request,
+						response);
 				break;
 			case "admin":
 				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp").forward(request, response);
@@ -52,16 +52,17 @@ public class login extends HttpServlet {
 						response);
 				break;
 			}
+		} else {
+
+			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 		}
-		request.getSession().setAttribute("profilCon", null);
-		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String email = request.getParameter("email");
-		String password = request.getParameter("password");		
+		String password = request.getParameter("password");
 		password = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
 		String result = null;
 		Utilisateur user = null;

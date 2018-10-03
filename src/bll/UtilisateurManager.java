@@ -1,5 +1,7 @@
 package bll;
 
+import java.util.List;
+
 import bo.Utilisateur;
 import dal.DALException;
 import dal.DAOFactory;
@@ -81,6 +83,26 @@ public class UtilisateurManager {
 		
 		
 		return user;
+	}
+	public void setPassword(int idUser,String password) throws BLLException{
+		
+		try {
+			DAO.updatePassword(idUser, password);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+	}
+	public List<Utilisateur> getCandidatsFromPromo(String codePromo) throws BLLException{
+		List<Utilisateur> liste = null;
+		
+		try {
+			liste = DAO.getUsersByCodePromo(codePromo);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		
+		return liste;
+		
 	}
 	
 }

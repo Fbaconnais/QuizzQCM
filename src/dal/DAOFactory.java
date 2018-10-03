@@ -1,6 +1,7 @@
 package dal;
 
 import dal.jdbc.DAOEpreuveJdbcImpl;
+import dal.jdbc.DAOPromotionJdbcImpl;
 import dal.jdbc.DAOQuestionJdbcImpl;
 import dal.jdbc.DAOQuestionTirageJdbcImpl;
 import dal.jdbc.DAOSectionTestJdbcImpl;
@@ -34,5 +35,8 @@ public class DAOFactory {
 	}
 	public static DAOTest getDAOTest() {
 		return new DAOTestJdbcImpl();
+	}
+	public static DAOPromotion getDAOPromotion() {
+		return new DAOPromotionJdbcImpl();
 	}
 }
