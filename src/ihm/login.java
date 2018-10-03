@@ -1,6 +1,9 @@
 package ihm;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -31,8 +34,24 @@ public class login extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		application = this.getServletContext();
-		if (application.getAttribute("erreur") == null) {
-			request.getSession().setAttribute("erreur", null);
+		if (request.getSession().getAttribute("profilCon") != null) {
+			switch ((String)request.getSession().getAttribute("profilCon")) {
+			case "candidat libre":
+			case "stagiaire":
+				request.getRequestDispatcher("/WEB-INF/jsp/candidat/accueil.jsp").forward(request, response);
+				break;	
+			case "formateur":
+				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp").forward(request, response);
+				break;
+			case "admin":
+				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp").forward(request, response);
+				break;
+			case "cellule de recrutement":
+			case "responsable de formation":
+				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilResponsable.jsp").forward(request,
+						response);
+				break;
+			}
 		}
 		request.getSession().setAttribute("profilCon", null);
 		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
@@ -42,7 +61,8 @@ public class login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String email = request.getParameter("email");
-		String password = request.getParameter("password");
+		String password = request.getParameter("password");		
+		password = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
 		String result = null;
 		Utilisateur user = null;
 		UtilisateurManager Mger = UtilisateurManager.getMger();
@@ -71,7 +91,8 @@ public class login extends HttpServlet {
 		if (request.getSession().getAttribute("erreur") != null) {
 			response.sendRedirect("erreur");
 		} else {
-			if (user.getProfil().getLibelle().equals("stagiaire") || user.getProfil().getLibelle().equals("candidat libre"))
+			if (user.getProfil().getLibelle().equals("stagiaire")
+					|| user.getProfil().getLibelle().equals("candidat libre"))
 
 				response.sendRedirect("candidat");
 			else {

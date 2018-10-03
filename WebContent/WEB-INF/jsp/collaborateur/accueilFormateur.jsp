@@ -11,9 +11,6 @@
 
 </head>
 <body>
-<div class="row justify-content-lg-center">
-		<h4>Bienvenue à vous cher collabo(rateur)</h1>
-	</div>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarsExample08" aria-controls="navbarsExample08"
@@ -45,7 +42,7 @@
 		<div class="row"><h1>${sessionScope.user.nom}</h1></div>
 		<div class="row"><h1>${sessionScope.user.prenom}</h1></div>
 		<div class="row"><a href="modif"><button>Modifier vos informations</button></a></div>
-		<div class="row"><a href="deconnexion"><button>Déconnection</button></a></div>
+		<div class="row"><a href="deconnection"><button>Déconnection</button></a></div>
 		
 		</div>
 	
