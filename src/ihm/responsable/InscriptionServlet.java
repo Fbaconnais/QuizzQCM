@@ -86,9 +86,7 @@ public class InscriptionServlet extends HttpServlet {
 			request.getSession().setAttribute("erreur", e.getMessage());
 			response.sendRedirect("erreur");
 		}
-		
-		
-		
+				
 		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/inscription/newPromoTest.jsp").forward(request, response);
 
 	}
