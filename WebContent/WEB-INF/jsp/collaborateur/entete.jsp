@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -15,9 +17,7 @@
 	crossorigin="anonymous"></script>
 <link rel="shortcut icon" href="./images/logo.ico">
 <div class="card bg-dark text-white">
-	<img src="./images/banniere.jpg" class="img-fluid card-img"
+	<img src="${pageContext.request.contextPath}/images/collabo/banniere.png" class="img-fluid card-img"
 		alt="Responsive image">
 </div>
-<br>
-<br>
 <br>

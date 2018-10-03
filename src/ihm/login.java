@@ -33,7 +33,7 @@ public class login extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getSession().getAttribute("profilCon") != null) {
+		if (request.getSession().getAttribute("user") != null) {
 			switch ((String) request.getSession().getAttribute("profilCon")) {
 			case "candidat libre":
 			case "stagiaire":
@@ -43,7 +43,7 @@ public class login extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp").forward(request,
 						response);
 				break;
-			case "admin":
+			case "administrateur":
 				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp").forward(request, response);
 				break;
 			case "cellule de recrutement":

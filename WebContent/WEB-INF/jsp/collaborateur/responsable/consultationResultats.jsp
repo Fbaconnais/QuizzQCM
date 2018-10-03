@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@include file="../entete.html"%>
+<%@include file="../entete.jsp"%>
 <title>Consultation de résultats</title>
 </head>
 <body>
@@ -21,13 +21,13 @@
 			id="navbarsExample08">
 			<ul class="navbar-nav">
 				<li class="nav-item "><a class="nav-link"
-					href="collaborateur"> Accueil Responsable 
+					href="${pageContext.request.contextPath}/collaborateur"> Accueil Responsable 
 				</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="collaborateur/inscriptions">Gestion des inscriptions</a></li>
+					href="inscriptions">Gestion des inscriptions</a></li>
 				<li class="nav-item active"><a class="nav-link"
-					href="collaborateur/resultats">Consultation des resultats<span class="sr-only">(current)</span></a></li>
+					href="resultats">Consultation des resultats<span class="sr-only">(current)</span></a></li>
 
 			</ul>
 		</div>

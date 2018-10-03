@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@include file="./entete.html"%>
+<%@include file="./entete.jsp"%>
 <title>QCM - Accueil formateur</title>
 
 </head>

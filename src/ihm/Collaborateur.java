@@ -15,11 +15,12 @@ public class Collaborateur extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String profil = (String) request.getSession().getAttribute("profilCon");
+		
 		switch (profil) {
 		case "formateur":
 			request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp").forward(request, response);
 			break;
-		case "admin":
+		case "administrateur":
 			request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp").forward(request, response);
 			break;
 		case "cellule de recrutement":
