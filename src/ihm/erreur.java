@@ -29,7 +29,7 @@ public class erreur extends HttpServlet {
 			switch ((String) request.getSession().getAttribute("profilCon")) {
 			case "candidat libre":
 			case "stagiaire":
-				disp = request.getRequestDispatcher("candidat");
+				disp = request.getRequestDispatcher("/candidat");
 				break;
 			case "formateur":
 
@@ -37,13 +37,13 @@ public class erreur extends HttpServlet {
 
 			case "cellule de recrutement":
 			case "responsable de formation":
-				disp = request.getRequestDispatcher("collaborateur");
+				disp = request.getRequestDispatcher("/collaborateur");
 				break;
 			default:
-				disp = request.getRequestDispatcher("login");
+				disp = request.getRequestDispatcher("/login");
 			}
 		} else {
-			disp = request.getRequestDispatcher("login");
+			disp = request.getRequestDispatcher("/login");
 		}
 		disp.forward(request, response);
 

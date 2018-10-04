@@ -69,7 +69,7 @@ public class InscriptionServlet extends HttpServlet {
 				url = newPromoTest(request, response);
 				break;
 			default:
-				url = "/WEB-INF/jsp/login.jsp";
+				url = "/login";
 			}
 		} else {
 			url = "inscriptions";
@@ -134,7 +134,7 @@ public class InscriptionServlet extends HttpServlet {
 			int idProfil = Integer.parseInt(request.getParameter("type"));
 			String codePromo = request.getParameter("promo");
 			if ((codePromo.equals("Choisir une promotion dans la liste")) && idProfil ==1) {
-				request.getSession().setAttribute("messageValidation", "Sélectionner une promotion");
+				request.getSession().setAttribute("messageValidation", "Sélectionner une promotion au stagiaire");
 				url = request.getContextPath() + "/collaborateur/inscriptions";
 			} else {
 				String email = request.getParameter("email");

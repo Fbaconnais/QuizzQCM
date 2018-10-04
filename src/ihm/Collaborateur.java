@@ -31,10 +31,10 @@ public class Collaborateur extends HttpServlet {
 				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilResponsable.jsp");
 				break;
 			default:
-				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/login.jsp");
+				disp = request.getRequestDispatcher("/login");
 			}
 		} else {
-			disp = request.getRequestDispatcher("/WEB-INF/jsp/erreur/autorisation.jsp");
+			disp = request.getRequestDispatcher("/autorisation");
 
 		}
 		disp.forward(request, response);

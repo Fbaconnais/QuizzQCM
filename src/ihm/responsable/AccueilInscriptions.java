@@ -29,17 +29,17 @@ public class AccueilInscriptions extends HttpServlet {
 		if (request.getSession().getAttribute("profilCon") != null) {
 			profil = (String) request.getSession().getAttribute("profilCon");
 		} else {
-			url = "/WEB-INF/jsp/erreur/autorisation.jsp";
+			url = "/autorisation";
 		}
 		if (profil != null) {
 			if (!(profil.equals("responsable de formation") || profil.equals("cellule de recrutement"))) {
-				url = "/WEB-INF/jsp/erreur/autorisation.jsp";
+				url = "/autorisation";
 			} else {
 
 				url = "/WEB-INF/jsp/collaborateur/responsable/accueilinscription.jsp";
 			}
 		} else {
-			url = "/WEB-INF/jsp/login.jsp";
+			url = "/login";
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}

@@ -20,10 +20,10 @@ public class AccueilConsultation extends HttpServlet {
 		if (request.getSession().getAttribute("profilCon") != null) {
 			profil = (String) request.getSession().getAttribute("profilCon");
 		} else {
-			url = "/WEB-INF/jsp/erreur/autorisation.jsp";
+			url = "/autorisation";
 		}
 		if (!(profil.equals("responsable de formation") || profil.equals("cellule de recrutement"))) {
-			url = "/WEB-INF/jsp/erreur/autorisation.jsp";
+			url = "/autorisation";
 		} else {
 			url = "/WEB-INF/jsp/collaborateur/responsable/consultationResultats.jsp";
 					
