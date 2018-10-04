@@ -11,12 +11,13 @@
 <title>QCM - Epreuve</title>
 </head>
 <body>
+<%@include file="../debutBody.html"%>
 	<c:if test="${ sessionScope.listeQuestionsTirages.size()==0 }">
 		<h3 style="color: red;">Une erreur est survenue, aucune question
 			n'a pu être retournée.</h3>
 	</c:if>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="#">Questions: </a>
+		<a class="navbar-brand">Questions: </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -24,21 +25,24 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
+<!-- 		<div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+<!-- 			<ul class="navbar-nav mr-auto"> -->
+<ul class="nav navbar-nav list-inline">
 				<c:forEach var="questionTirage"
 					items="${sessionScope.listeQuestionsTirages}">
-					<li class="nav-item active">
+					<li class="list-inline-item">
 						<div class="ecart">
 							<button type="button" class="btn btn-primary"
 								onClick="recuperationQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
 						</div>
 					</li>
 				</c:forEach>
-			</ul>
-		</div>
+				</ul>
+<!-- 			</ul> -->
+<!-- 		</div> -->
 	</nav>
-	<div id="test"></div>
+	<p id="test" class="cadre"></p>
+	<div id="propositions"></div>
 	<script>
 
     function recuperationQuestion(id) {
@@ -71,12 +75,16 @@
     
     function traitementQuestion(xml) {
     	var json = JSON.parse(xml);
-    	console.log(json.idQuestion);
-
-    	  document.getElementById("test").innerHTML = txt;
+		txt = json.enonce
+    	document.getElementById("test").innerHTML = txt;
+		var props = [];
+		for (let proposition of json.propositions) {
+			console.log(proposition);
+			props.push('<input type="checkbox" id="'+proposition.idProposition+'" value=""> <p>'+proposition.enonce +'<p><br>');
+		}
+		document.getElementById("propositions").innerHTML = props;
     }
 
-    <!-- document.getElementById("test").innerHTML = "Reçu:" + xhr.responseText;  -->
     </script>
 	<%@include file="../finBody.html"%>
 </html>

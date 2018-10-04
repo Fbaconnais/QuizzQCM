@@ -32,7 +32,17 @@ body {
     font-size: 1em;
 }
 
-.ecart{
-	margin-right: 1px;
-    margin-left: 1px;
+.list-inline-item {
+	margin-left: 10px;
+	margin-right: 10px;
+/* 	margin-top: 2px; */
+/* 	margin-bottom: 2px; */
+}
+.list-inline {
+		margin-left: 10px;
+		margin-right: 10px;
+}
+
+.btn btn-primary{
+	border: 2px solid #4CAF50;
 }
