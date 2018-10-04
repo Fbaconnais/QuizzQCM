@@ -80,7 +80,7 @@
 		var props = [];
 		for (let proposition of json.propositions) {
 			console.log(proposition);
-			props.push('<input type="checkbox" id="'+proposition.idProposition+'" value=""> <p>'+proposition.enonce +'<p><br>');
+			props.push('<input type="checkbox" id="'+proposition.idProposition+'" value=""> <p>'+proposition.enonce +'</p><br>');
 		}
 		document.getElementById("propositions").innerHTML = props;
     }
