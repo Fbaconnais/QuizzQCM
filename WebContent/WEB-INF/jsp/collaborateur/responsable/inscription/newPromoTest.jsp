@@ -47,7 +47,7 @@
 
 				<div class="form-row">
 					<label for="promo" class="col col-lg-3">Promotion</label> <select
-						class="form-control col col-lg-9" name="promo" id="promo">
+						class="form-control col col-lg-9" name="promo" id="promo" required>
 						<option selected>Choisir une promotion dans la liste</option>
 						<c:forEach var="promotion" items="${sessionScope.promos}">
 							<option>${promotion.id }</option>
@@ -57,7 +57,7 @@
 				<br>
 				<div class="form-row">
 					<label for="test" class="col col-lg-3">Test</label> <select
-						class="form-control col col-lg-9" name="test" id="test">
+						class="form-control col col-lg-9" name="test" id="test" required>
 						<option selected>Choisir un test dans la liste</option>
 						<c:forEach var="test" items="${sessionScope.tests}">
 							<option name="${test.idTest} id="
@@ -69,39 +69,24 @@
 				<div class="form-row">
 					<label for="dateDebutValidite" class="col col-lg-3">Date
 						debut validite</label> <input type="date"
-						class="form-control col col-lg-9" name="dateDebutValidite"
+						class="form-control col col-lg-4" name="dateDebutValidite"
 						required>
 				</div>
 				<br>
 				<div class="form-row">
 					<label for="dateFinValidite" class="col col-lg-3">Date fin
-						validite</label> <input type="date" class="form-control col col-lg-9"
+						validite</label> <input type="date" class="form-control col col-lg-4"
 						name="dateFinValidite" required>
 				</div>
-				<input type="hidden" id="myhidden" name="myhidden" value="vide"> <input
-					type="hidden" id="action" name="action" value="promotest">
+				<input
+					type="hidden" id="actionajout" name="actionajout" value="promotest">
 				<input type="submit">
 			</form>
 		</div>
 	</div>
 	</div>
 	
-	
-	<script>
-	
-	$('#test').change(function () {
-        var str = "";
-        $('select option:selected').each(function () {
-              str += $(this).id();
-            });
-         $('#myhidden').value.replace(str);
-         
-      })
-      .change();
-	
-	
-	
-	</script>
+
 
 	<%@include file="../../finBody.html"%>
 </html>

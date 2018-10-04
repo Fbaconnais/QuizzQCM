@@ -3,6 +3,7 @@ package ihm.responsable;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -74,24 +75,25 @@ public class InscriptionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url=null;
-		String action = request.getParameter("action");
-		switch (action) {
-		case "promotest" :
-			int idTest = Integer.parseInt(request.getParameter("myhidden"));
-			String codePromo = request.getParameter("promo");
-			String dateDebutValidite = request.getParameter("dateDebutValidite");
-			String dateFinValidite = request.getParameter("dateFinValidite");
-			PromotionManager promoMger = PromotionManager.getMger();
-			try {
-				promoMger.inscrirePromoATest(codePromo,idTest,dateDebutValidite, dateFinValidite);
-				request.getSession().setAttribute("messageValidation", "Requête exécutée");
-				url = "collaborateur";
-			} catch (BLLException e) {
-				request.getSession().setAttribute("erreur", e.getMessage());
-				url = "/WEB-INF/jsp/erreur/affichageMessageErreur.jsp";
-			}
-			break;
-		}
+		String action = request.getParameter("actionajout");
+		System.out.println(request.getParameter("test"));
+//		switch (action) {
+//		case "promotest" :
+//			int idTest = Integer.parseInt(request.getParameter("myhidden"));
+//			String codePromo = request.getParameter("promo");
+//			String dateDebutValidite = request.getParameter("dateDebutValidite");
+//			String dateFinValidite = request.getParameter("dateFinValidite");
+//			PromotionManager promoMger = PromotionManager.getMger();
+//			try {
+//				promoMger.inscrirePromoATest(codePromo,idTest,dateDebutValidite, dateFinValidite);
+//				request.getSession().setAttribute("messageValidation", "Requête exécutée");
+				url = "";
+//			} catch (BLLException e) {
+//				request.getSession().setAttribute("erreur", e.getMessage());
+//				url = "/WEB-INF/jsp/erreur/affichageMessageErreur.jsp";
+//			}
+//			break;
+//		}
 		
 		request.getRequestDispatcher(url).forward(request, response);
 		
