@@ -1,6 +1,7 @@
 package bll;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import bo.Promotion;
@@ -64,11 +65,13 @@ private DAOPromotion DAO;
 		return liste;
 	}
 	
-	public void inscrirePromoATest(String codePromo, int idTest,String dateDebutValidite,String dateFinValidite) throws BLLException{
+	public void inscrirePromoATest(String codePromo, int idTest,String dateDebutValidite,String dateFinValidite, String heureDebut, String heureFin) throws BLLException{
 		String dateDebut[] = dateDebutValidite.split("-");
+		String heureDeb[] = heureDebut.split(":");
 		String dateFin[] = dateFinValidite.split("-");
-		Date datedebut = ManipDates.getDateViaString(dateDebut);
-		Date datefin = ManipDates.getDateViaString(dateFin);
+		String heureFi[] = heureFin.split(":");
+		Timestamp datedebut = ManipDates.getDateViaString(dateDebut,heureDeb);
+		Timestamp datefin = ManipDates.getDateViaString(dateFin,heureFi);
 		
 		try {
 			DAO.inscrirePromoATest(codePromo, idTest, datedebut, datefin);

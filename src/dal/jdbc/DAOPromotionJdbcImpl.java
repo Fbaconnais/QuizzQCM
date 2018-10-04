@@ -2,11 +2,11 @@ package dal.jdbc;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,7 +176,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion{
 	}
 
 	@Override
-	public void inscrirePromoATest(String codePromo, int idTest, Date dateDebut, Date dateFin) throws DALException {
+	public void inscrirePromoATest(String codePromo, int idTest, Timestamp dateDebut, Timestamp dateFin) throws DALException {
 CallableStatement call = null;
 		
 		try {
@@ -184,8 +184,8 @@ CallableStatement call = null;
 			call = conn.prepareCall(inscrirePromoATest);
 			call.setString(1, codePromo);
 			call.setInt(2, idTest);
-			call.setDate(3,dateDebut);
-			call.setDate(4, dateFin);
+			call.setTimestamp(3,dateDebut);
+			call.setTimestamp(4, dateFin);
 			call.executeUpdate();
 			
 

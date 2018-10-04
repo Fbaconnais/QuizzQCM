@@ -2,8 +2,8 @@ CREATE PROCEDURE inscrirePromoATest
 	-- Add the parameters for the stored procedure here
 	@codePromo varchar(10),
 	@idTest int,
-	@dateDebut date,
-	@dateFin date
+	@dateDebut datetime,
+	@dateFin datetime
 	
 AS
 BEGIN
@@ -32,4 +32,4 @@ BEGIN
 END
 GO
 
-DROP PROCEDURE genererTest
+DROP PROCEDURE inscrirePromoATest
