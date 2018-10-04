@@ -92,7 +92,7 @@ public class login extends HttpServlet {
 		if (request.getSession().getAttribute("erreur") != null) {
 			response.sendRedirect("erreur");
 		} else {
-			request.getSession().setMaxInactiveInterval(120);
+			request.getSession().setMaxInactiveInterval(7200);
 			if (user.getProfil().getLibelle().equals("stagiaire")
 					|| user.getProfil().getLibelle().equals("candidat libre"))
 

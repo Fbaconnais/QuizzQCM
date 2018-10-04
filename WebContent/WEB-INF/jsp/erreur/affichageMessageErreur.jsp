@@ -16,5 +16,10 @@
 			donnant le code suivant :</h1>
 	</div>
 	<div class="row justify-content-lg-center">${sessionScope.erreur}</div>
+	
+	<form method="post" action="erreur">
+	<input type="submit" name="revenir a l'accueil" value="revenir à l'accueil">
+	
+	</form>
 	<%@include file="../finBody.html"%>
 </html>

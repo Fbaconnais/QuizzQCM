@@ -38,7 +38,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	String add = "INSERT INTO UTILISATEUR (nom,prenom,email,password,codeProfil,codePromo) VALUES (?,?,?,?,?,?)";
 	String update = "UPDATE UTILISATEUR SET nom=?,prenom=?,email=?,codeProfil=?,codePromo=? WHERE idUtilisateur=?";
 	String authentification = "SELECT libelle FROM PROFIL p JOIN UTILISATEUR u ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
-	String selectUsersByCodePromo = "SELECT u.idUtilisateur,u.nom,u.prenom,u.email,u.codeProfil,p.libelle as plibelle,pr.libelle as prlibelle FROM UTILISATEUR u JOIN PROFIL p on (u.codeProfil = p.codeProfil) JOIN PROMOTION pr ON (u.codePromo = pr.codePromo) WHERE codePromo=?";
+	String selectUsersByCodePromo = "SELECT u.idUtilisateur,u.nom,u.prenom,u.email,u.codeProfil,p.libelle as plibelle,pr.libelle as prlibelle FROM UTILISATEUR u JOIN PROFIL p on (u.codeProfil = p.codeProfil) JOIN PROMOTION pr ON (u.codePromo = pr.codePromo) WHERE u.codePromo=?";
 	String setPassword = "UPDATE UTILISATEUR SET password=? where idUtilisateur=?";
 
 	public DAOUtilisateurJdbcImpl() {
@@ -255,7 +255,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			while (rs.next()) {
 				user = new Candidat();
 				promo = new Promotion();
-				promo.setId(rs.getString("codePromo"));
+				promo.setId(codePromo);
 				promo.setLibelle(rs.getString("prlibelle"));
 				user.setPromotion(promo);
 				profil = new Profil(rs.getInt("codeProfil"), rs.getString("plibelle"));
@@ -268,7 +268,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			}
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- select one " + e.getMessage() + e.getStackTrace().toString(), e);
+			throw new DALException("ERREUR DAL- selectuser by code promo" + e.getMessage() + e.getStackTrace().toString(), e);
 		} finally {
 			try {
 				conn.close();

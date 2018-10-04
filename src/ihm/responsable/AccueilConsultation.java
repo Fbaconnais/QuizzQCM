@@ -16,17 +16,19 @@ public class AccueilConsultation extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String profil = null;
+		String url;
 		if (request.getSession().getAttribute("profilCon") != null) {
 			profil = (String) request.getSession().getAttribute("profilCon");
 		} else {
-			request.getRequestDispatcher("/WEB-INF/jsp/erreur/autorisation.jsp").forward(request, response);
+			url = "/WEB-INF/jsp/erreur/autorisation.jsp";
 		}
 		if (!(profil.equals("responsable de formation") || profil.equals("cellule de recrutement"))) {
-			request.getRequestDispatcher("/WEB-INF/jsp/erreur/autorisation.jsp").forward(request, response);
+			url = "/WEB-INF/jsp/erreur/autorisation.jsp";
 		} else {
-			request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/consultationResultats.jsp")
-					.forward(request, response);
+			url = "/WEB-INF/jsp/collaborateur/responsable/consultationResultats.jsp";
+					
 		}
+		request.getRequestDispatcher(url).forward(request, response);
 	}
 
 	@Override

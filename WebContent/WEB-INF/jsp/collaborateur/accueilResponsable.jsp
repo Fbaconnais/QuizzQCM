@@ -24,16 +24,24 @@
 					href="collaborateur"> Accueil Responsable <span class="sr-only">(current)</span>
 				</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="collaborateur/inscriptions">Gestion
-						des inscriptions</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/resultats">Consultation
-						des resultats</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="collaborateur/inscriptions">Gestion des inscriptions</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="collaborateur/resultats">Consultation des resultats</a></li>
 
 			</ul>
 		</div>
 	</nav>
 	<%@include file="./debutBody.jsp"%>
-
+	<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
+		<br> <a
+			href="collaborateur/inscriptions"
+			class="btn btn-primary btn-lg btn-block">Inscriptions</a> <a
+			href="collaborateur/resultats"
+			class="btn btn-primary btn-lg btn-block">Consultation de résultats</a>
+	</div>
+	</div>
+	</div>
 
 
 

@@ -25,9 +25,11 @@
 						Accueil Responsable </a></li>
 
 				<li class="nav-item active"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion des inscriptions<span
-						class="sr-only">(current)</span></a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
+					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion
+						des inscriptions<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
 						des resultats</a></li>
 
 			</ul>
@@ -37,21 +39,31 @@
 
 
 	<div class="col col-lg-7 justify-content-lg-center offset-lg-2">
-		<br>
-		<a href="${pageContext.request.contextPath}/collaborateur/inscription?action=stagiaire"><button type="button" class="btn btn-primary btn-mb btn-block">Inscrire
-			un nouveau Stagiaire/Candidat</button></a>
-		<a href="${pageContext.request.contextPath}/collaborateur/modif?action=stagiaire"><button type="button" class="btn btn-primary btn-mb btn-block">Modifier/Supprimer
-			Stagiaire/Candidat</button></a>
-		<a href="${pageContext.request.contextPath}/collaborateur/inscription?action=promotion"><button type="button" class="btn btn-primary btn-mb btn-block">Inscrire
-			une nouvelle promotion</button></a>
-		<a href="${pageContext.request.contextPath}/collaborateur/modif?action=promotion"><button type="button" class="btn btn-primary btn-mb btn-block">Modifier/Supprimer
-			promotion</button></a>
-		<a href="${pageContext.request.contextPath}/collaborateur/inscription?action=stagiairepromo"><button type="button" class="btn btn-primary btn-mb btn-block">Ajouter
-			Stagiaire/Candidat à promotion</button></a>
-		<a href="${pageContext.request.contextPath}/collaborateur/inscription?action=candidattest"><button type="button" class="btn btn-primary btn-mb btn-block">
-			Inscrire un Stagiaire/Candidat à un test</button></a>
-		<a href="${pageContext.request.contextPath}/collaborateur/inscription?action=promotest"><button type="button" class="btn btn-primary btn-mb btn-block">
-			Inscrire une promotion à un test</button></a>
+		<c:if test="${sessionScope.messageValidation != null }">
+			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
+		</c:if>
+		<br> <a
+			href="${pageContext.request.contextPath}/collaborateur/inscription?action=stagiaire"
+			class="btn btn-primary btn-mb btn-block">Inscrire un nouveau
+			Stagiaire/Candidat</a> <a
+			href="${pageContext.request.contextPath}/collaborateur/modif?action=stagiaire"
+			class="btn btn-primary btn-mb btn-block">Modifier/Supprimer
+			Stagiaire/Candidat</a> <a
+			href="${pageContext.request.contextPath}/collaborateur/inscription?action=promotion"
+			class="btn btn-primary btn-mb btn-block">Inscrire une nouvelle
+			promotion</a> <a
+			href="${pageContext.request.contextPath}/collaborateur/modif?action=promotion"
+			class="btn btn-primary btn-mb btn-block">Modifier/Supprimer
+			promotion</a> <a
+			href="${pageContext.request.contextPath}/collaborateur/inscription?action=stagiairepromo"
+			class="btn btn-primary btn-mb btn-block">Ajouter
+			Stagiaire/Candidat à promotion</a> <a
+			href="${pageContext.request.contextPath}/collaborateur/inscription?action=candidattest"
+			class="btn btn-primary btn-mb btn-block"> Inscrire un
+			Stagiaire/Candidat à un test</a> <a
+			href="${pageContext.request.contextPath}/collaborateur/inscription?action=promotest"
+			class="btn btn-primary btn-mb btn-block"> Inscrire une promotion
+			à un test</a>
 	</div>
 
 

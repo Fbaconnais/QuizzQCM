@@ -1,6 +1,8 @@
 package ihm;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,26 +17,27 @@ public class Collaborateur extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String profil = (String) request.getSession().getAttribute("profilCon");
+		RequestDispatcher disp;
 		if (profil != null && !profil.equals("stagiaire") && !profil.equals("candidat libre")) {
 			switch (profil) {
 			case "formateur":
-				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp").forward(request,
-						response);
+				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp");
 				break;
 			case "administrateur":
-				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp").forward(request, response);
+				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp");
 				break;
 			case "cellule de recrutement":
 			case "responsable de formation":
-				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilResponsable.jsp").forward(request,
-						response);
+				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilResponsable.jsp");
 				break;
+			default:
+				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/login.jsp");
 			}
 		} else {
-			request.getRequestDispatcher("/WEB-INF/jsp/erreur/autorisation.jsp").forward(request, response);
+			disp = request.getRequestDispatcher("/WEB-INF/jsp/erreur/autorisation.jsp");
 
 		}
-
+		disp.forward(request, response);
 	}
 
 	@Override
