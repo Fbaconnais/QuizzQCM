@@ -17,6 +17,7 @@ import bo.Candidat;
 import bo.Profil;
 import bo.Promotion;
 import bo.Test;
+import bo.Utilisateur;
 
 @WebServlet("/collaborateur/inscription")
 public class InscriptionServlet extends HttpServlet {
@@ -155,9 +156,15 @@ public class InscriptionServlet extends HttpServlet {
 				UtilisateurManager UserMger = UtilisateurManager.getMger();
 				
 				try {
+					Utilisateur test = UserMger.getUserByEmail(email);
+					if (test == null) {					
 					UserMger.addUser(cand);
 					request.getSession().setAttribute("messageValidation", "Requête exécutée");
+					} else {
+						request.getSession().setAttribute("messageValidation", "Il existe déjà un utilisateur avec cet Email");
+					}
 					url = request.getContextPath() + "/collaborateur/inscriptions";
+					
 				} catch (BLLException e) {
 					e.printStackTrace();
 					System.out.println(e.getMessage());
