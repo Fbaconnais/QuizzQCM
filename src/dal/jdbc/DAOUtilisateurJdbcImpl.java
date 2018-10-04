@@ -57,7 +57,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			if (data.getProfil().getLibelle().equals("stagiaire")) {
 				rqt.setString(6, ((Candidat) data).getPromotion().getId());
 			} else {
-				rqt.setInt(6, 0);
+				rqt.setString(6, null);
 			}
 			int nbRows = rqt.executeUpdate();
 			if (nbRows == 1) {
@@ -161,7 +161,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			if (data.getProfil().getLibelle().equals("stagiaire")) {
 				rqt.setString(5, ((Candidat) data).getPromotion().getId());
 			} else {
-				rqt.setInt(5, 0);
+				rqt.setString(5, null);
 			}
 			rqt.executeUpdate();
 		} catch (SQLException e) {

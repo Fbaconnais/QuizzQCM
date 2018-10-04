@@ -41,10 +41,9 @@
 		<h1>Inscription promotion à un test</h1>
 		<br>
 		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
-		
-			
-			<br>
-			<br>
+
+
+			<br> <br>
 			<form method="post"
 				action="${pageContext.request.contextPath}/collaborateur/inscription">
 
@@ -73,27 +72,30 @@
 					<label for="dateDebutValidite" class="col col-lg-3">Date
 						debut validite</label> <input type="date"
 						class="form-control col col-lg-3" name="dateDebutValidite"
-						required><label for="HeureDebutValidite" class="offset-lg-2"> Heure :</label>
-						<input type="time" class="form-control col col-lg-2 offset-lg-1"
+						required><label for="HeureDebutValidite"
+						class="offset-lg-2"> Heure :</label> <input type="time"
+						class="form-control col col-lg-2 offset-lg-1"
 						name="HeureDebutValidite" required>
 				</div>
 				<br>
 				<div class="form-row">
 					<label for="dateFinValidite" class="col col-lg-3">Date fin
 						validite</label> <input type="date" class="form-control col col-lg-3"
-						name="dateFinValidite" required>
-						<label for="HeureFinValidite" class="offset-lg-2"> Heure :</label>
-						<input type="time" class="form-control col col-lg-2 offset-lg-1"
+						name="dateFinValidite" required> <label
+						for="HeureFinValidite" class="offset-lg-2"> Heure :</label> <input
+						type="time" class="form-control col col-lg-2 offset-lg-1"
 						name="HeureFinValidite" required>
 				</div>
-				<input
-					type="hidden" id="actionajout" name="actionajout" value="promotest">
-				<input type="submit">
+				<input type="hidden" id="actionajout" name="actionajout"
+					value="promotest">
+				<div class="form-row">
+					<input type="submit">
+				</div>
 			</form>
 		</div>
 	</div>
 	</div>
-	
+
 
 
 	<%@include file="../../finBody.html"%>

@@ -34,11 +34,77 @@
 		</div>
 	</nav>
 	<%@include file="../../debutBody.jsp"%>
+<div class="col col-lg-9">
+		<br> <br>
+		<h1>Inscription d'un nouveau stagiaire/candidat</h1>
+		<br>
+		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
+		
+			
+			<br>
+			<br>
+			<form method="post"
+				action="${pageContext.request.contextPath}/collaborateur/inscription">
+
+				<div class="form-row">
+					<label for="nom" class="col col-lg-3">Nom </label> <input type="text"
+						class="form-control col col-lg-8 offset-lg-1" name="nom" id="nom" required>			
+				</div>
+				<br>
+				<div class="form-row">
+					<label for="prenom" class="col col-lg-3">Prenom </label> <input type="text"
+						class="form-control col col-lg-8 offset-lg-1" name="prenom" id="prenom" required>			
+				</div>
+				<br>
+				<div class="form-row">
+					<label for="email" class="col col-lg-3">Email </label> <input type="email"
+						class="form-control col col-lg-8 offset-lg-1" name="email" id="email" required>			
+				</div>
+				<br>
+				<div class="form-row">
+					<label for="type" class="col col-lg-3">Stagiaire/Candidat</label> <select
+						class="form-control col col-lg-8 offset-lg-1" name="type" id="type" onchange="afficher()" required>
+						<option value="1" selected>Stagiaire</option>
+						<option value="2" >Candidat libre</option>
+					</select>
+				</div>
+				<br>
+				<div class="form-row" >
+					<label for="promo" class="col col-lg-3" id="labelselect">Promotion</label> <select
+						class="form-control col col-lg-8 offset-lg-1" name="promo" id="promo" >
+						<option selected>Choisir une promotion dans la liste</option>
+						<c:forEach var="promotion" items="${sessionScope.promos}">
+							<option>${promotion.id }</option>
+						</c:forEach>
+					</select>
+				</div>
+				<div class="form-row">
+				<input
+					type="hidden" id="actionajout" name="actionajout" value="stagiaire">
+				<input type="submit">
+				</div>
+			</form>
+		</div>
+	</div>
+	</div>
 
 
 
-
-
+	<script>
+	function afficher(){
+		var type = document.getElementById('type');
+		var promos = document.getElementById('promo');
+		var label = document.getElementById('labelselect')
+		if (type.value == 1){
+			promos.style.display = 'inline';
+			label.style.display = 'inline';
+		} else {
+			promos.style.display = 'none';
+			label.style.display = 'none';
+		}
+	}
+	
+	</script>
 
 	<%@include file="../../finBody.html"%>
 </html>

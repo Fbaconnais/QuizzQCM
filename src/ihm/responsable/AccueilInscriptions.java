@@ -20,7 +20,6 @@ import dal.DAOUtilisateur;
 @WebServlet("/collaborateur/inscriptions")
 public class AccueilInscriptions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,11 +31,15 @@ public class AccueilInscriptions extends HttpServlet {
 		} else {
 			url = "/WEB-INF/jsp/erreur/autorisation.jsp";
 		}
-		if (!(profil.equals("responsable de formation") || profil.equals("cellule de recrutement"))) {
-			url = "/WEB-INF/jsp/erreur/autorisation.jsp";
+		if (profil != null) {
+			if (!(profil.equals("responsable de formation") || profil.equals("cellule de recrutement"))) {
+				url = "/WEB-INF/jsp/erreur/autorisation.jsp";
+			} else {
+
+				url = "/WEB-INF/jsp/collaborateur/responsable/accueilinscription.jsp";
+			}
 		} else {
-	
-			url = "/WEB-INF/jsp/collaborateur/responsable/accueilinscription.jsp";
+			url = "/WEB-INF/jsp/login.jsp";
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
