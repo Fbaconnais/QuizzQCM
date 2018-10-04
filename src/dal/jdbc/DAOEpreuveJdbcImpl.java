@@ -52,8 +52,8 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(add, Statement.RETURN_GENERATED_KEYS);
-			rqt.setDate(1, data.getDateDebutValidite());
-			rqt.setDate(2, data.getDateFinValidite());
+			rqt.setTimestamp(1, data.getDateDebutValidite());
+			rqt.setTimestamp(2, data.getDateFinValidite());
 			rqt.setInt(3, data.getTempsEcoule());
 			rqt.setString(4, data.getEtat());
 			rqt.setFloat(5, data.getNoteCandidat());
@@ -106,8 +106,8 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				user.setEmail(rs.getString("email"));
 
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getDate("dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getDate("dateFinValidite"));
+				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
 				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
@@ -145,8 +145,8 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve = new Epreuve();
 				test = DAOtest.selectOne(rs.getInt("idTest"));
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getDate("dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getDate("dateFinValidite"));
+				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
 				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
@@ -178,8 +178,8 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve = new Epreuve();
 				test = DAOtest.selectOne(rs.getInt("idTest"));
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getDate("dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getDate("dateFinValidite"));
+				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
 				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
@@ -217,8 +217,8 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(update);
-			rqt.setDate(1, data.getDateDebutValidite());
-			rqt.setDate(1, data.getDateFinValidite());
+			rqt.setTimestamp(1, data.getDateDebutValidite());
+			rqt.setTimestamp(1, data.getDateFinValidite());
 			rqt.setInt(3, data.getTempsEcoule());
 			rqt.setString(4, data.getEtat());
 			rqt.setFloat(5, data.getNoteCandidat());

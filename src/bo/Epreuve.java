@@ -2,6 +2,7 @@ package bo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -12,8 +13,8 @@ public class Epreuve implements Serializable {
 	private int idEpreuve;
 	private Candidat candidat;
 	private Test test;
-	private Date dateDebutValidite;
-	private Date dateFinValidite;
+	private Timestamp dateDebutValidite;
+	private Timestamp dateFinValidite;
 	private int tempsEcoule;
 	private String etat;
 	private float noteCandidat;
@@ -45,19 +46,19 @@ public class Epreuve implements Serializable {
 		this.test = test;
 	}
 
-	public Date getDateDebutValidite() {
+	public Timestamp getDateDebutValidite() {
 		return dateDebutValidite;
 	}
 
-	public void setDateDebutValidite(Date dateDebutValidite) {
+	public void setDateDebutValidite(Timestamp dateDebutValidite) {
 		this.dateDebutValidite = dateDebutValidite;
 	}
 
-	public Date getDateFinValidite() {
+	public Timestamp getDateFinValidite() {
 		return dateFinValidite;
 	}
 
-	public void setDateFinValidite(Date dateFinValidite) {
+	public void setDateFinValidite(Timestamp dateFinValidite) {
 		this.dateFinValidite = dateFinValidite;
 	}
 
@@ -101,7 +102,7 @@ public class Epreuve implements Serializable {
 
 	}
 
-	public Epreuve(int idEpreuve, Candidat candidat, Test test, Date dateDebutValidite, Date dateFinValidite) {
+	public Epreuve(int idEpreuve, Candidat candidat, Test test, Timestamp dateDebutValidite, Timestamp dateFinValidite) {
 
 		this.idEpreuve = idEpreuve;
 		this.candidat = candidat;
@@ -110,7 +111,7 @@ public class Epreuve implements Serializable {
 		this.dateFinValidite = dateFinValidite;
 	}
 
-	public Epreuve(Candidat candidat, Test test, Date dateDebutValidite, Date dateFinValidite) {
+	public Epreuve(Candidat candidat, Test test, Timestamp dateDebutValidite, Timestamp dateFinValidite) {
 
 		this.candidat = candidat;
 		this.test = test;
