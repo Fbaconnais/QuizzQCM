@@ -26,7 +26,7 @@ public class Test extends HttpServlet {
 
 		try {
 			listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
-			if (listeQuestionsTirages == null) {
+			if (listeQuestionsTirages.size() == 0) {
 				questionTirageMger.genererTest(id);
 				listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
 			}

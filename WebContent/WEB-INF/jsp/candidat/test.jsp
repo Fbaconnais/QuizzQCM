@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
- <link rel="stylesheet" href="./CSS/ButtonTest.css">
+<link rel="stylesheet" href="./CSS/ButtonTest.css">
 <head>
 <meta charset="UTF-8">
 <%@include file="../entete.jsp"%>
@@ -29,54 +29,44 @@
 				<c:forEach var="questionTirage"
 					items="${sessionScope.listeQuestionsTirages}">
 					<li class="nav-item active">
-					<div class="ecart">
-						<button type="button" class="btn btn-primary"
-							onClick="afficherQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
-					</div>
+						<div class="ecart">
+							<button type="button" class="btn btn-primary"
+								onClick="afficherQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
+						</div>
 					</li>
 				</c:forEach>
 			</ul>
 		</div>
 	</nav>
+<script>
 
-<!-- <script> -->
-// var xhttp = new XMLHttpRequest();
-// xhttp.onreadystatechange = function(${questionTirage.numordre}) {
-//     if (this.readyState == 4 && this.status == 200) {
-//        // Typical action to be performed when the document is ready:
-//        document.getElementById(${questionTirage.numordre}).innerHTML = xhttp.responseText;
-//     }
-// };
+    function afficherQuestion(id) {
 
+        var httpRequest = false;
 
-<!-- </script> -->
+        httpRequest = new XMLHttpRequest();
 
+        if (!httpRequest) {
+            alert('Abandon. Impossible de créer une instance XMLHTTP');
+            return false;
+        }
+        httpRequest.onreadystatechange = function() { alertContents(httpRequest); };
+        httpRequest.open('GET', "http://localhost:8080/QuizzQCM/question/"+id+"/get", true);
+        httpRequest.send();
 
-<%-- 	<c:forEach var="questionTirage" --%>
-<%-- 		items="${sessionScope.listeQuestionsTirages}"> --%>
-<!-- 		<div class="card" style="display: none;" -->
-<%-- 			id="${questionTirage.numordre}"> --%>
-<%-- 			<div class="card-body">${questionTirage.question.enonce }</div> --%>
-<!-- 			<div class="card-footer"> -->
-<!-- 				<ul> -->
-<%-- 					<c:forEach var="proposition" --%>
-<%-- 						items="${questionTirage.question.propositions}"> --%>
-<%-- 						<li>${proposition.enonce}</li> --%>
-<%-- 					</c:forEach> --%>
-<!-- 				</ul> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<%-- 	</c:forEach> --%>
+    }
 
-<!-- <!-- 	<script> --> -->
-<!-- // 		function afficherQuestion(id) { -->
-<!-- // 			var x = document.getElementById(id); -->
-<!-- // 			if (x.style.display === "none") { -->
-<!-- // 				x.style.display = "flex"; -->
-<!-- // 			} else { -->
-<!-- // 				x.style.display = "none"; -->
-<!-- // 			} -->
-<!-- // 		} -->
-<!-- <!-- 	</script> --> -->
+    function alertContents(httpRequest) {
+
+        if (httpRequest.readyState == XMLHttpRequest.DONE) {
+            if (httpRequest.status == 200) {
+                alert(httpRequest.responseText);
+            } else {
+                alert('Un problème est survenu avec la requête.');
+            }
+        }
+
+    }
+    </script>
 	<%@include file="../finBody.html"%>
 </html>

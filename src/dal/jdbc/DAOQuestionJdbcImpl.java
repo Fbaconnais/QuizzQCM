@@ -7,11 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-
 import bo.Proposition;
 import bo.Question;
 import bo.Theme;
@@ -19,7 +14,6 @@ import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOQuestion;
 
-@Path("/question")
 public class DAOQuestionJdbcImpl implements DAOQuestion {
 	private Connection conn = null;
 	private String selectAllByIDQuestion = "SELECT * FROM Proposition WHERE idQuestion=?";
@@ -28,17 +22,13 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 			+ "WHERE idQuestion=?";
 
 	@Override
-	@POST
-	@Path("/add")
 	public Question add(Question data) throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	@GET
-	@Path("/{id}/get")
-	public Question selectOne(@PathParam("id") int id) throws DALException {
+	public Question selectOne(int id) throws DALException {
 		Question question = null;
 		Theme theme = null;
 		PreparedStatement rqt = null;
@@ -50,7 +40,7 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 			rqt = conn.prepareStatement(selectOne);
 			rqt.setInt(1, id);
 			rs = rqt.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				listePropositions = selectAllByIDQuestion(rs.getInt("idQuestion"));
 				theme = new Theme();
 				question = new Question();
@@ -81,16 +71,12 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 	}
 
 	@Override
-	@GET
-	@Path("/getAll")
 	public List<Question> selectAll() throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	@GET
-	@Path("/{id}/delete")
 	public void remove(int id) throws DALException {
 		// TODO Auto-generated method stub
 
@@ -103,11 +89,9 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 	}
 
 	@Override
-	@GET
-	@Path("/{id}/getProps")
 	public List<Proposition> selectAllByIDQuestion(int id) throws DALException {
 		Proposition prop = null;
-		List<Proposition> propositions = null;
+		List<Proposition> propositions = new ArrayList<Proposition>();
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 
@@ -118,7 +102,6 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 			rs = rqt.executeQuery();
 			while (rs.next()) {
 				prop = new Proposition();
-				propositions = new ArrayList<Proposition>();
 				prop.setEnonce(rs.getString("enonce"));
 				prop.setEstBonne(rs.getBoolean("estBonne"));
 				prop.setIdProposition(rs.getInt("idProposition"));
