@@ -1,7 +1,11 @@
 package ihm.responsable;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +30,6 @@ public class InscriptionServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("je passe dans le doget");
 		request.getSession().setAttribute("messageValidation", "");
 		String action;
 		String url = null;
@@ -85,6 +88,7 @@ public class InscriptionServlet extends HttpServlet {
 		request.getSession().setAttribute("messageValidation", null);
 		String url = null;
 		String action = request.getParameter("actionajout");
+		String codePromo;
 		switch (action) {
 		case "promotest":
 			int idTest = 0;
@@ -93,7 +97,7 @@ public class InscriptionServlet extends HttpServlet {
 				url = request.getContextPath() + "/collaborateur/inscriptions";
 			} else {
 				idTest = Integer.parseInt(request.getParameter("test"));
-				String codePromo = request.getParameter("promo");
+				codePromo = request.getParameter("promo");
 				if (codePromo.equals("Choisir une promotion dans la liste")) {
 					request.getSession().setAttribute("messageValidation", "Sélectionner une promotion");
 					url = request.getContextPath() + "/collaborateur/inscriptions";
@@ -104,13 +108,13 @@ public class InscriptionServlet extends HttpServlet {
 					String heureFinValidite = request.getParameter("HeureFinValidite");
 					PromotionManager promoMger = PromotionManager.getMger();
 					try {
-						System.out.println(idTest + " " + codePromo);
+						
 						if (promoMger.verifPromoInscriteATest(codePromo, idTest)) {
 
 							request.getSession().setAttribute("messageValidation",
 									"Un ou plusieurs membre(s) de la promotion est(sont) déjà inscrit(s) à ce test");
 							url = request.getContextPath() + "/collaborateur/inscriptions";
-							System.out.println("il y a déjà des inscrits");
+					
 						} else {
 							System.out.println(
 									dateDebutValidite + dateFinValidite + heureDebutValidite + heureFinValidite);
@@ -118,11 +122,11 @@ public class InscriptionServlet extends HttpServlet {
 									heureDebutValidite, heureFinValidite);
 							request.getSession().setAttribute("messageValidation", "Requête exécutée");
 							url = request.getContextPath() + "/collaborateur/inscriptions";
-							System.out.println("il n'y a pas d inscrits");
+							
 						}
 					} catch (BLLException e) {
 						e.printStackTrace();
-						System.out.println(e.getMessage());
+					
 						request.getSession().setAttribute("erreur", e.getMessage());
 						url = request.getContextPath() + "/erreur";
 					}
@@ -131,16 +135,18 @@ public class InscriptionServlet extends HttpServlet {
 
 			break;
 		case "stagiaire":
+
 			int idProfil = Integer.parseInt(request.getParameter("type"));
-			String codePromo = request.getParameter("promo");
-			if ((codePromo.equals("Choisir une promotion dans la liste")) && idProfil ==1) {
+			codePromo = request.getParameter("promo");
+			if ((codePromo.equals("Choisir une promotion dans la liste")) && idProfil == 1) {
 				request.getSession().setAttribute("messageValidation", "Sélectionner une promotion au stagiaire");
 				url = request.getContextPath() + "/collaborateur/inscriptions";
 			} else {
 				String email = request.getParameter("email");
 				String nom = request.getParameter("nom");
 				String prenom = request.getParameter("prenom");
-				String password = org.apache.commons.codec.digest.DigestUtils.sha256Hex(nom.toUpperCase() + prenom.substring(0, 1).toUpperCase());
+				String password = org.apache.commons.codec.digest.DigestUtils
+						.sha256Hex(nom.toUpperCase() + prenom.substring(0, 1).toUpperCase());
 				Candidat cand = new Candidat(nom, prenom, email, password);
 				Profil p = new Profil();
 				p.setId(idProfil);
@@ -154,27 +160,53 @@ public class InscriptionServlet extends HttpServlet {
 					cand.getProfil().setLibelle("candidat libre");
 				}
 				UtilisateurManager UserMger = UtilisateurManager.getMger();
-				
+
 				try {
 					Utilisateur test = UserMger.getUserByEmail(email);
-					if (test == null) {					
-					UserMger.addUser(cand);
-					request.getSession().setAttribute("messageValidation", "Requête exécutée");
+					if (test == null) {
+						UserMger.addUser(cand);
+						request.getSession().setAttribute("messageValidation", "Requête exécutée");
 					} else {
-						request.getSession().setAttribute("messageValidation", "Il existe déjà un utilisateur avec cet Email");
+						request.getSession().setAttribute("messageValidation",
+								"Il existe déjà un utilisateur avec cet Email");
 					}
 					url = request.getContextPath() + "/collaborateur/inscriptions";
-					
+
 				} catch (BLLException e) {
-					e.printStackTrace();
-					System.out.println(e.getMessage());
 					request.getSession().setAttribute("erreur", e.getMessage());
 					url = request.getContextPath() + "erreur";
 				}
-				
+
 			}
 
 			break;
+		case "candidattest":
+			break;
+		case "stagiairepromo":
+			break;
+		case "promotion":
+			codePromo = request.getParameter("codePromo");
+			PromotionManager promoMger = PromotionManager.getMger();
+			
+			try {
+				Promotion p = promoMger.selectPromo(codePromo);
+				if (p == null) {
+					p = new Promotion();
+					p.setId(codePromo);
+					p.setLibelle(request.getParameter("libelle"));
+					promoMger.addPromotion(p);
+					request.getSession().setAttribute("messageValidation", "Requête exécutée");
+				} else {
+					request.getSession().setAttribute("messageValidation", "Il existe déjà une promotion avec ce code");
+				}
+			} catch (BLLException e) {
+				request.getSession().setAttribute("erreur", e.getMessage());
+				url = request.getContextPath() + "erreur";
+			}
+			
+			
+			break;
+
 		}
 
 		response.sendRedirect(url);
@@ -193,7 +225,7 @@ public class InscriptionServlet extends HttpServlet {
 			request.getSession().setAttribute("tests", listeTests);
 		} catch (BLLException e) {
 			request.getSession().setAttribute("erreur", e.getMessage());
-			return "/WEB-INF/jsp/erreur/affichageMessageErreur.jsp";
+			return "/erreur";
 		}
 
 		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newPromoTest.jsp";
@@ -202,12 +234,33 @@ public class InscriptionServlet extends HttpServlet {
 
 	private String newCandidatTest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		TestManager testMger = TestManager.getMger();
+
+		try {
+			List<Test> listeTests = testMger.selectAllTests();
+			request.getSession().setAttribute("tests", listeTests);
+		} catch (BLLException e) {
+			request.getSession().setAttribute("erreur", e.getMessage());
+			return "/erreur";
+		}
+
 		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newCandidatTest.jsp";
 
 	}
 
 	private String newStagiairePromo(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		PromotionManager promoMger = PromotionManager.getMger();
+
+		try {
+			List<Promotion> listePromos = promoMger.selectAllPromos();
+			request.getSession().setAttribute("promos", listePromos);
+		} catch (BLLException e) {
+			request.getSession().setAttribute("erreur", e.getMessage());
+			return "/erreur";
+		}
+
 		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newStagiaireInPromo.jsp";
 
 	}
@@ -229,7 +282,7 @@ public class InscriptionServlet extends HttpServlet {
 			request.getSession().setAttribute("promos", listePromos);
 		} catch (BLLException e) {
 			request.getSession().setAttribute("erreur", e.getMessage());
-			return "/WEB-INF/jsp/erreur/affichageMessageErreur.jsp";
+			return "/erreur";
 		}
 		return "/WEB-INF/jsp/collaborateur/responsable/inscription/newStagiaire.jsp";
 

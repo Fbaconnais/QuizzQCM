@@ -81,7 +81,7 @@
 				<div class="form-row">
 				<input
 					type="hidden" id="actionajout" name="actionajout" value="stagiaire">
-				<input type="submit">
+				<input type="submit" name="cestuntest">
 				</div>
 			</form>
 		</div>

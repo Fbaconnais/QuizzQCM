@@ -34,7 +34,40 @@
 		</div>
 	</nav>
 	<%@include file="../../debutBody.jsp"%>
+<div class="col col-lg-9">
+		<br> <br>
+		<h1>Inscription candidat à un test</h1>
+		<br>
+		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
+			<form method="post"
+				action="${pageContext.request.contextPath}/collaborateur/inscription">
 
+				
+				<div class="form-row">
+					<label for="nom" class="col col-lg-4">Recherche par nom/mail </label> <input type="text"
+						class="form-control col col-lg-7 offset-lg-1" name="nom" id="nom">			
+				</div>
+				<br>
+				<div class="form-row">
+					<label for="promo" class="col col-lg-3">Promotion</label> <select
+						class="form-control col col-lg-9" name="promo" id="promo" required>
+						<option selected>Choisir une promotion dans la liste</option>
+						<c:forEach var="promotion" items="${sessionScope.promos}">
+							<option>${promotion.id }</option>
+						</c:forEach>
+					</select>
+				</div>
+				<br>
+
+				<input type="hidden" id="actionajout" name="actionajout"
+					value="stagiairepromo">
+
+			</form>
+		</div>
+
+	</div>
+	</div>
+	</div>
 
 
 

@@ -17,7 +17,7 @@
 			</div>
 			<br>
 			<div class="row">
-				<a href="${pageContext.request.contextPath}/deconnection"><button>Déconnection</button></a>
+				<a href="${pageContext.request.contextPath}/deconnection"><button>Déconnexion</button></a>
 			</div>
 
 		</div>

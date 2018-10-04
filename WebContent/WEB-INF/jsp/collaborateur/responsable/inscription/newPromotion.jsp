@@ -25,18 +25,54 @@
 						Accueil Responsable </a></li>
 
 				<li class="nav-item active"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion des inscriptions<span
-						class="sr-only">(current)</span></a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
+					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion
+						des inscriptions<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
 						des resultats</a></li>
 
 			</ul>
 		</div>
 	</nav>
 	<%@include file="../../debutBody.jsp"%>
+	
+	<div class="col col-lg-9">
+	<br>
+	<br>
+	<h1>Inscription promotion à un test</h1>
+	<br>
+	<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
 
 
+		<br> <br>
 
+
+		<form method="post"
+			action="${pageContext.request.contextPath}/collaborateur/inscription">
+
+
+			<div class="form-row">
+				<label for="codePromo" class="col col-lg-4"> CodePromo </label> <input
+					type="text" class="form-control col col-lg-7 offset-lg-1"
+					name="codePromo" id="codePromo" maxlength="8">
+			</div>
+			<br>
+			<div class="form-row">
+				<label for="libelle" class="col col-lg-4"> Description </label> <input
+					type="text" class="form-control col col-lg-7 offset-lg-1"
+					name="libelle" id="libelle">
+			</div>
+			<br> <input type="hidden" id="actionajout" name="actionajout"
+				value="promotion">
+			<div class="form-row">
+				<input type="submit">
+			</div>
+		</form>
+	</div>
+	</div>
+	</div>
+	</div>
 
 
 

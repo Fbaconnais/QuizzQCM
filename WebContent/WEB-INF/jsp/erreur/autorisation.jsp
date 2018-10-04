@@ -12,7 +12,7 @@
 <body>
 	<%@include file="../debutBody.html"%>
 	<div class="row justify-content-lg-center">
-		<h1>Vous n'avez pas l'autorisation d'accéder à cette page</h1>
+		<h1>Fous n'afez pas l'autorisation d'accéder à cette page</h1>
 	</div>
 	<form method="post">
 		<input type="submit" value="revenir au login">

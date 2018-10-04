@@ -22,34 +22,28 @@ import bo.Utilisateur;
 @WebServlet(urlPatterns = { "/login", "" })
 public class login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	ServletContext application;
+	
 
-	@Override
-	public void init() throws ServletException {
-		application = this.getServletContext();
-		application.setAttribute("erreur", null);
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getSession().getAttribute("user") != null) {
+		request.setAttribute("messageValidation", null);
+		if (request.getSession().getAttribute("profilCon") != null) {
 			switch ((String) request.getSession().getAttribute("profilCon")) {
 			case "candidat libre":
 			case "stagiaire":
-				request.getRequestDispatcher("/WEB-INF/jsp/candidat/accueil.jsp").forward(request, response);
+				response.sendRedirect("candidat");
 				break;
 			case "formateur":
-				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp").forward(request,
-						response);
+				response.sendRedirect("collaborateur");
 				break;
 			case "administrateur":
-				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp").forward(request, response);
+				response.sendRedirect("collaborateur");
 				break;
 			case "cellule de recrutement":
 			case "responsable de formation":
-				request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilResponsable.jsp").forward(request,
-						response);
+				response.sendRedirect("collaborateur");
 				break;
 			}
 		} else {
@@ -76,7 +70,7 @@ public class login extends HttpServlet {
 		}
 		if (result == null) {
 			request.getSession().setAttribute("profilCon", "erreur");
-			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+			request.getRequestDispatcher("/login").forward(request, response);
 		} else {
 			try {
 				user = Mger.getUserByEmail(email);
