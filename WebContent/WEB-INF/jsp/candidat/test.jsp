@@ -31,42 +31,52 @@
 					<li class="nav-item active">
 						<div class="ecart">
 							<button type="button" class="btn btn-primary"
-								onClick="afficherQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
+								onClick="recuperationQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
 						</div>
 					</li>
 				</c:forEach>
 			</ul>
 		</div>
 	</nav>
-<script>
+	<div id="test"></div>
+	<script>
 
-    function afficherQuestion(id) {
+    function recuperationQuestion(id) {
+    	    var xhr; 
+    	    try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
+    	    catch (e) 
+    	    {
+    	        try {   xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
+    	        catch (e2) 
+    	        {
+    	           try {  xhr = new XMLHttpRequest();  }
+    	           catch (e3) {  xhr = false;   }
+    	         }
+    	    }
+    	  
+    	    xhr.onreadystatechange  = function() 
+    	    { 
+    	       if(xhr.readyState  == 4)
+    	       {
+    	        if(xhr.status  == 200) 
+    	        	traitementQuestion(this.response);
+    	        else
+    	        	console.log("Erreur de statut!");
+    	        }
+    	    }; 
+    	 
+    	   xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/question/"+id+"/get",  true); 
+    	   xhr.send(); 
+    }
+    
+    function traitementQuestion(xml) {
+    	var json = JSON.parse(xml);
+    	console.log(json.idQuestion);
 
-        var httpRequest = false;
-
-        httpRequest = new XMLHttpRequest();
-
-        if (!httpRequest) {
-            alert('Abandon. Impossible de créer une instance XMLHTTP');
-            return false;
-        }
-        httpRequest.onreadystatechange = function() { alertContents(httpRequest); };
-        httpRequest.open('GET', "http://localhost:8080/QuizzQCM/question/"+id+"/get", true);
-        httpRequest.send();
-
+    	  document.getElementById("test").innerHTML = txt;
     }
 
-    function alertContents(httpRequest) {
-
-        if (httpRequest.readyState == XMLHttpRequest.DONE) {
-            if (httpRequest.status == 200) {
-                alert(httpRequest.responseText);
-            } else {
-                alert('Un problème est survenu avec la requête.');
-            }
-        }
-
-    }
+    <!-- document.getElementById("test").innerHTML = "Reçu:" + xhr.responseText;  -->
     </script>
 	<%@include file="../finBody.html"%>
 </html>
