@@ -11,9 +11,6 @@
 <title>QCM - Epreuve</title>
 </head>
 <body>
-	<%
-		int compteurQuestion = 0;
-	%>
 	<c:if test="${ sessionScope.listeQuestionsTirages.size()==0 }">
 		<h3 style="color: red;">Une erreur est survenue, aucune question
 			n'a pu être retournée.</h3>
@@ -34,7 +31,7 @@
 					<li class="nav-item active">
 					<div class="ecart">
 						<button type="button" class="btn btn-primary"
-							action="afficherQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
+							onClick="afficherQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
 					</div>
 					</li>
 				</c:forEach>
@@ -42,32 +39,44 @@
 		</div>
 	</nav>
 
+<!-- <script> -->
+// var xhttp = new XMLHttpRequest();
+// xhttp.onreadystatechange = function(${questionTirage.numordre}) {
+//     if (this.readyState == 4 && this.status == 200) {
+//        // Typical action to be performed when the document is ready:
+//        document.getElementById(${questionTirage.numordre}).innerHTML = xhttp.responseText;
+//     }
+// };
 
-	<c:forEach var="questionTirage"
-		items="${sessionScope.listeQuestionsTirages}">
-		<div class="card" style="display: none;"
-			id="${questionTirage.numordre}">
-			<div class="card-body">${questionTirage.question.enonce }</div>
-			<div class="card-footer">
-				<ul>
-					<c:forEach var="proposition"
-						items="${questionTirage.question.propositions}">
-						<li>${proposition.enonce}</li>
-					</c:forEach>
-				</ul>
-			</div>
-		</div>
-	</c:forEach>
 
-	<script>
-		function afficherQuestion(id) {
-			var x = document.getElementById(id);
-			if (x.style.display === "none") {
-				x.style.display = "flex";
-			} else {
-				x.style.display = "none";
-			}
-		}
-	</script>
+<!-- </script> -->
+
+
+<%-- 	<c:forEach var="questionTirage" --%>
+<%-- 		items="${sessionScope.listeQuestionsTirages}"> --%>
+<!-- 		<div class="card" style="display: none;" -->
+<%-- 			id="${questionTirage.numordre}"> --%>
+<%-- 			<div class="card-body">${questionTirage.question.enonce }</div> --%>
+<!-- 			<div class="card-footer"> -->
+<!-- 				<ul> -->
+<%-- 					<c:forEach var="proposition" --%>
+<%-- 						items="${questionTirage.question.propositions}"> --%>
+<%-- 						<li>${proposition.enonce}</li> --%>
+<%-- 					</c:forEach> --%>
+<!-- 				</ul> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<%-- 	</c:forEach> --%>
+
+<!-- <!-- 	<script> --> -->
+<!-- // 		function afficherQuestion(id) { -->
+<!-- // 			var x = document.getElementById(id); -->
+<!-- // 			if (x.style.display === "none") { -->
+<!-- // 				x.style.display = "flex"; -->
+<!-- // 			} else { -->
+<!-- // 				x.style.display = "none"; -->
+<!-- // 			} -->
+<!-- // 		} -->
+<!-- <!-- 	</script> --> -->
 	<%@include file="../finBody.html"%>
 </html>

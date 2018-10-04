@@ -25,12 +25,11 @@ public class Test extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 
 		try {
-			questionTirageMger.genererTest(id);
 			listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
 			if (listeQuestionsTirages == null) {
-				System.out.println("Boloss.");
+				questionTirageMger.genererTest(id);
+				listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
 			}
-			System.out.println(listeQuestionsTirages.size()+"");
 			request.getSession().setAttribute("listeQuestionsTirages", listeQuestionsTirages);
 			request.getRequestDispatcher("/WEB-INF/jsp/candidat/test.jsp").forward(request, response);
 		} catch (BLLException e) {

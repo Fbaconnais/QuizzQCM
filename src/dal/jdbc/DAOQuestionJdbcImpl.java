@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+
 import bo.Proposition;
 import bo.Question;
 import bo.Theme;
@@ -14,6 +19,7 @@ import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOQuestion;
 
+@Path("/question")
 public class DAOQuestionJdbcImpl implements DAOQuestion {
 	private Connection conn = null;
 	private String selectAllByIDQuestion = "SELECT * FROM Proposition WHERE idQuestion=?";
@@ -22,13 +28,17 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 			+ "WHERE idQuestion=?";
 
 	@Override
+	@POST
+	@Path("/add")
 	public Question add(Question data) throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Question selectOne(int id) throws DALException {
+	@GET
+	@Path("/{id}/get")
+	public Question selectOne(@PathParam("id") int id) throws DALException {
 		Question question = null;
 		Theme theme = null;
 		PreparedStatement rqt = null;
@@ -71,12 +81,16 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 	}
 
 	@Override
+	@GET
+	@Path("/getAll")
 	public List<Question> selectAll() throws DALException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@GET
+	@Path("/{id}/delete")
 	public void remove(int id) throws DALException {
 		// TODO Auto-generated method stub
 
@@ -89,6 +103,8 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 	}
 
 	@Override
+	@GET
+	@Path("/{id}/getProps")
 	public List<Proposition> selectAllByIDQuestion(int id) throws DALException {
 		Proposition prop = null;
 		List<Proposition> propositions = null;
