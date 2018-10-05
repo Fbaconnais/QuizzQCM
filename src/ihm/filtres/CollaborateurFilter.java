@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE,
-		DispatcherType.ERROR }, urlPatterns = {"/collaborateur", "/collaborateur/*" })
+		DispatcherType.ERROR }, urlPatterns = { "/collaborateur", "/collaborateur/*" })
 public class CollaborateurFilter implements Filter {
 
 	@Override
@@ -26,18 +26,18 @@ public class CollaborateurFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse response = (HttpServletResponse) resp;
-		if (request.getSession().getAttribute("profilCon") == null) {
-			request.getSession().setAttribute("musique","alarme");
-			response.sendRedirect("login");
+		if (((HttpServletRequest) req).getSession().getAttribute("profilCon") == null
+				|| ((HttpServletRequest) req).getSession().getAttribute("profilCon").equals("erreur")) {
+			((HttpServletRequest) req).setAttribute("musique", "alarme");
+			((HttpServletRequest) req).getRequestDispatcher("login").forward(((HttpServletRequest) req),
+					(HttpServletResponse) resp);
 		} else {
-			String profil = (String) request.getSession().getAttribute("profilCon");
+			String profil = (String) ((HttpServletRequest) req).getSession().getAttribute("profilCon");
 			if (profil.equals("stagiaire") || profil.equals("candidat libre")) {
-				request.getSession().setAttribute("musique","alarme");
-				response.sendRedirect("candidat");
+				((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
+				((HttpServletResponse) resp).sendRedirect("candidat");
 			} else {
-				chain.doFilter(request, response);
+				chain.doFilter(((HttpServletRequest) req), (HttpServletResponse) resp);
 			}
 		}
 

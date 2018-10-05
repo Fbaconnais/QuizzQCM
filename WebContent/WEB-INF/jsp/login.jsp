@@ -8,18 +8,24 @@
 <meta charset="UTF-8">
 <%@include file="./entete.jsp"%>
 <title>QCM - Login</title>
+
 </head>
 <body>
+<iframe src="${pageContext.request.contextPath}/audio/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
+
+
+<c:if test="${!empty requestScope.musique}">
+
+	<audio autoplay="autoplay" preload="auto" src="${pageContext.request.contextPath}/audio/paspasser.mp3">
+		
+	</audio>
+</c:if>
 	<%@include file="./debutBody.html"%>
 
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<c:if test="${!empty musique}">
-					<audio src="./audio/alarme_intrusion.mp3" autoplay="autoplay" preload="auto">
-						<source src="./audio/alarme_intrusion.mp3" type="mp3">
-					</audio>
-				</c:if>
+
 
 				<div class="well login-box">
 					<form action="${pageContext.request.contextPath}/login"

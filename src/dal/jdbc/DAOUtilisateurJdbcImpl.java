@@ -40,6 +40,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	String authentification = "SELECT libelle FROM PROFIL p JOIN UTILISATEUR u ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
 	String selectUsersByCodePromo = "SELECT u.idUtilisateur,u.nom,u.prenom,u.email,u.codeProfil,p.libelle as plibelle,pr.libelle as prlibelle FROM UTILISATEUR u JOIN PROFIL p on (u.codeProfil = p.codeProfil) JOIN PROMOTION pr ON (u.codePromo = pr.codePromo) WHERE u.codePromo=?";
 	String setPassword = "UPDATE UTILISATEUR SET password=? where idUtilisateur=?";
+	String selectUsersByNameAndMail = "SELECT idUtilisateur,nom,prenom,email FROM UTILISATEUR WHERE nom LIKE ? OR email like ?";
 
 	public DAOUtilisateurJdbcImpl() {
 	}
@@ -301,6 +302,46 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		}
 
 
+	}
+
+	@Override
+	public List<Utilisateur> getUserByEmailOrName(String namemail) throws DALException {
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		Candidat user = null;
+		Profil profil = null;
+		List<Utilisateur> liste = new ArrayList<Utilisateur>();
+		Promotion promo = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(selectUsersByNameAndMail);
+			rqt.setString(1, codePromo);
+			rs = rqt.executeQuery();
+			while (rs.next()) {
+				user = new Candidat();
+				promo = new Promotion();
+				promo.setId(codePromo);
+				promo.setLibelle(rs.getString("prlibelle"));
+				user.setPromotion(promo);
+				profil = new Profil(rs.getInt("codeProfil"), rs.getString("plibelle"));
+				user.setProfil(profil);
+				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
+				user.setNom(rs.getString("nom"));
+				user.setPrenom(rs.getString("prenom"));
+				user.setEmail(rs.getString("email"));
+				liste.add(user);
+			}
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- selectuser by code promo" + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return liste;
 	}
 
 }

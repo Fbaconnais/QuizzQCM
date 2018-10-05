@@ -55,12 +55,29 @@
 						class="form-control col col-lg-9" name="test" id="test" required>
 						<option selected>Choisir un test dans la liste</option>
 						<c:forEach var="test" items="${sessionScope.tests}">
-							<option name="${test.idTest} id="
-								${test.idTest}" value="${test.idTest}">${test.libelle }</option>
+							<option id="${test.idTest}" value="${test.idTest}">${test.libelle }</option>
 						</c:forEach>
 					</select>
 				</div>
 				<br>
+				<div class="form-row">
+					<label for="dateDebutValidite" class="col col-lg-3">Date
+						debut validite</label> <input type="date"
+						class="form-control col col-lg-3" name="dateDebutValidite"
+						required><label for="HeureDebutValidite"
+						class="offset-lg-2"> Heure :</label> <input type="time"
+						class="form-control col col-lg-2 offset-lg-1"
+						name="HeureDebutValidite" required>
+				</div>
+				<br>
+				<div class="form-row">
+					<label for="dateFinValidite" class="col col-lg-3">Date fin
+						validite</label> <input type="date" class="form-control col col-lg-3"
+						name="dateFinValidite" required> <label
+						for="HeureFinValidite" class="offset-lg-2"> Heure :</label> <input
+						type="time" class="form-control col col-lg-2 offset-lg-1"
+						name="HeureFinValidite" required>
+				</div>
 
 				<input type="hidden" id="actionajout" name="actionajout"
 					value="candidattest">
