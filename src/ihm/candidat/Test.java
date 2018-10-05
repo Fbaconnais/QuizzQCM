@@ -10,17 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bll.BLLException;
+import bll.EpreuveManager;
 import bll.QuestionTirageManager;
 import bo.QuestionTirage;
 
 @WebServlet("/test")
 public class Test extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private List<QuestionTirage> listeQuestionsTirages;
+
+
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		List<QuestionTirage> listeQuestionsTirages;
 		QuestionTirageManager questionTirageMger = QuestionTirageManager.getMger();
 		int id = Integer.parseInt(request.getParameter("id"));
 
@@ -30,6 +33,7 @@ public class Test extends HttpServlet {
 				questionTirageMger.genererTest(id);
 				listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
 			}
+			request.setAttribute("idEpreuve", id);
 			request.getSession().setAttribute("listeQuestionsTirages", listeQuestionsTirages);
 			request.getRequestDispatcher("/WEB-INF/jsp/candidat/test.jsp").forward(request, response);
 		} catch (BLLException e) {

@@ -14,8 +14,8 @@
 <%@include file="../debutBody.html"%>
 <iframe src="${pageContext.request.contextPath}/audio/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
 <audio autoplay="autoplay" preload="auto" loop src="${pageContext.request.contextPath}/audio/Koh-Lanta.mp3"></audio>
-
-	<c:if test="${ sessionScope.listeQuestionsTirages.size()==0 }">
+<input type="hidden" value="${requestScope.idEpreuve}" id="epreuve">
+	<c:if test="${ sessionScope.listeQuestionsTirages.size()== 0}">
 		<h3 style="color: red;">Une erreur est survenue, aucune question
 			n'a pu être retournée.</h3>
 	</c:if>
@@ -74,7 +74,7 @@
     	        }
     	    }; 
     	 
-    	   xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/question/"+id+"/get",  true); 
+    	   xhr.open("GET", '<c:out value="${pageContext.request.contextPath}"/>/rest/question/'+id+'/get',  true); 
     	   xhr.send(); 
     }
     
@@ -82,11 +82,15 @@
     	var json = JSON.parse(xml);
 		var props = [];
 		var txt;
+		var idEpreuve;
+		console.log(json);
 		txt = json.enonce
     	document.getElementById("test").innerHTML = txt;
+		idEpreuve = document.getElementById("epreuve");
+		console.log(idEpreuve.value);
 		for (let proposition of json.propositions) {
 			console.log(proposition);
-			txt = '<input type="checkbox" id="'+proposition.idProposition+'" onClick=""> <p>'+proposition.enonce +'</p><br>';
+			txt = '<input type="checkbox" id="'+proposition.idProposition+'" onClick="gestionPropositionCandidat('+proposition.idProposition+','+json.idQuestion+','+idEpreuve.value+')"> <p>'+proposition.enonce +'</p><br>';
 			props.push(txt);
 		}
 		document.getElementById("propositions").innerHTML = props.join("");
@@ -97,7 +101,7 @@
     	var nbQrep;
     	var boutonFin;
     	txt = 'Vous avez répondu à '+nbQrep+' questions. Êtes-vous sûr de vouloir valider votre test?';
-    	boutonFin = '<button type=button onClick="gestionPropositionCandidat()">Terminer le test</button>';
+    	boutonFin = '<button type=button onClick="">Terminer le test</button>';
     	document.getElementById("test").innerHTML = txt;
     	document.getElementById("propositions").innerHTML = boutonFin;
     	
@@ -127,7 +131,7 @@
 	        }
 	    }; 
 	 
-	   xhr.open("GET", '<c:out value="${pageContext.request.contextPath}">/rest/reponse/'+idProposition+'/'+idQuestion+'/'+idEpreuve+'/gestion"',  true); 
+	   xhr.open("GET", '<c:out value="${pageContext.request.contextPath}"/>/rest/reponse/'+idProposition+'/'+idQuestion+'/'+idEpreuve+'/gestion',  true); 
 	   xhr.send(); 
     }
     </script>

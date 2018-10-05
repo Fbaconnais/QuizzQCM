@@ -16,7 +16,7 @@ import dal.DAOReponseTirage;
 public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 	private Connection conn = null;
 	private String generationTest = "{call gererReponseTirage(?,?,?)}";
-	private String verifReponse = "SELECT * FROM Reponse_Tirage WHERE (idProposition = ? AND idQuestion= ? AND idEpreuve=?)";
+	private String verifReponse = "SELECT * FROM Reponse_Tirage WHERE (idProposition = ?) AND (idQuestion= ?) AND (idEpreuve=?)";
 	
 	@Override
 	public ReponseTirage add(ReponseTirage data) throws DALException {
