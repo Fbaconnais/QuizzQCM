@@ -1,11 +1,7 @@
 package ihm.responsable;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +26,7 @@ public class InscriptionServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		String action;
 		String url = null;
 		if (request.getParameter("action") != null) {
@@ -53,27 +49,6 @@ public class InscriptionServlet extends HttpServlet {
 				break;
 			}
 
-		} else if (request.getSession().getAttribute("actionEnCours") != null) {
-			action = (String) request.getSession().getAttribute("actionEnCours");
-			switch (action) {
-			case "stagiaire":
-				url = newStagiaire(request, response);
-				break;
-			case "promotion":
-				url = newpromotion(request, response);
-				break;
-			case "stagiairepromo":
-				url = newStagiairePromo(request, response);
-				break;
-			case "candidattest":
-				url = newCandidatTest(request, response);
-				break;
-			case "promotest":
-				url = newPromoTest(request, response);
-				break;
-			default:
-				url = "/login";
-			}
 		} else {
 			url = "inscriptions";
 		}
@@ -95,7 +70,7 @@ public class InscriptionServlet extends HttpServlet {
 			if (request.getParameter("test").equals("Choisir un test dans la liste")) {
 				request.getSession().setAttribute("messageValidation", "Sélectionner un test");
 				url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
-	
+
 			} else {
 				idTest = Integer.parseInt(request.getParameter("test"));
 				codePromo = request.getParameter("promo");
@@ -117,7 +92,8 @@ public class InscriptionServlet extends HttpServlet {
 							url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 
 						} else {
-							promoMger.inscrirePromoATest(codePromo, idTest, dateDebutValidite, dateFinValidite, heureDebutValidite, heureFinValidite);
+							promoMger.inscrirePromoATest(codePromo, idTest, dateDebutValidite, dateFinValidite,
+									heureDebutValidite, heureFinValidite);
 							request.getSession().setAttribute("messageValidation", "Requête exécutée");
 							url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 
@@ -170,7 +146,6 @@ public class InscriptionServlet extends HttpServlet {
 					}
 					url = request.getContextPath() + "/collaborateur/inscription?action=stagiaire";
 
-
 				} catch (BLLException e) {
 					request.getSession().setAttribute("erreur", e.getMessage());
 					url = request.getContextPath() + "/erreur";
@@ -200,25 +175,47 @@ public class InscriptionServlet extends HttpServlet {
 						url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
 
 					} else {
-						
-						userMger.ajouterCandidatATest(dateDebutValidite, dateFinValidite, heureDebutValidite, heureFinValidite, idTest, idUtil);
+
+						userMger.ajouterCandidatATest(dateDebutValidite, dateFinValidite, heureDebutValidite,
+								heureFinValidite, idTest, idUtil);
 						request.getSession().setAttribute("messageValidation", "Requête exécutée");
 						url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
 
-
 					}
 				} catch (BLLException e) {
-					e.printStackTrace();
-
+					
 					request.getSession().setAttribute("erreur", e.getMessage());
 					url = request.getContextPath() + "/erreur";
 				}
-				
-				
+
 			}
 
 			break;
 		case "stagiairepromo":
+			codePromo = request.getParameter("promo");
+			UtilisateurManager UtilMger = UtilisateurManager.getMger();
+			if (codePromo.equals("Choisir une promotion dans la liste")) {
+				request.getSession().setAttribute("messageValidation", "Sélectionner une promotion");
+				url = request.getContextPath() + "/collaborateur/inscription?action=stagiairepromo";
+			} else {
+				int idUtil = Integer.parseInt(request.getParameter("idutil"));
+				try {
+					Utilisateur candidat = UtilMger.selectUser(idUtil);
+					Promotion p = new Promotion();
+					p.setId(codePromo);
+					((Candidat)candidat).setPromotion(p);
+					UtilMger.updateUser(candidat);
+					request.getSession().setAttribute("messageValidation", "Requête exécutée");
+					url = request.getContextPath() + "/collaborateur/inscription?action=stagiairepromo";
+				} catch (BLLException e) {
+					e.printStackTrace();
+					request.getSession().setAttribute("erreur", e.getMessage());
+					url = request.getContextPath() + "/erreur";
+				}
+						
+				
+			}
+
 			break;
 		case "promotion":
 			codePromo = request.getParameter("codePromo");

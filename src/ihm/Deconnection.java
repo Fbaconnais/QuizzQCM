@@ -19,7 +19,7 @@ public class Deconnection extends HttpServlet {
 		request.getSession().removeAttribute("profilCon");
 		request.getSession().removeAttribute("user");
 	
-		request.getRequestDispatcher("/login").forward(request, response);
+		response.sendRedirect("login");
 	}
 
 	@Override

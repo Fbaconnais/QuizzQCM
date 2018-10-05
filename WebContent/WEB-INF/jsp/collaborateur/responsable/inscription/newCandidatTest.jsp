@@ -45,15 +45,15 @@
 			<br>
 		</c:if>
 		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
+			<div class="form-row">
+				<label for="nom" class="col col-lg-4">Recherche par nom/mail
+				</label> <input type="text" class="form-control col col-lg-7 offset-lg-1"
+					name="nom" id="nom">
+			</div>
+			<br>
 			<form method="post"
 				action="${pageContext.request.contextPath}/collaborateur/inscription">
 
-				
-				<div class="form-row">
-					<label for="nom" class="col col-lg-4">Recherche par nom/mail </label> <input type="text"
-						class="form-control col col-lg-7 offset-lg-1" name="nom" id="nom">			
-				</div>
-				<br>
 				<div class="form-row">
 					<label for="test" class="col col-lg-3">Test</label> <select
 						class="form-control col col-lg-9" name="test" id="test" required>
@@ -67,25 +67,23 @@
 				<div class="form-row">
 					<label for="dateDebutValidite" class="col col-lg-3">Date
 						debut validite</label> <input type="date"
-						class="form-control col col-lg-3" name="dateDebutValidite"
-						><label for="HeureDebutValidite"
-						class="offset-lg-2"> Heure :</label> <input type="time"
-						class="form-control col col-lg-2 offset-lg-1"
-						name="HeureDebutValidite" >
+						class="form-control col col-lg-3" name="dateDebutValidite"><label
+						for="HeureDebutValidite" class="offset-lg-2"> Heure :</label> <input
+						type="time" class="form-control col col-lg-2 offset-lg-1"
+						name="HeureDebutValidite">
 				</div>
 				<br>
 				<div class="form-row">
 					<label for="dateFinValidite" class="col col-lg-3">Date fin
 						validite</label> <input type="date" class="form-control col col-lg-3"
-						name="dateFinValidite" > <label
-						for="HeureFinValidite" class="offset-lg-2"> Heure :</label> <input
-						type="time" class="form-control col col-lg-2 offset-lg-1"
-						name="HeureFinValidite" >
+						name="dateFinValidite"> <label for="HeureFinValidite"
+						class="offset-lg-2"> Heure :</label> <input type="time"
+						class="form-control col col-lg-2 offset-lg-1"
+						name="HeureFinValidite">
 				</div>
 
 				<input type="hidden" id="actionajout" name="actionajout"
-					value="candidattest">
-				<br>
+					value="candidattest"> <br>
 				<div id="results"></div>
 			</form>
 		</div>
@@ -94,7 +92,7 @@
 	</div>
 	</div>
 
-<script type="text/javascript">
+	<script type="text/javascript">
 jQuery("input[name='nom']").on("input", function() {
 	var xhr; 
     try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }

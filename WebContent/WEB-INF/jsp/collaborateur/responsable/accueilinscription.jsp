@@ -44,13 +44,13 @@
 			href="${pageContext.request.contextPath}/collaborateur/inscription?action=stagiaire"
 			class="btn btn-primary btn-mb btn-block">Inscrire un nouveau
 			Stagiaire/Candidat</a> <a
-			href="${pageContext.request.contextPath}/collaborateur/modif?action=stagiaire"
+			href="${pageContext.request.contextPath}/collaborateur/responsable/modif?action=stagiaire"
 			class="btn btn-primary btn-mb btn-block">Modifier/Supprimer
 			Stagiaire/Candidat</a> <a
 			href="${pageContext.request.contextPath}/collaborateur/inscription?action=promotion"
 			class="btn btn-primary btn-mb btn-block">Inscrire une nouvelle
 			promotion</a> <a
-			href="${pageContext.request.contextPath}/collaborateur/modif?action=promotion"
+			href="${pageContext.request.contextPath}/collaborateur/responsable/modif?action=promotion"
 			class="btn btn-primary btn-mb btn-block">Modifier/Supprimer
 			promotion</a> <a
 			href="${pageContext.request.contextPath}/collaborateur/inscription?action=stagiairepromo"

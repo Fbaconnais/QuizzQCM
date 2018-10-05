@@ -9,7 +9,7 @@
 <%@include file="../../entete.jsp"%>
 <title>gestions des inscriptions</title>
 </head>
-<body>
+<body onload="listepromos()">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarsExample08" aria-controls="navbarsExample08"
@@ -37,45 +37,33 @@
 	</nav>
 	<%@include file="../../debutBody.jsp"%>
 	<div class="col col-lg-9">
+
 		<br> <br>
-		<h1>Inscription candidat à un test</h1>
+		<h1>Modification d'une promotion</h1>
 		<br>
+
 		<c:if test="${sessionScope.messageValidation != null }">
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
 			<br>
 		</c:if>
-		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
-			<div class="form-row">
-				<label for="nom" class="col col-lg-4">Recherche par nom/mail
-				</label> <input type="text" class="form-control col col-lg-7 offset-lg-1"
-					name="nom" id="nom">
-			</div>
 
-			<form method="post"
-				action="${pageContext.request.contextPath}/collaborateur/inscription">
 
-				<br>
-				<div class="form-row">
-					<label for="promo" class="col col-lg-3">Promotion</label> <select
-						class="form-control col col-lg-9" name="promo" id="promo" required>
-						<option selected>Choisir une promotion dans la liste</option>
-						<c:forEach var="promotion" items="${sessionScope.promos}">
-							<option>${promotion.id }</option>
-						</c:forEach>
-					</select>
-				</div>
-				<br> <input type="hidden" id="actionajout" name="actionajout"
-					value="stagiairepromo">
-				<div id="results"></div>
+		<form method="post"
+			action="${pageContext.request.contextPath}/collaborateur/responsable/modif">
 
-			</form>
-		</div>
+
+			<input type="hidden" id="actionmodif" name="actionmodif"
+				value="promo"> <br>
+			<div id="results"></div>
+		</form>
 
 	</div>
 	</div>
-	</div>
+</div>
+
+
 	<script type="text/javascript">
-jQuery("input[name='nom']").on("input", function() {
+function listepromos() {
 	var xhr; 
     try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
     catch (e) 
@@ -93,30 +81,29 @@ jQuery("input[name='nom']").on("input", function() {
        if(xhr.readyState  == 4)
        {
         if(xhr.status  == 200) 
-        	afficherCandidats(this.response);
+        	afficherPromos(this.response);
         else
         	console.log("Erreur de statut!");
         }
     }; 
-    var input = document.getElementById('nom');
-    var nommail = input.value;
-    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/users/"+nommail+"/all",  true); 
+
+    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/promos/all",  true); 
 	   xhr.send();
     
-});
+};
 
-function afficherCandidats(xml) {
+function afficherPromos(xml) {
 	var json = JSON.parse(xml);
 	var props = [];
-	for (let Utilisateur of json) {
+	
+	for (let Promotion of json) {
 		
-		props.push('<button type="submit" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'+Utilisateur.idUtilisateur+'" ">Incrire : '+Utilisateur.nom+'  '+Utilisateur.prenom+' - '+Utilisateur.email+' </button><br>');
+		props.push('<button type="submit" class="btn btn-primary btn-mb col-xs-12 col-md-6 col-lg-3 " style="border-width: 5px;border-color:white;" name="idpromo" id="idpromo" value="'+Promotion.id+'" "> Modifier : '+Promotion.id+' </button>');
+		
 	}
 	document.getElementById("results").innerHTML = props.join("");
 }
 </script>
-
-
 
 
 	<%@include file="../../finBody.html"%>

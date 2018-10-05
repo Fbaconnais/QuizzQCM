@@ -22,5 +22,13 @@ public class GestionCandidat {
 		liste = UMger.getCandidatViaMailEtNom(nommail);
 		return liste;
 	};
+	
+	@GET
+	@Path("/{id}")
+	public Utilisateur getOne(@PathParam("id") int id) throws BLLException {
+		UtilisateurManager UMger = UtilisateurManager.getMger();
+		Utilisateur u = UMger.selectUser(id);
+		return u;
+	}
 
 }

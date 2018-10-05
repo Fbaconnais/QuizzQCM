@@ -22,13 +22,12 @@ import bo.Utilisateur;
 @WebServlet(urlPatterns = { "/login", "" })
 public class login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setAttribute("messageValidation", null);
+		request.getSession().removeAttribute("messageValidation");
+		request.getSession().removeAttribute("erreur");
 		if (request.getSession().getAttribute("profilCon") != null) {
 			switch ((String) request.getSession().getAttribute("profilCon")) {
 			case "candidat libre":
@@ -44,6 +43,9 @@ public class login extends HttpServlet {
 			case "cellule de recrutement":
 			case "responsable de formation":
 				response.sendRedirect("collaborateur");
+				break;
+			default:
+				request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 				break;
 			}
 		} else {
@@ -66,34 +68,30 @@ public class login extends HttpServlet {
 			result = Mger.authentification(email, password);
 
 		} catch (BLLException e) {
-
+			e.printStackTrace();
 			request.getSession().setAttribute("erreur", e.getMessage());
 		}
 		if (result == null) {
 			request.getSession().setAttribute("profilCon", "erreur");
-			request.getRequestDispatcher("/login").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/login");
 		} else {
 			try {
 				user = Mger.getUserByEmail(email);
 				request.getSession().setAttribute("user", user);
 				request.getSession().setAttribute("profilCon", user.getProfil().getLibelle());
+				request.getSession().setMaxInactiveInterval(7200);
+				if (user.getProfil().getLibelle().equals("stagiaire")
+						|| user.getProfil().getLibelle().equals("candidat libre"))
+
+					response.sendRedirect(request.getContextPath() + "/candidat");
+				else {
+					response.sendRedirect(request.getContextPath() + "/collaborateur");
+				}
 
 			} catch (BLLException e) {
-
+				e.printStackTrace();
 				request.getSession().setAttribute("erreur", e.getMessage());
-			}
-		}
-
-		if (request.getSession().getAttribute("erreur") != null) {
-			response.sendRedirect("erreur");
-		} else {
-			request.getSession().setMaxInactiveInterval(7200);
-			if (user.getProfil().getLibelle().equals("stagiaire")
-					|| user.getProfil().getLibelle().equals("candidat libre"))
-
-				response.sendRedirect("candidat");
-			else {
-				response.sendRedirect("collaborateur");
+				response.sendRedirect(request.getContextPath() + "/erreur");
 			}
 
 		}

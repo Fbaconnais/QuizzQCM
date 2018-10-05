@@ -157,7 +157,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(update);
 
-			rqt.setInt(7, data.getIdUtilisateur());
+			rqt.setInt(6, data.getIdUtilisateur());
 
 			rqt.setString(1, data.getNom());
 			rqt.setString(2, data.getPrenom());
