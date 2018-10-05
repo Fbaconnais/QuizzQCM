@@ -104,5 +104,30 @@ public class UtilisateurManager {
 		return liste;
 		
 	}
+	public List<Utilisateur> getCandidatViaMailEtNom(String nommail) throws BLLException{
+		List<Utilisateur> liste = null;
+		
+		try {
+			liste = DAO.getUserByEmailOrName(nommail);
+		} catch (DALException e) {
+			// TODO Auto-generated catch block
+			throw new BLLException(e.getMessage(), e);
+		}
+		
+		return liste;
+	}
+	
+	public Boolean verifCandidatInscritAtest(int idTest,int idCandidat) throws BLLException{
+		Boolean result = false;
+		
+		try {
+			result = DAO.verifCandidatInscrit(idTest, idCandidat);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		
+		
+		return result;
+	}
 	
 }

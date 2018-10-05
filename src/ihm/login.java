@@ -55,6 +55,7 @@ public class login extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.removeAttribute("musique");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		password = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);

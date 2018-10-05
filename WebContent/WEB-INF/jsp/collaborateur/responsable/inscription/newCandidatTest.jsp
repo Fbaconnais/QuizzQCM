@@ -64,24 +64,25 @@
 					<label for="dateDebutValidite" class="col col-lg-3">Date
 						debut validite</label> <input type="date"
 						class="form-control col col-lg-3" name="dateDebutValidite"
-						required><label for="HeureDebutValidite"
+						><label for="HeureDebutValidite"
 						class="offset-lg-2"> Heure :</label> <input type="time"
 						class="form-control col col-lg-2 offset-lg-1"
-						name="HeureDebutValidite" required>
+						name="HeureDebutValidite" >
 				</div>
 				<br>
 				<div class="form-row">
 					<label for="dateFinValidite" class="col col-lg-3">Date fin
 						validite</label> <input type="date" class="form-control col col-lg-3"
-						name="dateFinValidite" required> <label
+						name="dateFinValidite" > <label
 						for="HeureFinValidite" class="offset-lg-2"> Heure :</label> <input
 						type="time" class="form-control col col-lg-2 offset-lg-1"
-						name="HeureFinValidite" required>
+						name="HeureFinValidite" >
 				</div>
 
 				<input type="hidden" id="actionajout" name="actionajout"
 					value="candidattest">
-
+				<br>
+				<div id="results"></div>
 			</form>
 		</div>
 
@@ -89,7 +90,47 @@
 	</div>
 	</div>
 
+<script type="text/javascript">
+jQuery("input[name='nom']").on("input", function() {
+	var xhr; 
+    try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
+    catch (e) 
+    {
+        try {   xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
+        catch (e2) 
+        {
+           try {  xhr = new XMLHttpRequest();  }
+           catch (e3) {  xhr = false;   }
+         }
+    }
+    
+    xhr.onreadystatechange  = function() 
+    { 
+       if(xhr.readyState  == 4)
+       {
+        if(xhr.status  == 200) 
+        	afficherCandidats(this.response);
+        else
+        	console.log("Erreur de statut!");
+        }
+    }; 
+    var input = document.getElementById('nom');
+    var nommail = input.value;
+    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/users/"+nommail+"/all",  true); 
+	   xhr.send();
+    
+});
 
+function afficherCandidats(xml) {
+	var json = JSON.parse(xml);
+	var props = [];
+	for (let Utilisateur of json) {
+		
+		props.push('<button type="submit" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'+Utilisateur.idUtilisateur+'" ">Incrire : '+Utilisateur.nom+'  '+Utilisateur.prenom+' - '+Utilisateur.email+' </button><br>');
+	}
+	document.getElementById("results").innerHTML = props.join("");
+}
+</script>
 
 
 	<%@include file="../../finBody.html"%>

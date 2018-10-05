@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import bo.Theme;
 import bo.Utilisateur;
 import dal.ConnectionProvider;
 import dal.DALException;
+import dal.DAOFactory;
 import dal.DAOUtilisateur;
 
 public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
@@ -40,7 +42,9 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	String authentification = "SELECT libelle FROM PROFIL p JOIN UTILISATEUR u ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
 	String selectUsersByCodePromo = "SELECT u.idUtilisateur,u.nom,u.prenom,u.email,u.codeProfil,p.libelle as plibelle,pr.libelle as prlibelle FROM UTILISATEUR u JOIN PROFIL p on (u.codeProfil = p.codeProfil) JOIN PROMOTION pr ON (u.codePromo = pr.codePromo) WHERE u.codePromo=?";
 	String setPassword = "UPDATE UTILISATEUR SET password=? where idUtilisateur=?";
-	String selectUsersByNameAndMail = "SELECT idUtilisateur,nom,prenom,email FROM UTILISATEUR WHERE nom LIKE ? OR email like ?";
+	String selectUsersByNameAndMail = "SELECT idUtilisateur,nom,prenom,email FROM UTILISATEUR WHERE codeProfil IN (1,2) AND (nom LIKE ? OR email LIKE ?)";
+	String verifCandidatInscrit = "SELECT * from EPREUVE WHERE idTest=? AND idUtilisateur=?";
+	String inscrireCandidatATest = "INSERT INTO EPREUVE(dateDebutValidite,dateFinValidite,etat,idTest,idUtilisateur) VALUES (?,?,'EA',?,?)";
 
 	public DAOUtilisateurJdbcImpl() {
 	}
@@ -269,7 +273,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			}
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- selectuser by code promo" + e.getMessage() + e.getStackTrace().toString(), e);
+			throw new DALException(
+					"ERREUR DAL- selectuser by code promo" + e.getMessage() + e.getStackTrace().toString(), e);
 		} finally {
 			try {
 				conn.close();
@@ -289,7 +294,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 			rqt.setString(1, password);
 			rqt.setInt(2, id);
-			
+
 			rqt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL - updata", e);
@@ -301,7 +306,6 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			}
 		}
 
-
 	}
 
 	@Override
@@ -309,22 +313,16 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Candidat user = null;
-		Profil profil = null;
 		List<Utilisateur> liste = new ArrayList<Utilisateur>();
-		Promotion promo = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectUsersByNameAndMail);
-			rqt.setString(1, codePromo);
+			String req = "%" + namemail + "%";
+			rqt.setString(1, req);
+			rqt.setString(2, req);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
 				user = new Candidat();
-				promo = new Promotion();
-				promo.setId(codePromo);
-				promo.setLibelle(rs.getString("prlibelle"));
-				user.setPromotion(promo);
-				profil = new Profil(rs.getInt("codeProfil"), rs.getString("plibelle"));
-				user.setProfil(profil);
 				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
 				user.setNom(rs.getString("nom"));
 				user.setPrenom(rs.getString("prenom"));
@@ -333,7 +331,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			}
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- selectuser by code promo" + e.getMessage() + e.getStackTrace().toString(), e);
+			throw new DALException(
+					"ERREUR DAL- select candidats by mail & name" + e.getMessage() + e.getStackTrace().toString(), e);
 		} finally {
 			try {
 				conn.close();
@@ -342,6 +341,62 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			}
 		}
 		return liste;
+	}
+
+	@Override
+	public Boolean verifCandidatInscrit(int idTest, int idUtilisateur) throws DALException {
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		Boolean result = false;
+
+		try {
+			conn = ConnectionProvider.getCnx();
+
+			rqt = conn.prepareStatement(verifCandidatInscrit);
+			rqt.setInt(1, idTest);
+			rqt.setInt(2,idUtilisateur);
+			rs = rqt.executeQuery();
+			if (rs.next()) {
+				result = true;
+			}
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- verif promo inscrite " + e.getMessage(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public void inscrireCandidatAEpreuve(int idTest, int idUtilisateur, Timestamp dateDebutValid, Timestamp dateFinVald)
+			throws DALException {
+		PreparedStatement rqt = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(inscrireCandidatATest);
+			rqt.setTimestamp(1, dateDebutValid);
+			rqt.setTimestamp(2, dateFinVald);
+			rqt.setInt(3, idTest);
+			rqt.setInt(4, idUtilisateur);
+			
+			rqt.executeUpdate();
+			
+
+		} catch (SQLException e) {
+			throw new DALException("Erreur DAL-add", e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+
 	}
 
 }

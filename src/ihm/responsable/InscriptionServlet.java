@@ -108,13 +108,13 @@ public class InscriptionServlet extends HttpServlet {
 					String heureFinValidite = request.getParameter("HeureFinValidite");
 					PromotionManager promoMger = PromotionManager.getMger();
 					try {
-						
+
 						if (promoMger.verifPromoInscriteATest(codePromo, idTest)) {
 
 							request.getSession().setAttribute("messageValidation",
 									"Un ou plusieurs membre(s) de la promotion est(sont) déjà inscrit(s) à ce test");
 							url = request.getContextPath() + "/collaborateur/inscriptions";
-					
+
 						} else {
 							System.out.println(
 									dateDebutValidite + dateFinValidite + heureDebutValidite + heureFinValidite);
@@ -122,11 +122,11 @@ public class InscriptionServlet extends HttpServlet {
 									heureDebutValidite, heureFinValidite);
 							request.getSession().setAttribute("messageValidation", "Requête exécutée");
 							url = request.getContextPath() + "/collaborateur/inscriptions";
-							
+
 						}
 					} catch (BLLException e) {
 						e.printStackTrace();
-					
+
 						request.getSession().setAttribute("erreur", e.getMessage());
 						url = request.getContextPath() + "/erreur";
 					}
@@ -181,13 +181,29 @@ public class InscriptionServlet extends HttpServlet {
 
 			break;
 		case "candidattest":
+			if (request.getParameter("test").equals("Choisir un test dans la liste")) {
+				request.getSession().setAttribute("messageValidation", "Sélectionner un test");
+				url = request.getContextPath() + "/collaborateur/inscriptions";
+			} else {
+				idTest = Integer.parseInt(request.getParameter("test"));
+				int idUtil = Integer.parseInt(request.getParameter("idutil"));
+				String dateDebutValidite = request.getParameter("dateDebutValidite");
+				String dateFinValidite = request.getParameter("dateFinValidite");
+				String heureDebutValidite = request.getParameter("HeureDebutValidite");
+				String heureFinValidite = request.getParameter("HeureFinValidite");
+				UtilisateurManager userMger = UtilisateurManager.getMger();
+				
+				
+				
+			}
+
 			break;
 		case "stagiairepromo":
 			break;
 		case "promotion":
 			codePromo = request.getParameter("codePromo");
 			PromotionManager promoMger = PromotionManager.getMger();
-			
+
 			try {
 				Promotion p = promoMger.selectPromo(codePromo);
 				if (p == null) {
@@ -203,8 +219,7 @@ public class InscriptionServlet extends HttpServlet {
 				request.getSession().setAttribute("erreur", e.getMessage());
 				url = request.getContextPath() + "erreur";
 			}
-			
-			
+
 			break;
 
 		}

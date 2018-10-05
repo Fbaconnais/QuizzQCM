@@ -14,7 +14,7 @@
 <iframe src="${pageContext.request.contextPath}/audio/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
 
 
-<c:if test="${!empty requestScope.musique}">
+<c:if test="${!empty sessionScope.musique}">
 
 	<audio autoplay="autoplay" preload="auto" src="${pageContext.request.contextPath}/audio/paspasser.mp3">
 		

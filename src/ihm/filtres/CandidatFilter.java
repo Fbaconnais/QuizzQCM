@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE,
-		DispatcherType.ERROR }, urlPatterns = {"/candidat", "/candidat/*" })
+		DispatcherType.ERROR }, urlPatterns = {"/candidat","/candidat/", "/candidat/*" })
 public class CandidatFilter implements Filter{
 
 	@Override
@@ -27,16 +27,16 @@ public class CandidatFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse response = (HttpServletResponse) resp;
-		if (request.getSession().getAttribute("profilCon") == null) {
-			response.sendRedirect("login");
+		if (((HttpServletRequest) req).getSession().getAttribute("profilCon") == null
+				|| ((HttpServletRequest) req).getSession().getAttribute("profilCon").equals("erreur")) {
+			((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
+			((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/login");
 		} else {
-			String profil = (String) request.getSession().getAttribute("profilCon");
+			String profil = (String) ((HttpServletRequest) req).getSession().getAttribute("profilCon");
 			if (!((profil.equals("stagiaire") || profil.equals("candidat libre")))) {
-				response.sendRedirect("login");
+				((HttpServletResponse) resp).sendRedirect("login");
 			} else {
-				chain.doFilter(request, response);
+				chain.doFilter(((HttpServletRequest) req), ((HttpServletResponse) resp));
 			}
 		}
 		

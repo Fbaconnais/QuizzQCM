@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE,
-		DispatcherType.ERROR }, urlPatterns = { "/collaborateur", "/collaborateur/*" })
+		DispatcherType.ERROR }, urlPatterns = { "/collaborateur", "/collaborateur/","/collaborateur/*"})
 public class CollaborateurFilter implements Filter {
 
 	@Override
@@ -28,14 +28,13 @@ public class CollaborateurFilter implements Filter {
 			throws IOException, ServletException {
 		if (((HttpServletRequest) req).getSession().getAttribute("profilCon") == null
 				|| ((HttpServletRequest) req).getSession().getAttribute("profilCon").equals("erreur")) {
-			((HttpServletRequest) req).setAttribute("musique", "alarme");
-			((HttpServletRequest) req).getRequestDispatcher("login").forward(((HttpServletRequest) req),
-					(HttpServletResponse) resp);
+			((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
+			((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/login");
 		} else {
 			String profil = (String) ((HttpServletRequest) req).getSession().getAttribute("profilCon");
 			if (profil.equals("stagiaire") || profil.equals("candidat libre")) {
 				((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
-				((HttpServletResponse) resp).sendRedirect("candidat");
+				((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/candidat");
 			} else {
 				chain.doFilter(((HttpServletRequest) req), (HttpServletResponse) resp);
 			}

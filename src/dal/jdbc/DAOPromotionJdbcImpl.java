@@ -210,7 +210,6 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Boolean result = false;
-		StringBuilder sb = new StringBuilder();
 		try {
 			conn = ConnectionProvider.getCnx();
 			DAOUtilisateur DAOUtil = DAOFactory.getDAOUtilisateur();
@@ -226,7 +225,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 				rqt.setInt(1, idTest);
 				for (int i : in) {
 					
-					rqt.setObject(2, i);
+					rqt.setInt(2, i);
 					rs = rqt.executeQuery();
 					if (rs.next()) {
 						result = true;
