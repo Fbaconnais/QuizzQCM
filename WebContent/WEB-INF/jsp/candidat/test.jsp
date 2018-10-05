@@ -12,6 +12,9 @@
 </head>
 <body>
 <%@include file="../debutBody.html"%>
+<iframe src="${pageContext.request.contextPath}/audio/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
+<audio autoplay="autoplay" preload="auto" loop src="${pageContext.request.contextPath}/audio/Koh-Lanta.mp3"></audio>
+
 	<c:if test="${ sessionScope.listeQuestionsTirages.size()==0 }">
 		<h3 style="color: red;">Une erreur est survenue, aucune question
 			n'a pu être retournée.</h3>
@@ -25,8 +28,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-<!-- 		<div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-<!-- 			<ul class="navbar-nav mr-auto"> -->
+
 <ul class="nav navbar-nav list-inline">
 				<c:forEach var="questionTirage"
 					items="${sessionScope.listeQuestionsTirages}">
@@ -37,9 +39,12 @@
 						</div>
 					</li>
 				</c:forEach>
+				<li>
+				<button type="button" class="btn btn-primary"
+								onClick="recapTest()">Fin</a>
+				</li>
 				</ul>
-<!-- 			</ul> -->
-<!-- 		</div> -->
+
 	</nav>
 	<p id="test" class="cadre"></p>
 	<div id="propositions"></div>
@@ -75,16 +80,56 @@
     
     function traitementQuestion(xml) {
     	var json = JSON.parse(xml);
+		var props = [];
+		var txt;
 		txt = json.enonce
     	document.getElementById("test").innerHTML = txt;
-		var props = [];
 		for (let proposition of json.propositions) {
 			console.log(proposition);
-			props.push('<input type="checkbox" id="'+proposition.idProposition+'" value=""> <p>'+proposition.enonce +'</p><br>');
+			txt = '<input type="checkbox" id="'+proposition.idProposition+'" onClick=""> <p>'+proposition.enonce +'</p><br>';
+			props.push(txt);
 		}
-		document.getElementById("propositions").innerHTML = props;
+		document.getElementById("propositions").innerHTML = props.join("");
     }
-
+    
+    function recapTest() {
+    	var txt;
+    	var nbQrep;
+    	var boutonFin;
+    	txt = 'Vous avez répondu à '+nbQrep+' questions. Êtes-vous sûr de vouloir valider votre test?';
+    	boutonFin = '<button type=button onClick="gestionPropositionCandidat()">Terminer le test</button>';
+    	document.getElementById("test").innerHTML = txt;
+    	document.getElementById("propositions").innerHTML = boutonFin;
+    	
+    }
+    
+    function gestionPropositionCandidat(idProposition, idQuestion, idEpreuve){
+	    var xhr; 
+	    try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
+	    catch (e) 
+	    {
+	        try {   xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
+	        catch (e2) 
+	        {
+	           try {  xhr = new XMLHttpRequest();  }
+	           catch (e3) {  xhr = false;   }
+	         }
+	    }
+	  
+	    xhr.onreadystatechange  = function() 
+	    { 
+	       if(xhr.readyState  == 4)
+	       {
+	        if(xhr.status  == 200) 
+	        	traitementQuestion(this.response);
+	        else
+	        	console.log("Erreur de statut!");
+	        }
+	    }; 
+	 
+	   xhr.open("GET", '<c:out value="${pageContext.request.contextPath}">/rest/reponse/'+idProposition+'/'+idQuestion+'/'+idEpreuve+'/gestion"',  true); 
+	   xhr.send(); 
+    }
     </script>
 	<%@include file="../finBody.html"%>
 </html>

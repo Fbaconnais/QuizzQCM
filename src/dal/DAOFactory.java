@@ -4,6 +4,7 @@ import dal.jdbc.DAOEpreuveJdbcImpl;
 import dal.jdbc.DAOPromotionJdbcImpl;
 import dal.jdbc.DAOQuestionJdbcImpl;
 import dal.jdbc.DAOQuestionTirageJdbcImpl;
+import dal.jdbc.DAOReponseTirageJdbcImpl;
 import dal.jdbc.DAOSectionTestJdbcImpl;
 import dal.jdbc.DAOTestJdbcImpl;
 import dal.jdbc.DAOThemeJdbcImpl;
@@ -38,5 +39,9 @@ public class DAOFactory {
 	}
 	public static DAOPromotion getDAOPromotion() {
 		return new DAOPromotionJdbcImpl();
+	}
+	
+	public static DAOReponseTirage getDAOReponseTirage() {
+		return new DAOReponseTirageJdbcImpl();
 	}
 }
