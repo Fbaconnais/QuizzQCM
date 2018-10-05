@@ -39,9 +39,7 @@
 
 
 	<div class="col col-lg-7 justify-content-lg-center offset-lg-2">
-		<c:if test="${sessionScope.messageValidation != null }">
-			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
-		</c:if>
+		
 		<br> <a
 			href="${pageContext.request.contextPath}/collaborateur/inscription?action=stagiaire"
 			class="btn btn-primary btn-mb btn-block">Inscrire un nouveau

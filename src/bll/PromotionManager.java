@@ -1,6 +1,5 @@
 package bll;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -76,7 +75,6 @@ public class PromotionManager {
 		String heureFi[] = heureFin.split(":");
 		Timestamp datedebut = ManipDates.getDateViaString(dateDebut, heureDeb);
 		Timestamp datefin = ManipDates.getDateViaString(dateFin, heureFi);
-		System.out.println(datedebut+"" +datefin);
 		try {
 			DAO.inscrirePromoATest(codePromo, idTest, datedebut, datefin);
 		} catch (DALException e) {

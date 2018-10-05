@@ -25,27 +25,34 @@
 						Accueil Responsable </a></li>
 
 				<li class="nav-item active"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion des inscriptions<span
-						class="sr-only">(current)</span></a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
+					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion
+						des inscriptions<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
 						des resultats</a></li>
 
 			</ul>
 		</div>
 	</nav>
 	<%@include file="../../debutBody.jsp"%>
-<div class="col col-lg-9">
+	<div class="col col-lg-9">
 		<br> <br>
 		<h1>Inscription candidat à un test</h1>
 		<br>
+		<c:if test="${sessionScope.messageValidation != null }">
+			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
+			<br>
+		</c:if>
 		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
 			<form method="post"
 				action="${pageContext.request.contextPath}/collaborateur/inscription">
 
-				
+
 				<div class="form-row">
-					<label for="nom" class="col col-lg-4">Recherche par nom/mail </label> <input type="text"
-						class="form-control col col-lg-7 offset-lg-1" name="nom" id="nom">			
+					<label for="nom" class="col col-lg-4">Recherche par
+						nom/mail </label> <input type="text"
+						class="form-control col col-lg-7 offset-lg-1" name="nom" id="nom">
 				</div>
 				<br>
 				<div class="form-row">
@@ -57,9 +64,7 @@
 						</c:forEach>
 					</select>
 				</div>
-				<br>
-
-				<input type="hidden" id="actionajout" name="actionajout"
+				<br> <input type="hidden" id="actionajout" name="actionajout"
 					value="stagiairepromo">
 
 			</form>

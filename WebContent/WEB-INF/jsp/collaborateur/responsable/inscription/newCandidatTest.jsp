@@ -40,6 +40,10 @@
 		<br> <br>
 		<h1>Inscription candidat à un test</h1>
 		<br>
+		<c:if test="${sessionScope.messageValidation != null }">
+			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
+			<br>
+		</c:if>
 		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
 			<form method="post"
 				action="${pageContext.request.contextPath}/collaborateur/inscription">

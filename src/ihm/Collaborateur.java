@@ -16,6 +16,7 @@ public class Collaborateur extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.getSession().setAttribute("messageValidation", null);
 		String profil = (String) request.getSession().getAttribute("profilCon");
 		RequestDispatcher disp;
 		if (profil != null && !profil.equals("stagiaire") && !profil.equals("candidat libre")) {

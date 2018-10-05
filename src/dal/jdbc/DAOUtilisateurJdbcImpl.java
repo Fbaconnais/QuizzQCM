@@ -44,7 +44,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	String setPassword = "UPDATE UTILISATEUR SET password=? where idUtilisateur=?";
 	String selectUsersByNameAndMail = "SELECT idUtilisateur,nom,prenom,email FROM UTILISATEUR WHERE codeProfil IN (1,2) AND (nom LIKE ? OR email LIKE ?)";
 	String verifCandidatInscrit = "SELECT * from EPREUVE WHERE idTest=? AND idUtilisateur=?";
-	String inscrireCandidatATest = "INSERT INTO EPREUVE(dateDebutValidite,dateFinValidite,etat,idTest,idUtilisateur) VALUES (?,?,'EA',?,?)";
+	String inscrireCandidatATest = "INSERT INTO EPREUVE(dateDedutValidite,dateFinValidite,etat,idTest,idUtilisateur) VALUES (?,?,'EA',?,?)";
 
 	public DAOUtilisateurJdbcImpl() {
 	}

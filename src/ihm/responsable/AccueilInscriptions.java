@@ -24,6 +24,7 @@ public class AccueilInscriptions extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.getSession().setAttribute("messageValidation", null);
 		String profil = null;
 		String url;
 		if (request.getSession().getAttribute("profilCon") != null) {

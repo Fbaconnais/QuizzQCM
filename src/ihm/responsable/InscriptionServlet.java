@@ -30,7 +30,7 @@ public class InscriptionServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getSession().setAttribute("messageValidation", "");
+		
 		String action;
 		String url = null;
 		if (request.getParameter("action") != null) {
@@ -94,13 +94,14 @@ public class InscriptionServlet extends HttpServlet {
 			int idTest = 0;
 			if (request.getParameter("test").equals("Choisir un test dans la liste")) {
 				request.getSession().setAttribute("messageValidation", "Sélectionner un test");
-				url = request.getContextPath() + "/collaborateur/inscriptions";
+				url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
+	
 			} else {
 				idTest = Integer.parseInt(request.getParameter("test"));
 				codePromo = request.getParameter("promo");
 				if (codePromo.equals("Choisir une promotion dans la liste")) {
 					request.getSession().setAttribute("messageValidation", "Sélectionner une promotion");
-					url = request.getContextPath() + "/collaborateur/inscriptions";
+					url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 				} else {
 					String dateDebutValidite = request.getParameter("dateDebutValidite");
 					String dateFinValidite = request.getParameter("dateFinValidite");
@@ -113,15 +114,12 @@ public class InscriptionServlet extends HttpServlet {
 
 							request.getSession().setAttribute("messageValidation",
 									"Un ou plusieurs membre(s) de la promotion est(sont) déjà inscrit(s) à ce test");
-							url = request.getContextPath() + "/collaborateur/inscriptions";
+							url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 
 						} else {
-							System.out.println(
-									dateDebutValidite + dateFinValidite + heureDebutValidite + heureFinValidite);
-							promoMger.inscrirePromoATest(codePromo, idTest, dateDebutValidite, dateFinValidite,
-									heureDebutValidite, heureFinValidite);
+							promoMger.inscrirePromoATest(codePromo, idTest, dateDebutValidite, dateFinValidite, heureDebutValidite, heureFinValidite);
 							request.getSession().setAttribute("messageValidation", "Requête exécutée");
-							url = request.getContextPath() + "/collaborateur/inscriptions";
+							url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 
 						}
 					} catch (BLLException e) {
@@ -140,7 +138,7 @@ public class InscriptionServlet extends HttpServlet {
 			codePromo = request.getParameter("promo");
 			if ((codePromo.equals("Choisir une promotion dans la liste")) && idProfil == 1) {
 				request.getSession().setAttribute("messageValidation", "Sélectionner une promotion au stagiaire");
-				url = request.getContextPath() + "/collaborateur/inscriptions";
+				url = request.getContextPath() + "/collaborateur/inscription?action=stagiaire";
 			} else {
 				String email = request.getParameter("email");
 				String nom = request.getParameter("nom");
@@ -170,11 +168,12 @@ public class InscriptionServlet extends HttpServlet {
 						request.getSession().setAttribute("messageValidation",
 								"Il existe déjà un utilisateur avec cet Email");
 					}
-					url = request.getContextPath() + "/collaborateur/inscriptions";
+					url = request.getContextPath() + "/collaborateur/inscription?action=stagiaire";
+
 
 				} catch (BLLException e) {
 					request.getSession().setAttribute("erreur", e.getMessage());
-					url = request.getContextPath() + "erreur";
+					url = request.getContextPath() + "/erreur";
 				}
 
 			}
@@ -183,7 +182,7 @@ public class InscriptionServlet extends HttpServlet {
 		case "candidattest":
 			if (request.getParameter("test").equals("Choisir un test dans la liste")) {
 				request.getSession().setAttribute("messageValidation", "Sélectionner un test");
-				url = request.getContextPath() + "/collaborateur/inscriptions";
+				url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
 			} else {
 				idTest = Integer.parseInt(request.getParameter("test"));
 				int idUtil = Integer.parseInt(request.getParameter("idutil"));
@@ -192,7 +191,28 @@ public class InscriptionServlet extends HttpServlet {
 				String heureDebutValidite = request.getParameter("HeureDebutValidite");
 				String heureFinValidite = request.getParameter("HeureFinValidite");
 				UtilisateurManager userMger = UtilisateurManager.getMger();
-				
+				try {
+
+					if (userMger.verifCandidatInscritAtest(idTest, idUtil)) {
+
+						request.getSession().setAttribute("messageValidation",
+								"Ce candidat est déjà inscrit à ce test");
+						url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
+
+					} else {
+						
+						userMger.ajouterCandidatATest(dateDebutValidite, dateFinValidite, heureDebutValidite, heureFinValidite, idTest, idUtil);
+						request.getSession().setAttribute("messageValidation", "Requête exécutée");
+						url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
+
+
+					}
+				} catch (BLLException e) {
+					e.printStackTrace();
+
+					request.getSession().setAttribute("erreur", e.getMessage());
+					url = request.getContextPath() + "/erreur";
+				}
 				
 				
 			}
@@ -212,12 +232,14 @@ public class InscriptionServlet extends HttpServlet {
 					p.setLibelle(request.getParameter("libelle"));
 					promoMger.addPromotion(p);
 					request.getSession().setAttribute("messageValidation", "Requête exécutée");
+					url = request.getContextPath() + "/collaborateur/inscription?action=promotion";
 				} else {
 					request.getSession().setAttribute("messageValidation", "Il existe déjà une promotion avec ce code");
+					url = request.getContextPath() + "/collaborateur/inscription?action=promotion";
 				}
 			} catch (BLLException e) {
 				request.getSession().setAttribute("erreur", e.getMessage());
-				url = request.getContextPath() + "erreur";
+				url = request.getContextPath() + "/erreur";
 			}
 
 			break;
