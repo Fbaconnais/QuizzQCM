@@ -16,18 +16,21 @@
 		<h1 class="display-4">Epreuves</h1>
 		<hr>
 	</div>
-
 	<c:choose>
 		<c:when test="${empty sessionScope.listeEpreuves }">
 			<div class="row">Aucune épreuve n'est programmée pour vous</div>
 		</c:when>
 		<c:otherwise>
+					<%int compteurLigne = 0; %>
 			<c:forEach var="epreuve" items="${sessionScope.listeEpreuves}">
-				<div class="card" style="width: 255px">
+<%if (compteurLigne%4 == 0) {
+	out.write("<div class=\"row\">");
+}%>
+			<div class="col-lg-3 col-md-4 col-xs-6">
+				<div class="card" >
 					<img class="card-img-top"
 						src="${pageContext.request.contextPath}${epreuve.test.logoLangage }"
-						alt="Logo du langage de programmation"
-						style="width: 250px; height: 250px;">
+						alt="Logo du langage de programmation">
 					<div class="card-body">
 						<h5 class="card-title">${epreuve.test.libelle }</h5>
 						<p class="card-text">${epreuve.test.description }</p>
@@ -41,13 +44,18 @@
 							class="btn btn-primary">Participer à l'épreuve</a>
 					</div>
 				</div>
+				</div>
+				<%compteurLigne++; %>
+				<%if (compteurLigne%4 == 0) {
+					out.write("</div>");
+					}%>
+					
 			</c:forEach>
 
 			<br>
 
 		</c:otherwise>
 	</c:choose>
-
 	<%@include file="../finBody.html"%>
 </body>
 </html>

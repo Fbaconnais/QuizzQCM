@@ -61,8 +61,6 @@ public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 			rs = rqt.executeQuery();
 			if (rs.next()) {
 				estCoche = true;
-			} else {
-				estCoche = false;
 			}
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL- Gestion des réponses " + e.getMessage() + e.getStackTrace().toString(), e);

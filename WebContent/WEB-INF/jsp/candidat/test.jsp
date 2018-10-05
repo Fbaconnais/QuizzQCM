@@ -10,17 +10,19 @@
 <%@include file="../entete.jsp"%>
 <title>QCM - Epreuve</title>
 </head>
-<body>
-<%@include file="../debutBody.html"%>
-<iframe src="${pageContext.request.contextPath}/audio/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
-<audio autoplay="autoplay" preload="auto" loop src="${pageContext.request.contextPath}/audio/Koh-Lanta.mp3"></audio>
-<input type="hidden" value="${requestScope.idEpreuve}" id="epreuve">
+<body onload="rebour(3600)">
+	<%@include file="../debutBody.html"%>
+	<iframe src="${pageContext.request.contextPath}/audio/silence.mp3"
+		allow="autoplay" id="audio" style="display: none"></iframe>
+	<audio autoplay="autoplay" preload="auto" loop
+		src="${pageContext.request.contextPath}/audio/Koh-Lanta.mp3"></audio>
+	<input type="hidden" value="${requestScope.idEpreuve}" id="epreuve">
 	<c:if test="${ sessionScope.listeQuestionsTirages.size()== 0}">
 		<h3 style="color: red;">Une erreur est survenue, aucune question
 			n'a pu être retournée.</h3>
 	</c:if>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand">Questions: </a>
+		<a class="navbar-bran	d">Questions: </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -28,24 +30,33 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-
-<ul class="nav navbar-nav list-inline">
-				<c:forEach var="questionTirage"
-					items="${sessionScope.listeQuestionsTirages}">
-					<li class="list-inline-item">
-						<div class="ecart">
-							<button type="button" class="btn btn-primary"
-								onClick="recuperationQuestion(${questionTirage.numordre})">${questionTirage.numordre}</a>
-						</div>
-					</li>
-				</c:forEach>
-				<li>
-				<button type="button" class="btn btn-primary"
-								onClick="recapTest()">Fin</a>
+		<ul class="nav navbar-nav list-inline">
+			<c:forEach var="questionTirage"
+				items="${sessionScope.listeQuestionsTirages}">
+				<li class="list-inline-item">
+					<div class="ecart">
+						<button type="button" class="btn btn-primary"
+							onClick="recuperationQuestion(${questionTirage.question.idQuestion})">${questionTirage.numordre}</a>
+					</div>
 				</li>
-				</ul>
+			</c:forEach>
+			<li>
+			<div class="ecart">
+				<button type="button" class="btn btn-primary" onClick="recapTest()">
+					Fin</a>
+					</div>
+			</li>
+
+			<li id="compteRebour_affiche" style="float: right;">
+						<div class="ecart">
+						
+						</div>
+			</li>
+				
+		</ul>
 
 	</nav>
+
 	<p id="test" class="cadre"></p>
 	<div id="propositions"></div>
 	<script>
@@ -134,6 +145,32 @@
 	   xhr.open("GET", '<c:out value="${pageContext.request.contextPath}"/>/rest/reponse/'+idProposition+'/'+idQuestion+'/'+idEpreuve+'/gestion',  true); 
 	   xhr.send(); 
     }
+    
+    function rebour(tps){
+    	if (tps>0) {
+    		var heure = Math.floor(tps/3600);
+    		if(heure >= 24){
+    		var jour = Math.floor(heure/24);
+    		var moins = 86400*jour;
+    		var heure = heure-(24*jour);
+    		}else{
+    		var jour = 0;
+    		var moins = 0;
+    		}
+    	moins = moins+3600*heure;
+    	var minutes = Math.floor((tps-moins)/60);
+    	moins = moins + 60*minutes;
+    	var secondes = tps-moins;
+    	minutes = ((minutes < 10) ? "0" : "") + minutes;
+    	secondes = ((secondes < 10) ? "0" : "") + secondes;
+    	document.getElementById("compteRebour_affiche").innerHTML = '<button type="button" class="btn btn-primary">'+heure+':'+minutes+':'+secondes+'</button>';
+    	var restant = tps-1;
+    	setTimeout("rebour("+restant+")", 1000);
+    			}else{
+    	alert("Fin du test, merci de votre participation.");
+    	}
+    	}
     </script>
 	<%@include file="../finBody.html"%>
 </html>
+x
