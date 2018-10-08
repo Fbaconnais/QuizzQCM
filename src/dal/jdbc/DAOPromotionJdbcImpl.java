@@ -40,7 +40,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(add);
 			rqt.setString(1, data.getId());
-			rqt.setString(2, data.getLibelle());
+			rqt.setString(2, data.getLibelle().trim());
 			rqt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -75,7 +75,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 			while (rs.next()) {
 
 				promo = new Promotion();
-				promo.setId(rs.getString("codePromo"));
+				promo.setId(rs.getString("codePromo").trim());
 				promo.setLibelle(rs.getString("libelle"));
 				liste.add(promo);
 			}
@@ -163,7 +163,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 			if (rs.next()) {
 				promo = new Promotion();
 				promo.setId(codePromo);
-				promo.setLibelle(rs.getString("libelle"));
+				promo.setLibelle(rs.getString("libelle").trim());
 			}
 
 		} catch (SQLException e) {

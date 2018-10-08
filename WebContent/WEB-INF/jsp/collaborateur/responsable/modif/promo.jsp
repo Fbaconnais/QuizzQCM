@@ -46,64 +46,144 @@
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
 			<br>
 		</c:if>
+		<div id="succes" style="color: green"></div>
+		<div id="echec" style="color: red"></div>
+		<br> <br>
+		<div id="results"></div>
 
-
-		<form method="post"
-			action="${pageContext.request.contextPath}/collaborateur/responsable/modif">
-
-
-			<input type="hidden" id="actionmodif" name="actionmodif"
-				value="promo"> <br>
-			<div id="results"></div>
-		</form>
 
 	</div>
-	</div>
-</div>
+
 
 
 	<script type="text/javascript">
-function listepromos() {
-	var xhr; 
-    try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
-    catch (e) 
-    {
-        try {   xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
-        catch (e2) 
-        {
-           try {  xhr = new XMLHttpRequest();  }
-           catch (e3) {  xhr = false;   }
-         }
-    }
-    
-    xhr.onreadystatechange  = function() 
-    { 
-       if(xhr.readyState  == 4)
-       {
-        if(xhr.status  == 200) 
-        	afficherPromos(this.response);
-        else
-        	console.log("Erreur de statut!");
-        }
-    }; 
+		function createXHR() {
+			if (window.XMLHttpRequest) {
+				xhr = new XMLHttpRequest();
+			} else if (window.ActiveXObject) //  Internet Explorer
+			{
+				xhr = new ActiveXObject("Msxml2.XMLHTTP");
+			}
 
-    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/promos/all",  true); 
-	   xhr.send();
-    
-};
+			return xhr;
 
-function afficherPromos(xml) {
-	var json = JSON.parse(xml);
-	var props = [];
-	
-	for (let Promotion of json) {
+		}
+
+		function listepromos() {
+			var xhr = createXHR();
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200)
+						afficherPromos(this.response);
+					else
+						console.log("Erreur de statut!");
+				}
+			};
+
+			xhr
+					.open(
+							"GET",
+							"<c:out value="${pageContext.request.contextPath}"/>/rest/promos/all",
+							true);
+			xhr.send();
+
+		};
+
+		function afficherPromos(xml) {
+			var json = JSON.parse(xml);
+			console.log(json);
+			var props = [];
+			var x;
+			for (x = 0; x < json.length; x++) {
+				props
+						.push('<button onClick="afficherPromo('+json[x].id+')" class="btn btn-primary btn-mb col-xs-12 col-md-6 col-lg-3 " style="border-width: 5px;border-color:white;" name="idpromo" id="idpromo" value="'
+								+ json[x].id + '" "> Modifier : ' + json[x].id
+								+ ' </button>');
+				props
+						.push('<input type="hidden" id="'+json[x].id+'" value="'+json[x].libelle+'">');
+
+			}
+			document.getElementById("results").innerHTML = props.join("");
+		}
 		
-		props.push('<button type="submit" class="btn btn-primary btn-mb col-xs-12 col-md-6 col-lg-3 " style="border-width: 5px;border-color:white;" name="idpromo" id="idpromo" value="'+Promotion.id+'" "> Modifier : '+Promotion.id+' </button>');
+		function afficherPromo(id) {
+			var props = [];
+			var libellepromo = document.getElementById(id.id).value;
+			props
+					.push('<div class="form-row"><label for="codePromo" class="col col-lg-3">Code Promo</label><input type="text" name="codePromo" id="codePromo" value="'+id.id+'" class="form-control col col-lg-8 offset-lg-1"></div><br>');
+			props
+					.push('<div class="form-row"><label for="libPromo" class="col col-lg-3">Libelle promo</label><input type="text" name="libPromo" id="libPromo" value="'+libellepromo+'" class="form-control col col-lg-8 offset-lg-1"></div><br>')
+			props
+					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="deletePromo()" class="btn-primary btn-mb btn-block"></div>');
+			props
+					.push('<div class="col col-lg-6"><input type="button" value="Valider modifs" class="btn-primary btn-mb btn-block" onClick="modifyPromo()"></div></div>');
+			document.getElementById("results").innerHTML = props.join("");
+
+		}
+
+		function deletePromo() {
+			var codePromo = document.getElementById("codePromo").value;
+			console.log(codePromo);
+			var xhr = createXHR();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						succes("Requete exécutée");
+					}
+
+					else {
+						echec(xhr.status, "Echec de la modification");
+					}
+				}
+			};
+			data = "&libelle=" + encodeURIComponent(libPromo);
+			xhr.open("DELETE",
+					"<c:out value="${pageContext.request.contextPath}"/>/rest/promos/"
+							+ codePromo, true);
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+
+			xhr.send(null);
+			
+		}
+		function modifyPromo() {
+			var codePromo = document.getElementById("codePromo").value;
+			var libPromo = document.getElementById("libPromo").value;
+			console.log(libPromo);
+			var xhr = createXHR();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						succes("Requete exécutée");
+					}
+
+					else {
+						echec(xhr.status, "Echec de la modification");
+					}
+				}
+			};
+			data = "&libelle=" + encodeURIComponent(libPromo);
+			xhr.open("PUT",
+					"<c:out value="${pageContext.request.contextPath}"/>/rest/promos/"
+							+ codePromo, true);
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+
+			xhr.send(data);
+		}
 		
-	}
-	document.getElementById("results").innerHTML = props.join("");
-}
-</script>
+		function succes(reponse) {
+			document.getElementById("succes").innerHTML = reponse;
+			document.getElementById("echec").innerHTML = "";
+		}
+		function echec(codeReponse, reponse) {
+			document.getElementById("echec").innerHTML = reponse;
+			document.getElementById("succes").innerHTML = "";
+		}
+	</script>
 
 
 	<%@include file="../../finBody.html"%>

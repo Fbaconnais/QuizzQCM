@@ -233,7 +233,7 @@
 							+ id, true);
 			xhr.send(null);
 		}
-		
+
 		function modifyUser() {
 			var xhr = createXHR();
 			var profil = document.getElementById("profil").value;
@@ -267,15 +267,13 @@
 					}
 				}
 			};
-			console.log(data);
 			xhr.open("PUT",
 					"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
 							+ id, true);
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-type",
 					"application/x-www-form-urlencoded");
-			
-			
+
 			xhr.send(data);
 		}
 

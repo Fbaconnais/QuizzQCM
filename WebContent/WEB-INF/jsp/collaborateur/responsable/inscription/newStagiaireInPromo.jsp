@@ -44,6 +44,9 @@
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
 			<br>
 		</c:if>
+		<div id="succes" style="color: green"></div>
+		<div id="echec" style="color: red"></div>
+		<br>
 		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
 			<div class="form-row">
 				<label for="nom" class="col col-lg-4">Recherche par nom/mail
@@ -75,18 +78,22 @@
 	</div>
 	</div>
 	<script type="text/javascript">
+	function createXHR() {
+		if (window.XMLHttpRequest) {
+			xhr = new XMLHttpRequest();
+		} else if (window.ActiveXObject) //  Internet Explorer
+		{
+			xhr = new ActiveXObject("Msxml2.XMLHTTP");
+		}
+
+		return xhr;
+
+	}
+	
+	
 jQuery("input[name='nom']").on("input", function() {
-	var xhr; 
-    try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
-    catch (e) 
-    {
-        try {   xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
-        catch (e2) 
-        {
-           try {  xhr = new XMLHttpRequest();  }
-           catch (e3) {  xhr = false;   }
-         }
-    }
+	var xhr = createXHR(); 
+    
     
     xhr.onreadystatechange  = function() 
     { 
@@ -95,7 +102,7 @@ jQuery("input[name='nom']").on("input", function() {
         if(xhr.status  == 200) 
         	afficherCandidats(this.response);
         else
-        	console.log("Erreur de statut!");
+        	echec(xhr.status, "erreur");
         }
     }; 
     var input = document.getElementById('nom');
@@ -108,11 +115,21 @@ jQuery("input[name='nom']").on("input", function() {
 function afficherCandidats(xml) {
 	var json = JSON.parse(xml);
 	var props = [];
-	for (let Utilisateur of json) {
+	var x;
+	for (x = 0; x < json.length; x++) {
 		
-		props.push('<button type="submit" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'+Utilisateur.idUtilisateur+'" ">Incrire : '+Utilisateur.nom+'  '+Utilisateur.prenom+' - '+Utilisateur.email+' </button><br>');
+		props.push('<button type="submit" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'+json[x].idUtilisateur+'" ">Incrire : '+json[x].nom+'  '+json[x].prenom+' - '+json[x].email+' </button><br>');
 	}
 	document.getElementById("results").innerHTML = props.join("");
+}
+
+function succes(reponse) {
+	document.getElementById("succes").innerHTML = reponse;
+	document.getElementById("echec").innerHTML = "";
+}
+function echec(codeReponse, reponse) {
+	document.getElementById("echec").innerHTML = reponse;
+	document.getElementById("succes").innerHTML = "";
 }
 </script>
 
