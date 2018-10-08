@@ -136,7 +136,7 @@
 	       if(xhr.readyState  == 4)
 	       {
 	        if(xhr.status  == 200) 
-	        	traitementQuestion(this.response);
+				//TODO
 	        else
 	        	console.log("Erreur de statut!");
 	        }

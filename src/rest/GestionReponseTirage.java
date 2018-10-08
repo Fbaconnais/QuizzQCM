@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 
 import bll.BLLException;
 import bll.ReponseTirageManager;
+import bo.BeanGeneral;
 
 @Path("/reponse")
 public class GestionReponseTirage {
@@ -17,10 +18,10 @@ public class GestionReponseTirage {
 		Mger.gérerReponseTirage(idProposition, idQuestion, idEpreuve);
 	}
 	
-	public boolean verifReponse(@PathParam("idProposition") int idProposition,@PathParam("idQuestion") int idQuestion,@PathParam("idEpreuve") int idEpreuve) throws BLLException{
-		boolean estCoche;
+	public BeanGeneral recupReponses(@PathParam("idProposition") int idProposition,@PathParam("idQuestion") int idQuestion,@PathParam("idEpreuve") int idEpreuve) throws BLLException{
+		BeanGeneral bean;
 		ReponseTirageManager Mger = ReponseTirageManager.getMger();
-		estCoche = Mger.verifReponse(idProposition, idQuestion, idEpreuve);
-		return estCoche;
+		bean = ;
+		return bean;
 	}
 }
