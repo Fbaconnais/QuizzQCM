@@ -15,12 +15,13 @@ import bll.PromotionManager;
 import bll.UtilisateurManager;
 import bo.BeanGeneral;
 import bo.Candidat;
+import bo.Collaborateur;
 import bo.Profil;
 import bo.Promotion;
 import bo.Utilisateur;
 
 @Path("/users")
-public class GestionCandidat {
+public class GestionUtilisateurs {
 
 	@GET
 	@Path("/{nommail}/all")
@@ -91,4 +92,66 @@ public class GestionCandidat {
 		return true;
 	}
 
+	@PUT
+	@Path("/modifMDP/{email}")
+	public Boolean updateMDP(@PathParam("email") String email,@FormParam("oldpw") String oldpw, @FormParam("newpw") String newpw) throws RestException {
+		Boolean retour = false;
+		UtilisateurManager UMger = UtilisateurManager.getMger();
+		oldpw = org.apache.commons.codec.digest.DigestUtils.sha256Hex(oldpw);
+		newpw = org.apache.commons.codec.digest.DigestUtils.sha256Hex(newpw);
+		try {
+			String message = UMger.authentification(email, oldpw);
+			if (message != null) {
+				UMger.setPassword(email, newpw);
+				retour = true;		
+			}
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		
+		
+		return retour;
+	}
+	@PUT
+	@Path("/new/")
+	public Boolean addnewUser(@FormParam("nom") String nom, @FormParam("prenom") String prenom, @FormParam("email") String email, @FormParam("profil") String idProfil) throws RestException{
+		Utilisateur u = new Collaborateur();
+	
+		Profil pro = new Profil();
+		int idpro = Integer.parseInt(idProfil);
+		pro.setId(idpro);
+		u.setProfil(pro);
+		u.setNom(nom);
+		u.setPrenom(prenom);
+		u.setEmail(email);
+		String password = org.apache.commons.codec.digest.DigestUtils
+				.sha256Hex(nom.toUpperCase() + prenom.substring(0, 1).toUpperCase());
+		u.setPassword(password);
+		UtilisateurManager UMger = UtilisateurManager.getMger();
+		try {
+			UMger.addUser(u);
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		
+		
+		
+		return true;
+	}
+	
+	@GET
+	@Path("/collaborateurs/")
+	public List<Collaborateur> getAllCollaborateurs() throws RestException {
+		UtilisateurManager UMger = UtilisateurManager.getMger();
+		List<Collaborateur> liste = new ArrayList<Collaborateur>();
+		try {
+			liste = UMger.getAllCollabos();
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		return liste;
+	};
+	
+	
+	
 }

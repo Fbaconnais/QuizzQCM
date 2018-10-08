@@ -14,9 +14,7 @@ import dal.DAOFactory;
 import dal.DAOPromotion;
 import dal.DAOUtilisateur;
 
-/**
- * Servlet implementation class inscriptions
- */
+
 @WebServlet("/collaborateur/inscriptions")
 public class AccueilInscriptions extends HttpServlet {
 	private static final long serialVersionUID = 1L;

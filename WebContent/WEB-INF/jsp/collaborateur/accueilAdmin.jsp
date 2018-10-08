@@ -6,37 +6,244 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@include file="./entete.jsp"%> 
+<%@include file="./entete.jsp"%>
 <title>QCM - Accueil admin</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarsExample08" aria-controls="navbarsExample08"
-			aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
 
-		<div class="collapse navbar-collapse justify-content-md-center"
-			id="navbarsExample08">
-			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link"
-					href="collaborateur"> Accueil Admin <span class="sr-only">(current)</span>
-				</a></li>
-
-				<li class="nav-item"><a class="nav-link" href="collaborateur/admin">Gestion
-						des comptes</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/logs">Consultation
-						des logs incidents</a></li>
-
-			</ul>
+	<%@include file="./debutBody.jsp"%>
+	<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
+		<br> <input type="button" onClick="gestionPerso()"
+			class="btn btn-primary btn-lg btn-block" value="Inscriptions">
+		<br> <input type="button" onClick="consulterLogs()"
+			class="btn btn-primary btn-lg btn-block"
+			value="Consultation des logs incidents">
+	</div>
+	</div>
+	<br>
+	<div class="row justify-content-lg-center">
+		<div class="col col-lg-10 offset-lg-1">
+			<div id="succes" style="color: green"></div>
+			<div id="echec" style="color: red"></div>
 		</div>
-	</nav>
-<%@include file="./debutBody.jsp"%>
+		<br> <br>
+	</div>
+	<div class="row justify-content-lg-center">
+		<div class="col col-lg-10 offset-lg-1" id="results"></div>
+	</div>
 
 
+	<script>
+		function createXHR() {
+			if (window.XMLHttpRequest) {
+				xhr = new XMLHttpRequest();
+			} else if (window.ActiveXObject) //  Internet Explorer
+			{
+				xhr = new ActiveXObject("Msxml2.XMLHTTP");
+			}
 
+			return xhr;
 
+		}
+		function gestionPerso() {
+			document.getElementById("succes").innerHTML = "";
+			document.getElementById("echec").innerHTML = "";
+			var props = [];
+			props.push('<div class="col col-lg-8 offset-lg-2">')
+			props
+					.push('<input type="button" onClick="newPerso()" class="form-row btn btn-primary btn-mb btn-block" value="Ajouter un nouveau responsable"><br>');
+			props
+					.push('<input type="button" onClick="modifPerso()" class="form-row btn btn-primary btn-mb btn-block" value="Modifier/Supprimer un responsable"><br>');
+			props.push('</div>')
+			document.getElementById("results").innerHTML = props.join("");
 
-<%@include file="./finBody.html"%>
+		}
+
+		function newPerso() {
+			var props = [];
+			props
+					.push('<div class="form-row"><label for="name" class="col col-lg-3"> Nom </label>');
+			props
+					.push('<input type="text" class="col col-lg-8 offset-lg-1" name="nom" id="nom" placeholder="nom" required ></div><br>');
+			props
+					.push('<div class="form-row"><label for="prenom" class="col col-lg-3"> Prénom </label>');
+			props
+					.push('<input type="text" class="col col-lg-8 offset-lg-1" name="prenom" id="prenom" placeholder="prénom" required ></div><br>');
+			props
+					.push('<div class="form-row"><label for="email" class="col col-lg-3"> Email </label>');
+			props
+					.push('<input type="email" class="col col-lg-8 offset-lg-1" name="email" id="email" placeholder="email" required ></div><br>');
+			props
+					.push('<div class="form-row"><label for="role" class="col col-lg-3"> Role </label>');
+			props
+					.push('<select class="col col-lg-8 offset-lg-1" name="role" id="role">');
+			props.push('<option value="3" selected>Formateur</option>');
+			props.push('<option value="4" >Cellule de recrutement</option>');
+			props.push('<option value="5" >Responsable de formation</option>');
+			props
+					.push('<option value="6" >Administrateur</option></select></div><br>');
+			props
+					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="annuler" class="btn btn-primary btn-mb btn-block" onClick="gestionPerso()"></div>');
+			props
+					.push('<div class="col col-lg-6"><input type="button" value="Valider" onClick="addBDD()" class="btn btn-primary btn-mb btn-block"></div></div>')
+			document.getElementById("results").innerHTML = props.join("");
+
+		}
+
+		function addBDD() {
+			var xhr = createXHR();
+			var nom = document.getElementById("nom").value;
+			var prenom = document.getElementById("prenom").value;
+			var email = document.getElementById("email").value;
+			var profil = document.getElementById("role").value;
+			var expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
+			var message = "";
+			if (nom == null || nom === undefined) {
+				message += "Saisissez un nom - ";
+			}
+			if (prenom == null || prenom === undefined) {
+				message += "Saisissez un prenom - ";
+			}
+			if (email == null || email === undefined) {
+				message += "Saisissez un email - ";
+			} else if (!(expressionReguliere.test(email))) {
+				message += "L'adresse email n'est pas valide";
+			}
+			if (message != "") {
+				echec(1, message);
+			} else {
+				data = "&nom=" + encodeURIComponent(nom) + "&prenom="
+						+ encodeURIComponent(prenom) + "&email="
+						+ encodeURIComponent(email) + "&profil="
+						+ encodeURIComponent(profil);
+
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4) {
+						if (xhr.status == 200)
+							succes("Collaborateur ajouté");
+						else
+							echec(xhr.status, xhr.responseText);
+					}
+				};
+				var input = document.getElementById('nom');
+				var nommail = input.value;
+				xhr
+						.open(
+								"PUT",
+								"<c:out value="${pageContext.request.contextPath}"/>/rest/users/new/",
+								true);
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-type",
+						"application/x-www-form-urlencoded");
+				xhr.send(data);
+
+			}
+		}
+
+		function modifPerso() {
+			var xhr = createXHR();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200)
+						afficherListe(this.response);
+					else
+						echec(xhr.status, xhr.responseText);
+				}
+			};
+			xhr
+					.open(
+							"GET",
+							"<c:out value="${pageContext.request.contextPath}"/>/rest/users/collaborateurs/",
+							true);
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+			xhr.send();
+		}
+		function afficherListe(xml) {
+			var json = JSON.parse(xml);
+			var props = [];
+			var x;
+			for (x = 0; x < json.length; x++) {
+				props
+						.push('<div class="col"><input type="button" value="Modifier : '
+								+ json[x].prenom
+								+ ' '
+								+ json[x].nom
+								+ ' - '
+								+ json[x].email
+								+ '" class="btn-primary btn-mb btn-block" onClick="afficherColl('
+								+ json[x].idUtilisateur + ')"></div>');
+				props
+						.push('<input type="hidden" id="prenom'+json[0].idUtilisateur+'" value="'+json[0].prenom+'">');
+				props
+						.push('<input type="hidden" id="nom'+json[0].idUtilisateur+'" value="'+json[0].nom+'">');
+				props
+						.push('<input type="hidden" id="email'+json[0].idUtilisateur+'" value="'+json[0].email+'">');
+				props
+						.push('<input type="hidden" id="pro'+json[0].idUtilisateur+'" value="'+json[0].profil.id+'">');
+			}
+			document.getElementById("results").innerHTML = props.join("");
+
+		}
+
+		function afficherColl(id) {
+			var prenom = document.getElementById('prenom' + id).value;
+			var nom = document.getElementById('nom' + id).value;
+			var email = document.getElementById('email' + id).value;
+			var profil = document.getElementById('pro' + id).value;
+			var props = [];
+			props
+					.push('<div class="form-row"><label for="name" class="col col-lg-3"> Nom </label>');
+			props
+					.push('<input type="text" class="col col-lg-8 offset-lg-1" name="nom" id="nom" value="'+nom+'" required ></div><br>');
+			props
+					.push('<div class="form-row"><label for="prenom" class="col col-lg-3"> Prénom </label>');
+			props
+					.push('<input type="text" class="col col-lg-8 offset-lg-1" name="prenom" id="prenom" value="'+prenom+'" required ></div><br>');
+			props
+					.push('<div class="form-row"><label for="email" class="col col-lg-3"> Email </label>');
+			props
+					.push('<input type="email" class="col col-lg-8 offset-lg-1" name="email" id="email" value="'+email+'" required ></div><br>');
+			props
+					.push('<div class="form-row"><label for="role" class="col col-lg-3"> Role </label>');
+			props
+					.push('<select class="col col-lg-8 offset-lg-1" name="role" id="role">');
+
+			props.push('<option value="3"');
+			if (profil == 3) {
+				props.push(' selected ');
+			}
+			props.push('>Formateur</option>');
+			props.push('<option value="4"');
+			if (profil == 4) {
+				props.push(' selected ');
+			}
+			props.push('>Cellule de recrutement</option>');
+			props.push('<option value="5"');
+			if (profil == 5) {
+				props.push(' selected ');
+			}
+			props.push('>Responsable de formation</option>');
+			props.push('<option value="6"');
+			if (profil == 6) {
+				props.push(' selected ');
+			}
+			props.push('>Administrateur</option></select></div><br>');
+			document.getElementById("results").innerHTML = props.join("");
+		}
+
+		function consulterLogs() {
+			document.getElementById("results").innerHTML = "<h1>en construction</h1>";
+		}
+		function succes(reponse) {
+			document.getElementById("succes").innerHTML = reponse;
+			document.getElementById("echec").innerHTML = "";
+		}
+		function echec(codeReponse, reponse) {
+			document.getElementById("echec").innerHTML = reponse;
+			document.getElementById("succes").innerHTML = "";
+		}
+	</script>
+	<%@include file="./finBody.html"%>
 </html>

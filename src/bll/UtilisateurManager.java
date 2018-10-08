@@ -3,6 +3,7 @@ package bll;
 import java.sql.Timestamp;
 import java.util.List;
 
+import bo.Collaborateur;
 import bo.Utilisateur;
 import dal.DALException;
 import dal.DAOFactory;
@@ -85,10 +86,10 @@ public class UtilisateurManager {
 		
 		return user;
 	}
-	public void setPassword(int idUser,String password) throws BLLException{
+	public void setPassword(String email,String password) throws BLLException{
 		
 		try {
-			DAO.updatePassword(idUser, password);
+			DAO.updatePassword(email, password);
 		} catch (DALException e) {
 			throw new BLLException(e.getMessage(), e);
 		}
@@ -145,6 +146,16 @@ public class UtilisateurManager {
 			throw new BLLException(e.getMessage(), e);
 		}
 	
+	}
+	
+	public List<Collaborateur> getAllCollabos() throws BLLException{
+		List<Collaborateur> liste = null;
+		try {
+			liste = DAO.getAllCollabos();
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		return liste;
 	}
 	
 }

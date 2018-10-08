@@ -12,8 +12,7 @@
 			</div>
 			<br>
 			<div class="row">
-				<a href="${pageContext.request.contextPath}/collaborateur/modif"><button>Modifier vos
-						informations</button></a>
+				<a href="${pageContext.request.contextPath}/modifMDP"><button>Modifier mon mot de passe</button></a>
 			</div>
 			<br>
 			<div class="row">

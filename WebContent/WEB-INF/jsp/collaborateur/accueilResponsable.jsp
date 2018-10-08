@@ -35,9 +35,9 @@
 	<%@include file="./debutBody.jsp"%>
 	<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
 		<br> <a
-			href="collaborateur/inscriptions"
+			href="${pageContext.request.contextPath}/collaborateur/inscriptions"
 			class="btn btn-primary btn-lg btn-block">Inscriptions</a> <a
-			href="collaborateur/resultats"
+			href="${pageContext.request.contextPath}/collaborateur/resultats"
 			class="btn btn-primary btn-lg btn-block">Consultation de résultats</a>
 	</div>
 	</div>

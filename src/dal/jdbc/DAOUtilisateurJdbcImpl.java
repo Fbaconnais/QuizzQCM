@@ -41,11 +41,13 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	String update = "UPDATE UTILISATEUR SET nom=?,prenom=?,email=?,codeProfil=?,codePromo=? WHERE idUtilisateur=?";
 	String authentification = "SELECT libelle FROM PROFIL p JOIN UTILISATEUR u ON (u.codeProfil = p.codeProfil) WHERE (u.email=? AND u.password=?)";
 	String selectUsersByCodePromo = "SELECT u.idUtilisateur,u.nom,u.prenom,u.email,u.codeProfil,p.libelle as plibelle,pr.libelle as prlibelle FROM UTILISATEUR u JOIN PROFIL p on (u.codeProfil = p.codeProfil) JOIN PROMOTION pr ON (u.codePromo = pr.codePromo) WHERE u.codePromo=?";
-	String setPassword = "UPDATE UTILISATEUR SET password=? where idUtilisateur=?";
+	String setPassword = "UPDATE UTILISATEUR SET password=? where email=?";
 	String selectUsersByNameAndMail = "SELECT idUtilisateur,nom,prenom,email FROM UTILISATEUR WHERE codeProfil IN (1,2) AND (nom LIKE ? OR email LIKE ?)";
 	String verifCandidatInscrit = "SELECT * from EPREUVE WHERE idTest=? AND idUtilisateur=?";
 	String inscrireCandidatATest = "INSERT INTO EPREUVE(dateDedutValidite,dateFinValidite,etat,idTest,idUtilisateur) VALUES (?,?,'EA',?,?)";
-
+	String getAllCollabos = "SELECT idUtilisateur,nom,prenom,email,codeProfil FROM UTILISATEUR WHERE codeProfil IN (3,4,5,6) ORDER BY nom";
+	
+	
 	public DAOUtilisateurJdbcImpl() {
 	}
 
@@ -59,7 +61,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(3, data.getEmail());
 			rqt.setString(4, data.getPassword());
 			rqt.setInt(5, data.getProfil().getId());
-			if (data.getProfil().getLibelle().equals("stagiaire")) {
+			if (data.getProfil().getId() == 1) {
 				rqt.setString(6, ((Candidat) data).getPromotion().getId());
 			} else {
 				rqt.setString(6, null);
@@ -286,14 +288,14 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	}
 
 	@Override
-	public void updatePassword(int id, String password) throws DALException {
+	public void updatePassword(String email, String password) throws DALException {
 		PreparedStatement rqt = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(setPassword);
 
 			rqt.setString(1, password);
-			rqt.setInt(2, id);
+			rqt.setString(2, email);
 
 			rqt.executeUpdate();
 		} catch (SQLException e) {
@@ -397,6 +399,42 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			}
 		}
 
+	}
+
+	@Override
+	public List<Collaborateur> getAllCollabos() throws DALException {
+		Statement rqt = null;
+		ResultSet rs = null;
+		List<Collaborateur> liste = new ArrayList<Collaborateur>();
+		Collaborateur user = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.createStatement();
+			rs = rqt.executeQuery(getAllCollabos);
+			while (rs.next()) {
+				
+				user = new Collaborateur();
+				user.setIdUtilisateur(rs.getInt("idUtilisateur"));
+				user.setNom(rs.getString("nom"));
+				user.setPrenom(rs.getString("prenom"));
+				user.setEmail(rs.getString("email"));
+				Profil p = new Profil();
+				p.setId(rs.getInt("codeProfil"));
+				user.setProfil(p);
+				liste.add(user);
+			}
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- select all collabos " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return liste;
+		
 	}
 
 }
