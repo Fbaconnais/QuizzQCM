@@ -45,40 +45,7 @@ public class ModificationServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action = request.getParameter("action");
-		String url = "";
-		switch (action) {
-		case "stagiaire":
-			String nom = request.getParameter("nom");
-			String prenom = request.getParameter("prenom");
-			String email = request.getParameter("email");
-			int idutil = Integer.parseInt(request.getParameter("idutil"));
-			int codeProfil = Integer.parseInt(request.getParameter("profil"));
-			Utilisateur util = new Candidat();
-			if (codeProfil == 1) {
-				String codePromo = request.getParameter("promo");
-				Promotion p = new Promotion(codePromo, "");
-				((Candidat)util).setPromotion(p);
-			}
-			Profil profil = new Profil(codeProfil, "");
-			util.setProfil(profil);
-			util.setIdUtilisateur(idutil);
-			util.setNom(nom);
-			util.setPrenom(prenom);
-			util.setEmail(email);
-			
-			UtilisateurManager UMger = UtilisateurManager.getMger();
-			
-			try {
-				UMger.updateUser(util);
-			} catch (BLLException e) {
-				request.getSession().setAttribute("erreur", e.getMessage());
-				url = request.getContextPath() + "/erreur";
-			}
-			
-			break;
-		}
-		response.sendRedirect(url);
+		
 	}
 
 }

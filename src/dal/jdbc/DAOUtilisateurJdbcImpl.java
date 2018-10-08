@@ -163,7 +163,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 			rqt.setString(2, data.getPrenom());
 			rqt.setString(3, data.getEmail());
 			rqt.setInt(4, data.getProfil().getId());
-			if (data.getProfil().getLibelle().equals("stagiaire")) {
+			if (data.getProfil().getId() == 1) {
 				rqt.setString(5, ((Candidat) data).getPromotion().getId());
 			} else {
 				rqt.setString(5, null);

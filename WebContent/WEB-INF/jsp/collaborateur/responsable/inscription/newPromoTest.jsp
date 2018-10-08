@@ -6,10 +6,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/CSS/datePicker/datepicker.css">
 <%@include file="../../entete.jsp"%>
 <title>gestions des inscriptions</title>
 </head>
 <body>
+	<script type="text/javascript">
+	$('.datepicker').datepicker({
+	    format: 'dd/mm/yyyy',
+	    startDate: '-3d'
+	});
+	</script>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarsExample08" aria-controls="navbarsExample08"
@@ -40,7 +48,7 @@
 		<br> <br>
 		<h1>Inscription promotion à un test</h1>
 		<br>
-			<c:if test="${sessionScope.messageValidation != null }">
+		<c:if test="${sessionScope.messageValidation != null }">
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
 			<br>
 		</c:if>
@@ -74,18 +82,26 @@
 				<br>
 				<div class="form-row">
 					<label for="dateDebutValidite" class="col col-lg-3">Date
-						debut validite</label> <input type="date"
-						class="form-control col col-lg-3" name="dateDebutValidite"
-						required><label for="HeureDebutValidite"
-						class="offset-lg-2"> Heure :</label> <input type="time"
-						class="form-control col col-lg-2 offset-lg-1"
+						debut validite</label>
+					<div class="input-group date" data-provide="datepicker-inline">
+						<input type="text" class="form-control">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-th"></span>
+						</div>
+					</div>
+
+					<!-- 						 <input type="text" -->
+					<!-- 						class="form-control col col-lg-3" name="dateDebutValidite" -->
+					<!-- 						id="date1" required> -->
+					<label for="HeureDebutValidite" class="offset-lg-2"> Heure
+						:</label> <input type="time" class="form-control col col-lg-2 offset-lg-1"
 						name="HeureDebutValidite" required>
 				</div>
 				<br>
 				<div class="form-row">
 					<label for="dateFinValidite" class="col col-lg-3">Date fin
-						validite</label> <input type="date" class="form-control col col-lg-3"
-						name="dateFinValidite" required> <label
+						validite</label> <input type="text" class="form-control col col-lg-3"
+						name="dateFinValidite" id="date2" required> <label
 						for="HeureFinValidite" class="offset-lg-2"> Heure :</label> <input
 						type="time" class="form-control col col-lg-2 offset-lg-1"
 						name="HeureFinValidite" required>

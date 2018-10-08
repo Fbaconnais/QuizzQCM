@@ -46,10 +46,10 @@
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
 			<br>
 		</c:if>
-		<div id="succes" style="color:green"></div>
-		<div id="echec" style="color:red"></div>
+		<div id="succes" style="color: green"></div>
+		<div id="echec" style="color: red"></div>
 		<br>
-		
+
 		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
 			<div id="afficherinfos">
 				<div class="form-row">
@@ -129,7 +129,7 @@
 			xhr.open("GET",
 					"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
 							+ id, true);
-			xhr.setRequestHeader("Accept","application/json");
+			xhr.setRequestHeader("Accept", "application/json");
 			xhr.send();
 		}
 
@@ -137,10 +137,7 @@
 			var json = JSON.parse(xml);
 
 			var props = [];
-			props
-					.push('<form method="post" action="<c:out value="${pageContext.request.contextPath}"/>/collaborateur/modif">');
-			props
-					.push('<input type="hidden" name="action" value="stagiaire" id="action">');
+			props.push('<form>');
 			props
 					.push('<input type="hidden" name="idutil" value="'+json.utilisateur.idUtilisateur+'" id="idutil">');
 			props
@@ -198,7 +195,7 @@
 							+ json.utilisateur.idUtilisateur
 							+ ')" class="btn-primary btn-mb btn-block"></div>');
 			props
-					.push('<div class="col col-lg-6"><input type="submit" value="Valider modifs" class="btn-primary btn-mb btn-block"></div></div></form>');
+					.push('<div class="col col-lg-6"><input type="button" value="Valider modifs" class="btn-primary btn-mb btn-block" onClick="modifyUser()"></div></div></form>');
 
 			document.getElementById("afficherinfos").innerHTML = props.join("");
 		}
@@ -217,7 +214,6 @@
 
 		function deleteUser(id) {
 			var xhr = createXHR();
-			
 
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4) {
@@ -226,7 +222,8 @@
 					}
 
 					else {
-						echec(xhr.status, "Echec de la suppresion - vérifier l'inscription à des tests");
+						echec(xhr.status,
+								"Echec de la suppresion - vérifier l'inscription à des tests");
 					}
 				}
 			};
@@ -237,13 +234,58 @@
 			xhr.send(null);
 		}
 		
-		function succes(reponse){
-			document.getElementById("succes").innerHTML=reponse;
-			document.getElementById("echec").innerHTML="";
+		function modifyUser() {
+			var xhr = createXHR();
+			var profil = document.getElementById("profil").value;
+			var id = document.getElementById("idutil").value;
+			var nom = document.getElementById("nom").value;
+			var prenom = document.getElementById("prenom").value;
+			var email = document.getElementById("email").value;
+			var profil = document.getElementById("profil").value;
+			var promo = document.getElementById("promo").value;
+
+			if (profil == '1') {
+				data = "&nom=" + encodeURIComponent(nom) + "&prenom="
+						+ encodeURIComponent(prenom) + "&email="
+						+ encodeURIComponent(email) + "&profil="
+						+ encodeURIComponent(profil) + "&promo="
+						+ encodeURIComponent(promo);
+			} else {
+				data = "&nom=" + encodeURIComponent(nom) + "&prenom="
+						+ encodeURIComponent(prenom) + "&email="
+						+ encodeURIComponent(email) + "&profil="
+						+ encodeURIComponent(profil);
+			}
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						succes("Requete exécutée");
+					}
+
+					else {
+						echec(xhr.status, "Echec de la modification");
+					}
+				}
+			};
+			console.log(data);
+			xhr.open("PUT",
+					"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
+							+ id, true);
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+			
+			
+			xhr.send(data);
 		}
-		function echec(codeReponse, reponse){
-			document.getElementById("echec").innerHTML=reponse;
-			document.getElementById("succes").innerHTML="";
+
+		function succes(reponse) {
+			document.getElementById("succes").innerHTML = reponse;
+			document.getElementById("echec").innerHTML = "";
+		}
+		function echec(codeReponse, reponse) {
+			document.getElementById("echec").innerHTML = reponse;
+			document.getElementById("succes").innerHTML = "";
 		}
 	</script>
 
