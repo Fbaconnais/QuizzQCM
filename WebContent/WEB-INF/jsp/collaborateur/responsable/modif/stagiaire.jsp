@@ -5,9 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <%@include file="../../entete.jsp"%>
 <title>gestions des inscriptions</title>
+
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -44,7 +46,10 @@
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
 			<br>
 		</c:if>
-
+		<div id="succes" style="color:green"></div>
+		<div id="echec" style="color:red"></div>
+		<br>
+		
 		<div class="col col-lg-10 justify-content-lg-center offset-lg-1">
 			<div id="afficherinfos">
 				<div class="form-row">
@@ -58,170 +63,189 @@
 		</div>
 
 	</div>
-	</div>
-	</div>
+
 
 	<script type="text/javascript">
-	
-jQuery("input[name='nom']").on("input", function() {
-	var xhr; 
-    try {  xhr = new ActiveXObject('Msxml2.XMLHTTP');   }
-    catch (e) 
-    {
-        try {   xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
-        catch (e2) 
-        {
-           try {  xhr = new XMLHttpRequest();  }
-           catch (e3) {  xhr = false;   }
-         }
-    }
-    
-    xhr.onreadystatechange  = function() 
-    { 
-       if(xhr.readyState  == 4)
-       {
-        if(xhr.status  == 200) 
-        	afficherCandidats(this.response);
-        else
-        	console.log("Erreur de statut!");
-        }
-    }; 
-    var input = document.getElementById('nom');
-    var nommail = input.value;
-    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/users/"+nommail+"/all",  true); 
-	   xhr.send();
-    
-});
-
-function afficherCandidats(xml) {
-	var json = JSON.parse(xml);
-	var props = [];
-	for (let Utilisateur of json) {
-		
-		props.push('<button onClick="afficher('+Utilisateur.idUtilisateur+')" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'+Utilisateur.idUtilisateur+'" ">Modifier : '+Utilisateur.nom+'  '+Utilisateur.prenom+' - '+Utilisateur.email+' </button><br>');
-	}
-	document.getElementById("results").innerHTML = props.join("");
-}
-
-function afficher(id){
-	var xhr2; 
-    try {  xhr2 = new ActiveXObject('Msxml2.XMLHTTP');   }
-    catch (e) 
-    {
-        try {   xhr2 = new ActiveXObject('Microsoft.XMLHTTP'); }
-        catch (e2) 
-        {
-           try {  xhr2 = new XMLHttpRequest();  }
-           catch (e3) {  xhr2 = false;   }
-         }
-    }
-    
-    xhr2.onreadystatechange  = function() 
-    { 
-       if(xhr2.readyState  == 4)
-       {
-        if(xhr2.status  == 200) 
-        	afficherCandidat(this.response);
-        else
-        	console.log("Erreur de statut!");
-        }
-    }; 
-
-    xhr2.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/users/"+id,  true); 
-	   xhr2.send();
-};
-
-function afficherCandidat(xml2) {
-	var json2 = JSON.parse(xml2);
-	var props2 = [];
-		props2.push('<form method="post" action="<c:out value="${pageContext.request.contextPath}"/>/collaborateur/modif">');
-		props2.push('<input type="hidden" name="action" value="stagiaire" id="action">')
-		props2.push('<div class="form-row"><label for="nom" class="col col-lg-3">Nom </label>');
-		props2.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="nom" id="nom" required value="'+json2.utilisateur.nom+'"></div><br>');
-		props2.push('<div class="form-row"><label for="prenom" class="col col-lg-3">Prenom </label>');
-		props2.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="prenom" id="prenom" required value="'+json2.utilisateur.prenom+'"></div><br>');
-		props2.push('<div class="form-row"><label for="email" class="col col-lg-3">Email </label>');
-		props2.push('<input type="email" class="form-control col col-lg-8 offset-lg-1" name="email" id="email" required value="'+json2.utilisateur.email+'"></div><br>');
-		props2.push('<div class="form row"><label for="profil" class="col col-lg-3"></label><select name="profil" id="profil onchange="afficherpromos()" class="form-control col col-lg-8 offset-lg-1">');
-		if (json2.utilisateur.codeProfil == 1){
-			props2.push('<option value="1" selected>Stagiaire</option>');
-			props2.push('<option value="2">Candidat libre</option>');
-			props2.push('</select></div>');
-			props2.push('<div class="form-row"><label for="promo" class="col col-lg-3" id="labelselect">Promotion</label>');
-			props2.push('<select class="form-control col col-lg-8 offset-lg-1" name="promo" id="promo">');
-			for (let promotion of json.promotions) {
-			props2.push('<option ');
-			if (promotion.id == json2.utilisateur.codePromo){
-				props2.push('selected');
+		function createXHR() {
+			if (window.XMLHttpRequest) {
+				xhr = new XMLHttpRequest();
+			} else if (window.ActiveXObject) //  Internet Explorer
+			{
+				xhr = new ActiveXObject("Msxml2.XMLHTTP");
 			}
-			props2.push('>'+promotion.id+'</option>');
-			}
-			props2.push('</select></div>');
-		} else {
-			props2.push('<option value="1" >Stagiaire</option>');
-			props2.push('<option value="2" selected>Candidat libre</option>');
-			props2.push('</select></div>');
-			props2.push('<div class="form-row"><label for="promo" class="col col-lg-3" id="labelselect" style="display:none;">Promotion</label>');
-			props2.push('<select class="form-control col col-lg-8 offset-lg-1" name="promo" id="promo" style="display:none;">');
-			for (let promotion of json.promotions) {
-			props2.push('<option>'+promotion.id+'</option>');
-			}
-			props2.push('</select></div>');
+
+			return xhr;
+
 		}
-		props2.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="delete('+json2.utilisateur.id+')" class="btn-primary btn-mb btn-block"></div>');
-		props2.push('<div class="col col-lg-6"><input type="submit" value="Valider modifs" class="btn-primary btn-mb btn-block"></div></div></form>');
-		
-		
-	document.getElementById("afficherinfos").innerHTML = props2.join("");
-}
-function afficherpromos(){
-	var type = document.getElementById('type');
-	var promos = document.getElementById('promo');
-	var label = document.getElementById('labelselect')
-	if (type.value == 1){
-		promos.style.display = 'inline';
-		label.style.display = 'inline';
-	} else {
-		promos.style.display = 'none';
-		label.style.display = 'none';
-	}
-}
 
+		jQuery("input[name='nom']").on(
+				"input",
+				function() {
+					var xhr = createXHR();
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState == 4) {
+							if (xhr.status == 200)
+								afficherCandidats(this.response);
+							else
+								echec(xhr.status, xhr.responseText);
+						}
+					};
+					var input = document.getElementById('nom');
+					var nommail = input.value;
+					xhr.open("GET",
+							"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
+									+ nommail + "/all", true);
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.send();
+
+				});
+
+		function afficherCandidats(xml) {
+			var json = JSON.parse(xml);
+			var props = [];
+			var x;
+			for (x = 0; x < json.length; x++) {
+				props
+						.push('<button onClick="afficher('
+								+ json[x].idUtilisateur
+								+ ')" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'
+								+ json[x].idUtilisateur + '" ">Modifier : '
+								+ json[x].nom + '  ' + json[x].prenom + ' - '
+								+ json[x].email + ' </button><br>');
+			}
+			document.getElementById("results").innerHTML = props.join("");
+		}
+
+		function afficher(id) {
+			var xhr = createXHR();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200)
+						afficherCandidat(this.response);
+					else
+						echec(xhr.status, xhr.responseText);
+				}
+			};
+			xhr.open("GET",
+					"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
+							+ id, true);
+			xhr.setRequestHeader("Accept","application/json");
+			xhr.send();
+		}
+
+		function afficherCandidat(xml) {
+			var json = JSON.parse(xml);
+
+			var props = [];
+			props
+					.push('<form method="post" action="<c:out value="${pageContext.request.contextPath}"/>/collaborateur/modif">');
+			props
+					.push('<input type="hidden" name="action" value="stagiaire" id="action">');
+			props
+					.push('<input type="hidden" name="idutil" value="'+json.utilisateur.idUtilisateur+'" id="idutil">');
+			props
+					.push('<div class="form-row"><label for="nom" class="col col-lg-3">Nom </label>');
+			props
+					.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="nom" id="nom" required value="'+json.utilisateur.nom+'"></div><br>');
+			props
+					.push('<div class="form-row"><label for="prenom" class="col col-lg-3">Prenom </label>');
+			props
+					.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="prenom" id="prenom" required value="'+json.utilisateur.prenom+'"></div><br>');
+			props
+					.push('<div class="form-row"><label for="email" class="col col-lg-3">Email </label>');
+			props
+					.push('<input type="email" class="form-control col col-lg-8 offset-lg-1" name="email" id="email" required value="'+json.utilisateur.email+'"></div><br>');
+			props
+					.push('<div class="form row"><label for="profil" class="col col-lg-3">Profil</label><select name="profil" id="profil" onchange="afficherpromos()" class="form-control col col-lg-8 offset-lg-1">');
+			if (json.utilisateur.profil.id == '1') {
+				props.push('<option value="1" selected>Stagiaire</option>');
+				props.push('<option value="2">Candidat libre</option>');
+				props.push('</select></div><br>');
+				props
+						.push('<div class="form-row"><label for="promo" class="col col-lg-3" id="labelselect">Promotion</label>');
+				props
+						.push('<select class="form-control col col-lg-8 offset-lg-1" name="promo" id="promo">');
+
+				var x;
+				for (x = 0; x < json.promotions.length; x++) {
+					props.push('<option ');
+					if (json.utilisateur.promotion.id == json.promotions[x].id) {
+						props.push('selected');
+					}
+					props.push('>' + json.promotions[x].id + '</option>');
+				}
+				props.push('</select></div><br>');
+			} else {
+				props.push('<option value="1" >Stagiaire</option>');
+				props
+						.push('<option value="2" selected>Candidat libre</option>');
+				props.push('</select></div><br>');
+				props
+						.push('<div class="form-row"><label for="promo" class="col col-lg-3" id="labelselect" style="display:none;">Promotion</label>');
+				props
+						.push('<select class="form-control col col-lg-8 offset-lg-1" name="promo" id="promo" style="display:none;">');
+				var x;
+				for (x = 0; x < json.promotions.length; x++) {
+					props
+							.push('<option>' + json.promotions[x].id
+									+ '</option>');
+				}
+
+				props.push('</select></div><br>');
+			}
+			props
+					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="deleteUser('
+							+ json.utilisateur.idUtilisateur
+							+ ')" class="btn-primary btn-mb btn-block"></div>');
+			props
+					.push('<div class="col col-lg-6"><input type="submit" value="Valider modifs" class="btn-primary btn-mb btn-block"></div></div></form>');
+
+			document.getElementById("afficherinfos").innerHTML = props.join("");
+		}
+		function afficherpromos() {
+			var type = document.getElementById('profil');
+			var promos = document.getElementById('promo');
+			var label = document.getElementById('labelselect')
+			if (type.value == 1) {
+				promos.style.display = 'inline';
+				label.style.display = 'inline';
+			} else {
+				promos.style.display = 'none';
+				label.style.display = 'none';
+			}
+		}
+
+		function deleteUser(id) {
+			var xhr = createXHR();
 			
-	
-				
-			
-</script>
-	<!-- 
-	//
-	<div class="form-row">
-		// <label for="type" class="col col-lg-3">Stagiaire/Candidat</label> <select
-			// 						class="form-control col col-lg-8 offset-lg-1" name="type"
-			id="type" onchange="afficher()" required> //
-			<option value="1" selected>Stagiaire</option> //
-			<option value="2">Candidat libre</option> //
-		</select> //
-	</div>
-	//
-	<br> //
-	<div class="form-row">
-		// <label for="promo" class="col col-lg-3" id="labelselect">Promotion</label>
-		<select // 						class="form-control col col-lg-8 offset-lg-1"
-			name="promo" id="promo"> //
-			<option selected>Choisir une promotion dans la liste</option> //
-			<c:forEach var="promotion" items="${sessionScope.promos}">
-// 							<option>${promotion.id }</option>
-// 						</c:forEach> //
-		</select> //
-	</div>
-	//
-	<div class="form-row">
-		// <input // 					type="hidden" id="actionajout" name="actionajout"
-			value="stagiaire"> // <input type="submit" name="cestuntest">
-		//
-	</div>
-	//
-	</form>
- -->
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						succes("Requete exécutée");
+					}
+
+					else {
+						echec(xhr.status, "Echec de la suppresion - vérifier l'inscription à des tests");
+					}
+				}
+			};
+
+			xhr.open("DELETE",
+					"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
+							+ id, true);
+			xhr.send(null);
+		}
+		
+		function succes(reponse){
+			document.getElementById("succes").innerHTML=reponse;
+			document.getElementById("echec").innerHTML="";
+		}
+		function echec(codeReponse, reponse){
+			document.getElementById("echec").innerHTML=reponse;
+			document.getElementById("succes").innerHTML="";
+		}
+	</script>
+
 	<%@include file="../../finBody.html"%>
 </html>

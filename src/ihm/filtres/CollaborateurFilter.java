@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE,
-		DispatcherType.ERROR }, urlPatterns = { "/collaborateur", "/collaborateur/","/collaborateur/*"})
+		DispatcherType.ERROR }, urlPatterns = { "/collaborateur", "/collaborateur/", "/collaborateur/*" })
 public class CollaborateurFilter implements Filter {
 
 	@Override
@@ -27,7 +27,8 @@ public class CollaborateurFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
 		if (((HttpServletRequest) req).getSession().getAttribute("profilCon") == null
-				|| ((HttpServletRequest) req).getSession().getAttribute("profilCon").equals("erreur")) {
+				|| ((HttpServletRequest) req).getSession().getAttribute("profilCon").equals("erreur") 
+				|| ((HttpServletRequest) req).getSession().getAttribute("user") == null) {
 			((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
 			((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/login");
 		} else {

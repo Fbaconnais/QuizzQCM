@@ -11,7 +11,7 @@
 	src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
 
 
-<link rel="shortcut icon" href="./images/logo.ico">
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/images/logo.ico">
 <div class="card bg-dark text-white">
 	<img
 		src="${pageContext.request.contextPath}/images/collabo/banniere.png"
