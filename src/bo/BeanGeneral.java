@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="Transfert")
 public class BeanGeneral {
 	private Utilisateur utilisateur;
-	private List<Promotion> listePromo;
-	private List<Profil> listeProfils;
-	private List<ReponseTirage> listeReponseTirage;
+	private List<Promotion> promotions;
+	private List<Profil> profils;
+	private List<ReponseTirage> reponsetirages;
 	private Question question;
 	
 	public BeanGeneral() {
@@ -23,28 +23,30 @@ public class BeanGeneral {
 		this.utilisateur = utilisateur;
 	}
 
-	public List<Promotion> getListePromo() {
-		return listePromo;
+	
+
+	public List<Promotion> getPromotions() {
+		return promotions;
 	}
 
-	public void setListePromo(List<Promotion> listePromo) {
-		this.listePromo = listePromo;
+	public void setPromotions(List<Promotion> promotions) {
+		this.promotions = promotions;
 	}
 
-	public List<Profil> getListeProfils() {
-		return listeProfils;
+	public List<Profil> getProfils() {
+		return profils;
 	}
 
-	public void setListeProfils(List<Profil> listeProfils) {
-		this.listeProfils = listeProfils;
+	public void setProfils(List<Profil> profils) {
+		this.profils = profils;
 	}
 
-	public List<ReponseTirage> getListeReponseTirage() {
-		return listeReponseTirage;
+	public List<ReponseTirage> getReponsetirages() {
+		return reponsetirages;
 	}
 
-	public void setListeReponseTirage(List<ReponseTirage> listeReponseTirage) {
-		this.listeReponseTirage = listeReponseTirage;
+	public void setReponsetirages(List<ReponseTirage> reponsetirages) {
+		this.reponsetirages = reponsetirages;
 	}
 
 	public Question getQuestion() {

@@ -52,6 +52,7 @@
 						nom/mail </label> <input type="text"
 						class="form-control col col-lg-7 offset-lg-1" name="nom" id="nom">
 				</div>
+				<br>
 				<div id="results"></div>
 			</div>
 		</div>
@@ -133,25 +134,65 @@ function afficher(id){
 function afficherCandidat(xml2) {
 	var json2 = JSON.parse(xml2);
 	var props2 = [];
+		props2.push('<form method="post" action="<c:out value="${pageContext.request.contextPath}"/>/collaborateur/modif">');
+		props2.push('<input type="hidden" name="action" value="stagiaire" id="action">')
 		props2.push('<div class="form-row"><label for="nom" class="col col-lg-3">Nom </label>');
-		props2.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="nom" id="nom" required value="'+json2.nom+'"></div>');
+		props2.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="nom" id="nom" required value="'+json2.utilisateur.nom+'"></div><br>');
 		props2.push('<div class="form-row"><label for="prenom" class="col col-lg-3">Prenom </label>');
-		props2.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="prenom" id="prenom" required value="'+json2.prenom+'"></div><br>');
+		props2.push('<input type="text" class="form-control col col-lg-8 offset-lg-1" name="prenom" id="prenom" required value="'+json2.utilisateur.prenom+'"></div><br>');
 		props2.push('<div class="form-row"><label for="email" class="col col-lg-3">Email </label>');
-		props2.push('<input type="email" class="form-control col col-lg-8 offset-lg-1" name="email" id="email" required value="'+json2.email+'"></div><br></form>');
-		
+		props2.push('<input type="email" class="form-control col col-lg-8 offset-lg-1" name="email" id="email" required value="'+json2.utilisateur.email+'"></div><br>');
+		props2.push('<div class="form row"><label for="profil" class="col col-lg-3"></label><select name="profil" id="profil onchange="afficherpromos()" class="form-control col col-lg-8 offset-lg-1">');
+		if (json2.utilisateur.codeProfil == 1){
+			props2.push('<option value="1" selected>Stagiaire</option>');
+			props2.push('<option value="2">Candidat libre</option>');
+			props2.push('</select></div>');
+			props2.push('<div class="form-row"><label for="promo" class="col col-lg-3" id="labelselect">Promotion</label>');
+			props2.push('<select class="form-control col col-lg-8 offset-lg-1" name="promo" id="promo">');
+			for (let promotion of json.promotions) {
+			props2.push('<option ');
+			if (promotion.id == json2.utilisateur.codePromo){
+				props2.push('selected');
+			}
+			props2.push('>'+promotion.id+'</option>');
+			}
+			props2.push('</select></div>');
+		} else {
+			props2.push('<option value="1" >Stagiaire</option>');
+			props2.push('<option value="2" selected>Candidat libre</option>');
+			props2.push('</select></div>');
+			props2.push('<div class="form-row"><label for="promo" class="col col-lg-3" id="labelselect" style="display:none;">Promotion</label>');
+			props2.push('<select class="form-control col col-lg-8 offset-lg-1" name="promo" id="promo" style="display:none;">');
+			for (let promotion of json.promotions) {
+			props2.push('<option>'+promotion.id+'</option>');
+			}
+			props2.push('</select></div>');
+		}
+		props2.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="delete('+json2.utilisateur.id+')" class="btn-primary btn-mb btn-block"></div>');
+		props2.push('<div class="col col-lg-6"><input type="submit" value="Valider modifs" class="btn-primary btn-mb btn-block"></div></div></form>');
 		
 		
 	document.getElementById("afficherinfos").innerHTML = props2.join("");
 }
-
+function afficherpromos(){
+	var type = document.getElementById('type');
+	var promos = document.getElementById('promo');
+	var label = document.getElementById('labelselect')
+	if (type.value == 1){
+		promos.style.display = 'inline';
+		label.style.display = 'inline';
+	} else {
+		promos.style.display = 'none';
+		label.style.display = 'none';
+	}
+}
 
 			
 	
 				
 			
 </script>
-<!-- 
+	<!-- 
 	//
 	<div class="form-row">
 		// <label for="type" class="col col-lg-3">Stagiaire/Candidat</label> <select

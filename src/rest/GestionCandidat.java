@@ -8,7 +8,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import bll.BLLException;
+import bll.PromotionManager;
 import bll.UtilisateurManager;
+import bo.BeanGeneral;
+import bo.Promotion;
 import bo.Utilisateur;
 
 @Path("/users")
@@ -25,10 +28,15 @@ public class GestionCandidat {
 	
 	@GET
 	@Path("/{id}")
-	public Utilisateur getOne(@PathParam("id") int id) throws BLLException {
+	public BeanGeneral getOne(@PathParam("id") int id) throws BLLException {
 		UtilisateurManager UMger = UtilisateurManager.getMger();
+		PromotionManager PMger = PromotionManager.getMger();
 		Utilisateur u = UMger.selectUser(id);
-		return u;
+		List<Promotion> liste = PMger.selectAllPromos();
+		BeanGeneral retour = new BeanGeneral();
+		retour.setUtilisateur(u);
+		retour.setPromotions(liste);
+		return retour;
 	}
 
 }
