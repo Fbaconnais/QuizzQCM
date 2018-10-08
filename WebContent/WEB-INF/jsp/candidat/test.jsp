@@ -61,8 +61,10 @@
 
 	<p id="test" class="cadre"></p>
 	<div id="propositions"></div>
+	<div id="timer"></div>
 	<script>
-	var path= "${baseURL}" 
+	var path= "${baseURL}"; 
+	var idEpreuve = "${requestScope.idEpreuve}";
 	</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/Test.js"></script>
 	<%@include file="../finBody.html"%>

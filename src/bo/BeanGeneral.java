@@ -12,6 +12,7 @@ public class BeanGeneral {
 	private List<Profil> profils;
 	private Map<Integer, ReponseTirage> reponsetirages;
 	private Question question;
+	private Epreuve epreuve;
 	
 	public BeanGeneral() {
 	}
@@ -54,6 +55,14 @@ public class BeanGeneral {
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public Epreuve getEpreuve() {
+		return epreuve;
+	}
+
+	public void setEpreuve(Epreuve epreuve) {
+		this.epreuve = epreuve;
 	}
 	
 	

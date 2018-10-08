@@ -1,7 +1,6 @@
 package bo;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.xml.bind.annotation.XmlRootElement;

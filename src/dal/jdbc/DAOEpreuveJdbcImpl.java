@@ -36,7 +36,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
 	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur, logo_langage) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
-	String update = "UPDATE Epreuve SET dateDedutValidite=?, dateFinValidite=?, tempsEcoule=?, etat=?, note_obtenue=?, niveau_obtenu=?, idTest=?, idUtilisateur=?";
+	String update = "UPDATE Epreuve SET dateDedutValidite=?, dateFinValidite=?, tempsEcoule=?, etat=?, note_obtenue=?, niveau_obtenu=?, idTest=?, idUtilisateur=? WHERE idEpreuve=?";
 	String selectIdTestViaIdEpreuve = "SELECT idTest FROM EPREUVE where idEpreuve=?";
 	
 	private void closeConnection(Connection conn) throws DALException {
@@ -218,13 +218,14 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(update);
 			rqt.setTimestamp(1, data.getDateDebutValidite());
-			rqt.setTimestamp(1, data.getDateFinValidite());
+			rqt.setTimestamp(2, data.getDateFinValidite());
 			rqt.setInt(3, data.getTempsEcoule());
 			rqt.setString(4, data.getEtat());
 			rqt.setFloat(5, data.getNoteCandidat());
 			rqt.setString(6, data.getNiveauCandidat());
 			rqt.setInt(7, data.getTest().getIdTest());
 			rqt.setInt(8, data.getCandidat().getIdUtilisateur());
+			rqt.setInt(9, data.getIdEpreuve());
 			rqt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL - updata", e);
