@@ -15,8 +15,9 @@ import dal.DAOReponseTirage;
 
 public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 	private Connection conn = null;
-	private String generationTest = "{call gererReponseTirage(?,?,?)}";
-	private String verifReponse = "SELECT * FROM Reponse_Tirage WHERE (idProposition = ?) AND (idQuestion= ?) AND (idEpreuve=?)";
+	private String gestionReponse = "{call gererReponseTirage(?,?,?)}";
+	private String selectAllByIDEpreuve = "SELECT * FROM Reponse_Tirage WHERE (idEpreuve=?)";
+	private String selectAllByIDQuestionIDEpreuve = "SELECT * FROM Reponse_Tirage WHERE (idQuestion =?) AND (idEpreuve=?)";
 	
 	@Override
 	public ReponseTirage add(ReponseTirage data) throws DALException {
@@ -54,7 +55,7 @@ public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 
 		try {
 			conn = ConnectionProvider.getCnx();
-			call = conn.prepareCall(generationTest);
+			call = conn.prepareCall(gestionReponse);
 			
 			call.setInt(1, idProposition);
 			call.setInt(2, idQuestion);
@@ -74,24 +75,53 @@ public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 	}
 
 	@Override
-	public List<ReponseTirage> recupReponses(int idProposition, int idQuestion, int idEpreuve) throws DALException {
-		ReponseTirage reponse = null;
-		int idProposition = null;
-		int idQuestion;
-		int idEpreuve;
+	public List<ReponseTirage> selectAllByIDQuestionIDEpreuve(int idQuestion, int idEpreuve) throws DALException {
+		ReponseTirage reponseTirage = null;
 		List<ReponseTirage> listeReponses = new ArrayList<ReponseTirage>();
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		try {
 			conn = ConnectionProvider.getCnx();
-			rqt = conn.prepareStatement(verifReponse);
-			rqt.setInt(1, idProposition);
-			rqt.setInt(2, idQuestion);
-			rqt.setInt(3, idEpreuve);
+			rqt = conn.prepareStatement(selectAllByIDQuestionIDEpreuve);
+			rqt.setInt(1, idQuestion);
+			rqt.setInt(2, idEpreuve);
 			rs = rqt.executeQuery();
 			while (rs.next()) {
-				reponse = new ReponseTirage();
-				
+				reponseTirage = new ReponseTirage();
+				reponseTirage.setIdQuestion(idQuestion);
+				reponseTirage.setIdEpreuve(idEpreuve);
+				reponseTirage.setIdProposition(rs.getInt("idProposition"));
+				listeReponses.add(reponseTirage);
+			}
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- Récupération des réponses du candidat" + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return listeReponses;
+	}
+	
+	@Override
+	public List<ReponseTirage> selectAllByIDEpreuve(int idEpreuve) throws DALException {
+		ReponseTirage reponseTirage = null;
+		List<ReponseTirage> listeReponses = new ArrayList<ReponseTirage>();
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(selectAllByIDEpreuve);
+			rqt.setInt(1, idEpreuve);
+			rs = rqt.executeQuery();
+			while (rs.next()) {
+				reponseTirage = new ReponseTirage();
+				reponseTirage.setIdEpreuve(idEpreuve);
+				reponseTirage.setIdProposition(rs.getInt("idProposition"));
+				reponseTirage.setIdQuestion(rs.getInt("idQuestion"));
+				listeReponses.add(reponseTirage);
 			}
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL- Récupération des réponses du candidat" + e.getMessage() + e.getStackTrace().toString(), e);

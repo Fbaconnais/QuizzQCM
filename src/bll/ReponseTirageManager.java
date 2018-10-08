@@ -1,7 +1,8 @@
 package bll;
 
-import javax.ws.rs.PathParam;
+import java.util.List;
 
+import bo.ReponseTirage;
 import dal.DALException;
 import dal.DAOFactory;
 import dal.DAOReponseTirage;
@@ -27,13 +28,13 @@ public class ReponseTirageManager {
 		}
 	}
 	
-	public boolean verifReponse(int idProposition, int idQuestion, int idEpreuve) throws BLLException {
-		boolean estCoche;
+	public List<ReponseTirage> selectAllByIDQuestionIDEpreuve(int idQuestion, int idEpreuve) throws BLLException {
+		List<ReponseTirage> listeReponses = null;
 		try {
-			estCoche = DAOReponseTirage.verifReponse(idProposition, idQuestion, idEpreuve);
+			listeReponses = DAOReponseTirage.selectAllByIDQuestionIDEpreuve(idQuestion, idEpreuve);
 		} catch (DALException e) {
 			throw new BLLException(e.getMessage(), e);
 		}
-		return estCoche;
+		return listeReponses;
 	}
 }

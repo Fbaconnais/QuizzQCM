@@ -1,6 +1,7 @@
 package bo;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -9,7 +10,7 @@ public class BeanGeneral {
 	private Utilisateur utilisateur;
 	private List<Promotion> promotions;
 	private List<Profil> profils;
-	private List<ReponseTirage> reponsetirages;
+	private Map<Integer, ReponseTirage> reponsetirages;
 	private Question question;
 	
 	public BeanGeneral() {
@@ -22,8 +23,6 @@ public class BeanGeneral {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
-
-	
 
 	public List<Promotion> getPromotions() {
 		return promotions;
@@ -41,11 +40,11 @@ public class BeanGeneral {
 		this.profils = profils;
 	}
 
-	public List<ReponseTirage> getReponsetirages() {
+	public Map<Integer, ReponseTirage> getReponsetirages() {
 		return reponsetirages;
 	}
 
-	public void setReponsetirages(List<ReponseTirage> reponsetirages) {
+	public void setReponsetirages(Map<Integer, ReponseTirage> reponsetirages) {
 		this.reponsetirages = reponsetirages;
 	}
 
