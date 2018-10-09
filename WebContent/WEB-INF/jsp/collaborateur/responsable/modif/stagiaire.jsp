@@ -135,7 +135,6 @@
 
 		function afficherCandidat(xml) {
 			var json = JSON.parse(xml);
-			console.log(json);
 			var props = [];
 			props.push('<form>');
 			props
@@ -192,7 +191,7 @@
 			}
 			var y;
 			for (y = 0; y < json.epreuves.length;y++){
-				props.push('<div class="form-row"><div class="col col-lg-8 offset-lg-2"><input type="button" value="Désinscrire du test : '+json.epreuves[y].test.libelle+'" onClick="deleteEpreuve('+json.epreuves[y].idEpreuve+')" class="btn btn-primary btn-mb btn-block"></div></div><br>');	
+				props.push('<div class="form-row"><div class="col col-lg-8 offset-lg-2"><input type="button" value="Désinscrire du test : '+json.epreuves[y].test.libelle+'" onClick="deleteEpreuve('+json.epreuves[y].idEpreuve+','+json.utilisateur.idUtilisateur+')" class="btn btn-primary btn-mb btn-block"></div></div><br>');	
 			}		
 			props
 					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="deleteUser('
@@ -280,8 +279,26 @@
 
 			xhr.send(data);
 		}
-		function deleteEpreuve(id){
-			
+		function deleteEpreuve(id,iduser){
+			var xhr = createXHR();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						succes("Requete exécutée");
+						afficher(iduser);
+					}
+
+					else {
+						echec(xhr.status,
+								"Echec de la suppresion");
+					}
+				}
+			};
+
+			xhr.open("DELETE",
+					"<c:out value="${pageContext.request.contextPath}"/>/rest/epreuve/"
+							+ id, true);
+			xhr.send(null);
 		}
 
 		function succes(reponse) {

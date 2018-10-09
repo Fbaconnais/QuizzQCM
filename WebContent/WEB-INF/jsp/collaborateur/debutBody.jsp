@@ -1,9 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div class="container ">
 	<div class="row">
 		<div class="col col-lg-3 text-center">
 			<br>
+			<c:if test="${sessionScope.user == null}">
+			<input type="hidden" value="${pageContext.request.contextPath}" id="path">
+			<script>
+			var path = document.getElementById("path").value;
+			var link = ${pageContext.request.contextPath} + "/login";
+			document.location.href = link;
+			</script>
+			</c:if>
 			<div class="row">
 				<h1>${sessionScope.user.nom}</h1>
 			</div>
@@ -12,12 +22,14 @@
 			</div>
 			<br>
 			<div class="row">
-				<a href="${pageContext.request.contextPath}/modifMDP"><button class="btn btn-primary btn-mb btn-block">Modifier mon mot de passe</button></a>
+				<a href="${pageContext.request.contextPath}/modifMDP"><button
+						class="btn btn-primary btn-mb btn-block">Modifier mon mot
+						de passe</button></a>
 			</div>
 			<br>
 			<div class="row">
-				<a href="${pageContext.request.contextPath}/deconnection"><button class="btn btn-primary btn-mb btn-block">Déconnexion</button></a>
+				<a href="${pageContext.request.contextPath}/deconnection"><button
+						class="btn btn-primary btn-mb btn-block">Déconnexion</button></a>
 			</div>
 
 		</div>
-		

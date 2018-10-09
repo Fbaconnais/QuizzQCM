@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @WebServlet("/collaborateur/resultats")
 public class AccueilConsultation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -18,16 +17,20 @@ public class AccueilConsultation extends HttpServlet {
 		request.getSession().setAttribute("messageValidation", null);
 		String profil = null;
 		String url;
-		if (request.getSession().getAttribute("profilCon") != null) {
-			profil = (String) request.getSession().getAttribute("profilCon");
+		if (request.getSession().getAttribute("user") == null) {
+			url = "/login";
 		} else {
-			url = "/autorisation";
-		}
-		if (!(profil.equals("responsable de formation") || profil.equals("cellule de recrutement"))) {
-			url = "/autorisation";
-		} else {
-			url = "/WEB-INF/jsp/collaborateur/responsable/consultationResultats.jsp";
-					
+			if (request.getSession().getAttribute("profilCon") != null) {
+				profil = (String) request.getSession().getAttribute("profilCon");
+			} else {
+				url = "/autorisation";
+			}
+			if (!(profil.equals("responsable de formation") || profil.equals("cellule de recrutement"))) {
+				url = "/autorisation";
+			} else {
+				url = "/WEB-INF/jsp/collaborateur/responsable/consultationResultats.jsp";
+
+			}
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}

@@ -16,27 +16,32 @@ public class Collaborateur extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getSession().setAttribute("messageValidation", null);
-		String profil = (String) request.getSession().getAttribute("profilCon");
 		RequestDispatcher disp;
-		if (profil != null && !profil.equals("stagiaire") && !profil.equals("candidat libre")) {
-			switch (profil) {
-			case "formateur":
-				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp");
-				break;
-			case "administrateur":
-				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp");
-				break;
-			case "cellule de recrutement":
-			case "responsable de formation":
-				disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilResponsable.jsp");
-				break;
-			default:
-				disp = request.getRequestDispatcher("/login");
-			}
+		request.getSession().setAttribute("messageValidation", null);
+		if (request.getSession().getAttribute("user") == null) {
+			disp = request.getRequestDispatcher("/login");
 		} else {
-			disp = request.getRequestDispatcher("/autorisation");
+			String profil = (String) request.getSession().getAttribute("profilCon");
 
+			if (profil != null && !profil.equals("stagiaire") && !profil.equals("candidat libre")) {
+				switch (profil) {
+				case "formateur":
+					disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilFormateur.jsp");
+					break;
+				case "administrateur":
+					disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilAdmin.jsp");
+					break;
+				case "cellule de recrutement":
+				case "responsable de formation":
+					disp = request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/accueilResponsable.jsp");
+					break;
+				default:
+					disp = request.getRequestDispatcher("/login");
+				}
+			} else {
+				disp = request.getRequestDispatcher("/autorisation");
+
+			}
 		}
 		disp.forward(request, response);
 	}

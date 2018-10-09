@@ -11,7 +11,8 @@
 
 </head>
 <body>
-<iframe src="${pageContext.request.contextPath}/audio/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
+<!--[IF !IE]><iframe src="${pageContext.request.contextPath}/audio/silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe><![ENDIF]-->
+
 
 
 <c:if test="${!empty sessionScope.musique}">
@@ -25,8 +26,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-
-
 				<div class="well login-box">
 					<form action="${pageContext.request.contextPath}/login"
 						method="post">
@@ -40,8 +39,6 @@
 							<br>
 							<br>
 						</c:if>
-
-
 						<div class="row justify-content-lg-center">
 							<div class="form-group col-lg-8 ">
 								<label for="username-email">E-mail</label> <input
@@ -56,14 +53,12 @@
 									name="password" />
 							</div>
 						</div>
-
 						<div class="row justify-content-lg-center">
 							<input type="submit" class="btn btn-success btn-login-submit"
 								value="Valider" />
 						</div>
 					</form>
 				</div>
-
 			</div>
 		</div>
 	</div>

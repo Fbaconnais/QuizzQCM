@@ -33,30 +33,33 @@ public class InscriptionServlet extends HttpServlet {
 
 		String action;
 		String url = null;
-		if (request.getParameter("action") != null) {
-			action = request.getParameter("action");
-			switch (action) {
-			case "stagiaire":
-				url = newStagiaire(request, response);
-				break;
-			case "promotion":
-				url = newpromotion(request, response);
-				break;
-			case "stagiairepromo":
-				url = newStagiairePromo(request, response);
-				break;
-			case "candidattest":
-				url = newCandidatTest(request, response);
-				break;
-			case "promotest":
-				url = newPromoTest(request, response);
-				break;
-			}
-
+		if (request.getSession().getAttribute("user") == null) {
+			url = "/login";
 		} else {
-			url = "inscriptions";
-		}
+			if (request.getParameter("action") != null) {
+				action = request.getParameter("action");
+				switch (action) {
+				case "stagiaire":
+					url = newStagiaire(request, response);
+					break;
+				case "promotion":
+					url = newpromotion(request, response);
+					break;
+				case "stagiairepromo":
+					url = newStagiairePromo(request, response);
+					break;
+				case "candidattest":
+					url = newCandidatTest(request, response);
+					break;
+				case "promotest":
+					url = newPromoTest(request, response);
+					break;
+				}
 
+			} else {
+				url = "inscriptions";
+			}
+		}
 		request.getRequestDispatcher(url).forward(request, response);
 
 	}
@@ -130,10 +133,10 @@ public class InscriptionServlet extends HttpServlet {
 							}
 						}
 					}
-
-					break;
 				}
 			}
+
+			break;
 
 		case "stagiaire":
 
@@ -193,34 +196,55 @@ public class InscriptionServlet extends HttpServlet {
 				String heureDebutValidite = request.getParameter("HeureDebutValidite");
 				String heureFinValidite = request.getParameter("HeureFinValidite");
 
-				// verif validité dates
+				Pattern date = Pattern.compile(regexDate);
+				Pattern heure = Pattern.compile(regexTemps);
+				Matcher matchDateDebut = date.matcher(dateDebutValidite);
+				Matcher matchDateFin = date.matcher(dateFinValidite);
+				Matcher matchHeureDebut = heure.matcher(heureDebutValidite);
+				Matcher matchHeureFin = heure.matcher(heureFinValidite);
 
-				UtilisateurManager userMger = UtilisateurManager.getMger();
-				try {
-
-					if (userMger.verifCandidatInscritAtest(idTest, idUtil)) {
+				if (!(matchDateDebut.matches()) || !(matchDateFin.matches())) {
+					request.getSession().setAttribute("messageValidation",
+							"Veuillez entrer une date au format correct: Jour-Mois-Année.");
+					url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
+				} else {
+					if (!(matchHeureDebut.matches()) || !(matchHeureFin.matches())) {
 
 						request.getSession().setAttribute("messageValidation",
-								"Ce candidat est déjà inscrit à ce test");
-						url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
+								"Veuillez entrer une heure au format correct: Heure:Minute.");
+						url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 
 					} else {
 
-						userMger.ajouterCandidatATest(dateDebutValidite, dateFinValidite, heureDebutValidite,
-								heureFinValidite, idTest, idUtil);
-						request.getSession().setAttribute("messageValidation", "Requête exécutée");
-						url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
+						UtilisateurManager userMger = UtilisateurManager.getMger();
+						try {
+
+							if (userMger.verifCandidatInscritAtest(idTest, idUtil)) {
+
+								request.getSession().setAttribute("messageValidation",
+										"Ce candidat est déjà inscrit à ce test");
+								url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
+
+							} else {
+
+								userMger.ajouterCandidatATest(dateDebutValidite, dateFinValidite, heureDebutValidite,
+										heureFinValidite, idTest, idUtil);
+								request.getSession().setAttribute("messageValidation", "Requête exécutée");
+								url = request.getContextPath() + "/collaborateur/inscription?action=candidattest";
+
+							}
+						} catch (BLLException e) {
+
+							request.getSession().setAttribute("erreur", e.getMessage());
+							url = request.getContextPath() + "/erreur";
+						}
 
 					}
-				} catch (BLLException e) {
-
-					request.getSession().setAttribute("erreur", e.getMessage());
-					url = request.getContextPath() + "/erreur";
 				}
-
 			}
 
 			break;
+
 		case "stagiairepromo":
 			codePromo = request.getParameter("promo");
 			UtilisateurManager UtilMger = UtilisateurManager.getMger();

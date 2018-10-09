@@ -28,7 +28,7 @@ public class login extends HttpServlet {
 			throws ServletException, IOException {
 		request.getSession().removeAttribute("messageValidation");
 		request.getSession().removeAttribute("erreur");
-		if (request.getSession().getAttribute("profilCon") != null) {
+		if (request.getSession().getAttribute("profilCon") != null && request.getSession().getAttribute("user") != null) {
 			switch ((String) request.getSession().getAttribute("profilCon")) {
 			case "candidat libre":
 			case "stagiaire":
@@ -77,9 +77,10 @@ public class login extends HttpServlet {
 		} else {
 			try {
 				user = Mger.getUserByEmail(email);
+				request.getSession().setMaxInactiveInterval(7200);
 				request.getSession().setAttribute("user", user);
 				request.getSession().setAttribute("profilCon", user.getProfil().getLibelle());
-				request.getSession().setMaxInactiveInterval(7200);
+				
 				if (user.getProfil().getLibelle().equals("stagiaire")
 						|| user.getProfil().getLibelle().equals("candidat libre"))
 

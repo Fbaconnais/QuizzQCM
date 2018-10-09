@@ -111,13 +111,13 @@
 			var props = [];
 			var libellepromo = document.getElementById(id.id).value;
 			props
-					.push('<div class="form-row"><label for="codePromo" class="col col-lg-3">Code Promo</label><input type="text" name="codePromo" id="codePromo" value="'+id.id+'" class="form-control col col-lg-8 offset-lg-1"></div><br>');
+					.push('<div class="form-row"><label for="codePromo" class="col col-lg-3">Code Promo</label><input type="text" name="codePromo" id="codePromo" value="'+id.id+'" class="form-control col col-lg-8 offset-lg-1" disabled></div><br>');
 			props
 					.push('<div class="form-row"><label for="libPromo" class="col col-lg-3">Libelle promo</label><input type="text" name="libPromo" id="libPromo" value="'+libellepromo+'" class="form-control col col-lg-8 offset-lg-1"></div><br>')
 			props
-					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="deletePromo()" class="btn-primary btn-mb btn-block"></div>');
+					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="deletePromo()" class="btn-danger btn-mb btn-block"></div>');
 			props
-					.push('<div class="col col-lg-6"><input type="button" value="Valider modifs" class="btn-primary btn-mb btn-block" onClick="modifyPromo()"></div></div>');
+					.push('<div class="col col-lg-6"><input type="button" value="Valider modifs" class="btn-success btn-mb btn-block" onClick="modifyPromo()"></div></div>');
 			document.getElementById("results").innerHTML = props.join("");
 
 		}
@@ -130,6 +130,7 @@
 				if (xhr.readyState == 4) {
 					if (xhr.status == 200) {
 						succes("Requete exécutée");
+						listepromos();
 					}
 
 					else {
@@ -152,11 +153,13 @@
 			var codePromo = document.getElementById("codePromo").value;
 			var libPromo = document.getElementById("libPromo").value;
 			console.log(libPromo);
+			console.log(codePromo);
 			var xhr = createXHR();
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4) {
 					if (xhr.status == 200) {
 						succes("Requete exécutée");
+						listepromos();
 					}
 
 					else {

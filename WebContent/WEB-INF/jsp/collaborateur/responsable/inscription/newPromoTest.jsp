@@ -103,7 +103,7 @@
 				<input type="hidden" id="actionajout" name="actionajout"
 					value="promotest">
 				<div class="form-row">
-					<input type="submit" class="btn btn-primary btn-mb btn-block">
+					<input type="submit" class="btn btn-success btn-mb btn-block">
 				</div>
 			</form>
 		</div>

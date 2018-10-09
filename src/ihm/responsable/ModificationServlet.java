@@ -24,28 +24,30 @@ public class ModificationServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String action;
 		String url = null;
-		if (request.getParameter("action") != null) {
-			action = request.getParameter("action");
-			switch (action) {
-			case "stagiaire":
-				url = "/WEB-INF/jsp/collaborateur/responsable/modif/stagiaire.jsp";
-				break;
-			case "promotion":
-				url = "/WEB-INF/jsp/collaborateur/responsable/modif/promo.jsp";
-				break;
-			}
-
+		if (request.getSession().getAttribute("user") == null) {
+			url = "/login";
 		} else {
-			url = "inscriptions";
+			if (request.getParameter("action") != null) {
+				action = request.getParameter("action");
+				switch (action) {
+				case "stagiaire":
+					url = "/WEB-INF/jsp/collaborateur/responsable/modif/stagiaire.jsp";
+					break;
+				case "promotion":
+					url = "/WEB-INF/jsp/collaborateur/responsable/modif/promo.jsp";
+					break;
+				}
+			} else {
+				url = "inscriptions";
+			}
 		}
-
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 	}
 
 }
