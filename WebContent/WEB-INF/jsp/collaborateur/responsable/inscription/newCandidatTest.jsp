@@ -79,14 +79,14 @@
 				<br>
 				<div class="form-row">
 					<label for="dateFinValidite" class="col col-lg-3">Date fin
-						validite attention au format)</label> <input type="text" class="form-control col col-lg-4"
-						name="dateFinValidite" id="date2" required
-						placeholder="/!\ JJ-MM-AAAA /!\"> <label
+						validite attention au format)</label> <input type="text"
+						class="form-control col col-lg-4" name="dateFinValidite"
+						id="date2" required placeholder="/!\ JJ-MM-AAAA /!\"> <label
 						for="HeureFinValidite" class="offset-lg-1"> Heure :</label> <input
 						type="text" class="form-control col col-lg-2 offset-lg-1"
-						name="HeureFinValidite" placeholder="/!\ HH:MM /!\"  required>
+						name="HeureFinValidite" placeholder="/!\ HH:MM /!\" required>
 				</div>
-
+			
 				<input type="hidden" id="actionajout" name="actionajout"
 					value="candidattest"> <br>
 				<div id="results"></div>
@@ -98,57 +98,66 @@
 	</div>
 
 	<script type="text/javascript">
-	function createXHR() {
-		if (window.XMLHttpRequest) {
-			xhr = new XMLHttpRequest();
-		} else if (window.ActiveXObject) //  Internet Explorer
-		{
-			xhr = new ActiveXObject("Msxml2.XMLHTTP");
+	
+		function createXHR() {
+			if (window.XMLHttpRequest) {
+				xhr = new XMLHttpRequest();
+			} else if (window.ActiveXObject) //  Internet Explorer
+			{
+				xhr = new ActiveXObject("Msxml2.XMLHTTP");
+			}
+
+			return xhr;
+
 		}
 
-		return xhr;
+		jQuery("input[name='nom']").on(
+				"input",
+				function() {
+					var xhr = createXHR();
 
-	}
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState == 4) {
+							if (xhr.status == 200)
+								afficherCandidats(this.response);
+							else
+								console.log("Erreur de statut!");
+						}
+					};
+					var input = document.getElementById('nom');
+					var nommail = input.value;
+					xhr.open("GET",
+							"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
+									+ nommail + "/all", true);
+					xhr.send();
 
-jQuery("input[name='nom']").on("input", function() {
-	var xhr= createHXR();
-    
-    xhr.onreadystatechange  = function() 
-    { 
-       if(xhr.readyState  == 4)
-       {
-        if(xhr.status  == 200) 
-        	afficherCandidats(this.response);
-        else
-        	console.log("Erreur de statut!");
-        }
-    }; 
-    var input = document.getElementById('nom');
-    var nommail = input.value;
-    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/users/"+nommail+"/all",  true); 
-	   xhr.send();
-    
-});
+				});
 
-function afficherCandidats(xml) {
-	var json = JSON.parse(xml);
-	var props = [];
-	var x;
-	for (x = 0; x < json.length; x++) {
-		
-		props.push('<button type="submit" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'+json[x].idUtilisateur+'" ">Incrire : '+json[x].nom+'  '+json[x].prenom+' - '+json[x].email+' </button><br>');
-	}
-	document.getElementById("results").innerHTML = props.join("");
-}
-function succes(reponse) {
-	document.getElementById("succes").innerHTML = reponse;
-	document.getElementById("echec").innerHTML = "";
-}
-function echec(codeReponse, reponse) {
-	document.getElementById("echec").innerHTML = reponse;
-	document.getElementById("succes").innerHTML = "";
-}
-</script>
+		function afficherCandidats(xml) {
+			var json = JSON.parse(xml);
+			var props = [];
+			var x;
+			for (x = 0; x < json.length; x++) {
+
+				props
+						.push('<button type="submit" class="form-row btn btn-primary btn-mb btn-block" name="idutil" id="idutil" value="'+json[x].idUtilisateur+'" ">Incrire : '
+								+ json[x].nom
+								+ '  '
+								+ json[x].prenom
+								+ ' - '
+								+ json[x].email + ' </button><br>');
+			}
+			document.getElementById("results").innerHTML = props.join("");
+		}
+		function succes(reponse) {
+			document.getElementById("succes").innerHTML = reponse;
+			document.getElementById("echec").innerHTML = "";
+		}
+		function echec(codeReponse, reponse) {
+			document.getElementById("echec").innerHTML = reponse;
+			document.getElementById("succes").innerHTML = "";
+		}
+	</script>
 
 
 	<%@include file="../../finBody.html"%>

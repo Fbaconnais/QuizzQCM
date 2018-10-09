@@ -99,10 +99,11 @@
 						type="text" class="form-control col col-lg-2 offset-lg-1"
 						name="HeureFinValidite" placeholder="/!\ HH:MM /!\"  required>
 				</div>
+				<br>
 				<input type="hidden" id="actionajout" name="actionajout"
 					value="promotest">
 				<div class="form-row">
-					<input type="submit">
+					<input type="submit" class="btn btn-primary btn-mb btn-block">
 				</div>
 			</form>
 		</div>

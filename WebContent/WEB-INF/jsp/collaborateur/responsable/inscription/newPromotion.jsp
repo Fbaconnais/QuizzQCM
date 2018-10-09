@@ -40,7 +40,7 @@
 	<div class="col col-lg-9">
 	<br>
 	<br>
-	<h1>Inscription promotion à un test</h1>
+	<h1>Inscription d'une nouvelle promotion</h1>
 	<br>
 		<c:if test="${sessionScope.messageValidation != null }">
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
@@ -70,7 +70,7 @@
 			<br> <input type="hidden" id="actionajout" name="actionajout"
 				value="promotion">
 			<div class="form-row">
-				<input type="submit">
+				<input type="submit" class="btn btn-primary btn-mb btn-block">
 			</div>
 		</form>
 	</div>

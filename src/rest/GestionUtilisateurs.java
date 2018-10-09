@@ -11,11 +11,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import bll.BLLException;
+import bll.EpreuveManager;
 import bll.PromotionManager;
 import bll.UtilisateurManager;
 import bo.BeanGeneral;
 import bo.Candidat;
 import bo.Collaborateur;
+import bo.Epreuve;
 import bo.Profil;
 import bo.Promotion;
 import bo.Utilisateur;
@@ -37,11 +39,14 @@ public class GestionUtilisateurs {
 	public BeanGeneral getOne(@PathParam("id") int id) throws RestException {
 		UtilisateurManager UMger = UtilisateurManager.getMger();
 		PromotionManager PMger = PromotionManager.getMger();
+		EpreuveManager EMger = EpreuveManager.getMger();
 		Utilisateur u = null;
 		List<Promotion> liste = null;
+		List<Epreuve> listeEpreuve = null;
 		try {
 			u = UMger.selectUser(id);
 			liste = PMger.selectAllPromos();
+			listeEpreuve = EMger.selectAllEpreuvesByIDUser(id);
 		} catch (BLLException e) {
 			throw new RestException(e.getMessage(), e);
 		}
@@ -49,6 +54,7 @@ public class GestionUtilisateurs {
 		BeanGeneral retour = new BeanGeneral();
 		retour.setUtilisateur(u);
 		retour.setPromotions(liste);
+		retour.setEpreuves(listeEpreuve);
 		return retour;
 	}
 	

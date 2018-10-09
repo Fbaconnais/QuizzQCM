@@ -135,7 +135,7 @@
 
 		function afficherCandidat(xml) {
 			var json = JSON.parse(xml);
-
+			console.log(json);
 			var props = [];
 			props.push('<form>');
 			props
@@ -190,12 +190,16 @@
 
 				props.push('</select></div><br>');
 			}
+			var y;
+			for (y = 0; y < json.epreuves.length;y++){
+				props.push('<div class="form-row"><div class="col col-lg-8 offset-lg-2"><input type="button" value="Désinscrire du test : '+json.epreuves[y].test.libelle+'" onClick="deleteEpreuve('+json.epreuves[y].idEpreuve+')" class="btn btn-primary btn-mb btn-block"></div></div><br>');	
+			}		
 			props
 					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="supprimer" onClick="deleteUser('
 							+ json.utilisateur.idUtilisateur
-							+ ')" class="btn-primary btn-mb btn-block"></div>');
+							+ ')" class="btn btn-danger btn-mb btn-block"></div>');
 			props
-					.push('<div class="col col-lg-6"><input type="button" value="Valider modifs" class="btn-primary btn-mb btn-block" onClick="modifyUser()"></div></div></form>');
+					.push('<div class="col col-lg-6"><input type="button" value="Valider modifs" class="btn btn-success btn-mb btn-block" onClick="modifyUser()"></div></div></form>');
 
 			document.getElementById("afficherinfos").innerHTML = props.join("");
 		}
@@ -275,6 +279,9 @@
 					"application/x-www-form-urlencoded");
 
 			xhr.send(data);
+		}
+		function deleteEpreuve(id){
+			
 		}
 
 		function succes(reponse) {

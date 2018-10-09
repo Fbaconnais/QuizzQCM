@@ -73,8 +73,11 @@ public class PromotionManager {
 		String heureDeb[] = heureDebut.split(":");
 		String dateFin[] = dateFinValidite.split("-");
 		String heureFi[] = heureFin.split(":");
+	
 		Timestamp datedebut = ManipDates.getDateViaString(dateDebut, heureDeb);
+		System.out.println(datedebut);
 		Timestamp datefin = ManipDates.getDateViaString(dateFin, heureFi);
+		System.out.println(datefin);
 		try {
 			DAO.inscrirePromoATest(codePromo, idTest, datedebut, datefin);
 		} catch (DALException e) {

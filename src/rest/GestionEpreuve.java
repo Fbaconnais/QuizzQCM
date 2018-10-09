@@ -1,5 +1,6 @@
 package rest;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -57,4 +58,20 @@ public class GestionEpreuve {
 		return true;
 		
 	}
+	
+	@DELETE
+	@Path("/{id}")
+	public Boolean deleteEpreuve(@PathParam("id") int id) throws RestException {
+		EpreuveManager EMger = EpreuveManager.getMger();
+		
+		try {
+			EMger.removeEpreuve(id);
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		
+		return true;
+	}
+	
+	
 }

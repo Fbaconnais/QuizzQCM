@@ -13,12 +13,30 @@ public class BeanGeneral {
 	private Map<Integer, ReponseTirage> reponsetirages;
 	private Question question;
 	private Epreuve epreuve;
+	private List<Test> tests;
+	private List<Epreuve> epreuves;
 	
 	public BeanGeneral() {
 	}
 
 	public Utilisateur getUtilisateur() {
 		return utilisateur;
+	}
+
+	public List<Test> getTests() {
+		return tests;
+	}
+
+	public List<Epreuve> getEpreuves() {
+		return epreuves;
+	}
+
+	public void setEpreuves(List<Epreuve> epreuves) {
+		this.epreuves = epreuves;
+	}
+
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
 	}
 
 	public void setUtilisateur(Utilisateur utilisateur) {

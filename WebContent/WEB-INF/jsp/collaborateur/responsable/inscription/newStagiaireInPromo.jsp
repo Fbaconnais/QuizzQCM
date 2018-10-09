@@ -38,7 +38,7 @@
 	<%@include file="../../debutBody.jsp"%>
 	<div class="col col-lg-9">
 		<br> <br>
-		<h1>Inscription candidat à un test</h1>
+		<h1>Inscription candidat à une promo</h1>
 		<br>
 		<c:if test="${sessionScope.messageValidation != null }">
 			<h2 style="color: red;">${sessionScope.messageValidation}</h2>

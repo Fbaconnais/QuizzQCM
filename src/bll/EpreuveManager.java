@@ -78,4 +78,12 @@ public class EpreuveManager {
 			throw new BLLException(e.getMessage(), e);
 		}
 	}
+	public void removeEpreuve(int idEpreuve) throws BLLException {
+		
+		try {
+			DAO.remove(idEpreuve);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+	}
 }

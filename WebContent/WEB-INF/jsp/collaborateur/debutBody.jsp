@@ -12,11 +12,11 @@
 			</div>
 			<br>
 			<div class="row">
-				<a href="${pageContext.request.contextPath}/modifMDP"><button>Modifier mon mot de passe</button></a>
+				<a href="${pageContext.request.contextPath}/modifMDP"><button class="btn btn-primary btn-mb btn-block">Modifier mon mot de passe</button></a>
 			</div>
 			<br>
 			<div class="row">
-				<a href="${pageContext.request.contextPath}/deconnection"><button>Déconnexion</button></a>
+				<a href="${pageContext.request.contextPath}/deconnection"><button class="btn btn-primary btn-mb btn-block">Déconnexion</button></a>
 			</div>
 
 		</div>

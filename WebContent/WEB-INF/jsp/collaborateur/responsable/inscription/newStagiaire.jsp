@@ -82,10 +82,11 @@
 						</c:forEach>
 					</select>
 				</div>
+				<br>
 				<div class="form-row">
 				<input
 					type="hidden" id="actionajout" name="actionajout" value="stagiaire">
-				<input type="submit" name="cestuntest">
+				<input type="submit" name="cestuntest" class="btn btn-primary btn-mb btn-block">
 				</div>
 			</form>
 		</div>
