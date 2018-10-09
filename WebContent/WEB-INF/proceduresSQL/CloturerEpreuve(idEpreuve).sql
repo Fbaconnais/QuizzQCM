@@ -18,6 +18,9 @@ BEGIN
 	DECLARE @candidat BIT
 	DECLARE @compteur int
 	DECLARE @idTest int
+	DECLARE @NOTEFINALE float
+	SET @POINTSMAX = 0
+	SET @NOTE = 0
 
 	CREATE TABLE tempTable (
 			idQuestion			int NOT NULL,
@@ -33,8 +36,7 @@ BEGIN
 		BEGIN
 			
 			DECLARE propCandidat CURSOR FOR SELECT idProposition FROM REPONSE_TIRAGE WHERE idEpreuve=@idEpreuve AND idQuestion=@idQuestion
-			DECLARE propFormateur CURSOR FOR SELECT idProposition,estBonne FROM PROPOSITION WHERE idQuestion = @idQuestion		
-			DECLARE pointsQuestion CURSOR FOR SELECT points FROM QUESTION WHERE idQuestion=@idQuestion
+			DECLARE propFormateur CURSOR FOR SELECT idProposition,estBonne FROM PROPOSITION WHERE idQuestion = @idQuestion
 
 			OPEN propFormateur
 				FETCH NEXT FROM propFormateur INTO @idProposition,@bonne
@@ -56,10 +58,11 @@ BEGIN
 			CLOSE propCandidat
 			DEALLOCATE propCandidat
 
-			FETCH NEXT FROM questionsTirage INTO @idQuestion
+			FETCH NEXT FROM questionsTirage INTO @idQuestion,@ptsQuestion
 		END
-	
-	FETCH FIRST FROM questionsTirage INTO @idQuestion,@ptsQuestion
+	CLOSE questionsTirage
+	OPEN questionsTirage
+	FETCH NEXT FROM questionsTirage INTO @idQuestion,@ptsQuestion
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 			SET @compteur = 0
@@ -75,6 +78,8 @@ BEGIN
 						END
 					FETCH NEXT FROM curseur INTO @bonne,@candidat
 				END
+			CLOSE curseur
+			DEALLOCATE curseur
 				IF (@compteur = 0)
 					BEGIN
 					SET @NOTE = @NOTE + @ptsQuestion
@@ -86,26 +91,36 @@ BEGIN
 
 
 	DECLARE newCurseur CURSOR FOR SELECT  t.seuil_haut, t.seuil_bas FROM TEST t JOIN EPREUVE e ON (e.idTest = t.idTest) WHERE e.idEpreuve = @idEpreuve
+	
 	OPEN newCurseur
 		FETCH NEXT FROM newCurseur INTO @SEUILHAUT,@SEUILBAS
+		IF (@@FETCH_STATUS = 0)
+		BEGIN
+
+			SET @NOTEFINALE =  ((@NOTE * 1.0) / (@POINTSMAX * 1.0)*20.0)
+			PRINT @NOTE
+			PRINT @POINTSMAX
+			PRINT @NOTEFINALE
+
+			IF (@NOTEFINALE < @SEUILBAS)
+				BEGIN 
+				UPDATE EPREUVE SET niveau_obtenu='NA' WHERE idEpreuve=@idEpreuve
+				END
+			ELSE
+				BEGIN 
+					IF (@NOTEFINALE < @SEUILHAUT)
+					BEGIN
+						UPDATE EPREUVE SET niveau_obtenu='ECA' WHERE idEpreuve=@idEpreuve
+					END
+					ELSE
+					BEGIN
+						UPDATE EPREUVE SET niveau_obtenu='A' WHERE idEpreuve=@idEpreuve
+					END
+			END
+			UPDATE EPREUVE SET etat='T',note_obtenue=@NOTEFINALE WHERE idEpreuve=@idEpreuve
+		END
 	CLOSE newCurseur
 	DEALLOCATE newCurseur
-
-	DECLARE @NOTEFINALE float
-	SET @NOTEFINALE = ROUND(@NOTE / @POINTSMAX * 20,2)
-	IF (@NOTEFINALE < @SEUILBAS)
-		BEGIN 
-		UPDATE EPREUVE SET niveau_obtenu='NA' WHERE idEpreuve=@idEpreuve
-		END
-	ELSE IF (@NOTEFINALE < @SEUILHAUT)
-		BEGIN
-		UPDATE EPREUVE SET niveau_obtenu='ECA' WHERE idEpreuve=@idEpreuve
-		END
-		ELSE
-			BEGIN
-			UPDATE EPREUVE SET niveau_obtenu='A' WHERE idEpreuve=@idEpreuve
-			END
-	UPDATE EPREUVE SET etat='T',note_obtenue=@NOTEFINALE WHERE idEpreuve=@idEpreuve
 	DROP TABLE tempTable
 	DELETE FROM REPONSE_TIRAGE WHERE idEpreuve=@idEpreuve
 	DELETE FROM QUESTION_TIRAGE WHERE idEpreuve=@idEpreuve
