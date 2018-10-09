@@ -1,13 +1,11 @@
-	var temps;
-	
-	window.onload = function(){
-		verifTimer();
-		var temps;
-		console.log(temps);
-		if (temps != undefined) {
-			rebour(temps);
+
+	onload = function(){
+//		verifTimer();
+		console.log(tpsEcoule);
+		if (tpsEcoule != undefined) {
+			rebour(tpsEcoule);
 		} else {
-			rebour(3600);	
+			rebour(3600);
 		}
             }
 
@@ -65,7 +63,7 @@
     	var txt;
     	var nbQrep;
     	var boutonFin;
-    	txt = 'Vous avez répondu à '+nbQrep+' questions. Êtes-vous sûr de vouloir valider votre test?';
+    	txt = 'Êtes-vous sûr de vouloir valider votre test?';
     	boutonFin = '<button type=button onClick="">Terminer le test</button>';
     	document.getElementById("test").innerHTML = txt;
     	document.getElementById("propositions").innerHTML = boutonFin;
@@ -142,51 +140,6 @@
     			}
     	}
     
-    function verifTimer() {
-    	var xhr;
-    	
-    	try {
-    		xhr = new ActiveXObject('Msxml2.XMLHTTP');
-    		}
-    	catch (e)
-    		{
-    			try {
-    				xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    				}
-    				catch (e2)
-    					{
-    						try {
-    							xhr = new XMLHttpRequest();
-    							}
-    						catch (e3) { xhr = false; }
-    					}
-    		}
-	  
-    	xhr.onreadystatechange = function() {
-    		if(xhr.readyState == 4) {
-    			if(xhr.status == 200){
-    				recupTimer(this.response);
-    			}
-    			else
-    				echec(xhr.status, "Erreur de statut lors de la récupération du temps restant. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
-    		}
-    	};
-	 
-    	xhr.open("GET", path+'epreuve/'+idEpreuve+'/get', true);
-    	xhr.send();
-    }
-    
-    function recupTimer(xml) {
-    	var json = JSON.parse(xml);
-		console.log(json);
-		if (json != undefined) {
-	    	var temps = json.tempsEcoule;
-	    	document.getElementById("timer").innerHTML = tps;
-		} else {
-			
-		} 
-    }
-    
     function updateTimer(i) {
     		var xhr;
         	try {
@@ -217,4 +170,3 @@
         	xhr.open("PUT", path+'epreuve/'+idEpreuve+'/'+i+'/timer', true);
         	xhr.send();
     	}
-

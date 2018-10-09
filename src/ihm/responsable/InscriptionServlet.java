@@ -2,6 +2,8 @@ package ihm.responsable;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,8 @@ import bo.Utilisateur;
 @WebServlet("/collaborateur/inscription")
 public class InscriptionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String regexDate = "^(?:(?:31(-)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(-)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(-)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(-)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
+	private String regexTemps = "^(([0-1]{0,1}[0-9])|(2[0-3])):[0-5]{0,1}[0-9]$";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -82,42 +86,55 @@ public class InscriptionServlet extends HttpServlet {
 					String dateFinValidite = request.getParameter("dateFinValidite");
 					String heureDebutValidite = request.getParameter("HeureDebutValidite");
 					String heureFinValidite = request.getParameter("HeureFinValidite");
-					
-					
-					
+					Pattern date = Pattern.compile(regexDate);
+					Pattern heure = Pattern.compile(regexTemps);
+					Matcher matchDateDebut = date.matcher(dateDebutValidite);
+					Matcher matchDateFin = date.matcher(dateFinValidite);
+					Matcher matchHeureDebut = heure.matcher(heureDebutValidite);
+					Matcher matchHeureFin = heure.matcher(heureFinValidite);
 
-					// verif validité dates
-					
-					
-					
-					
-					
-					PromotionManager promoMger = PromotionManager.getMger();
-					try {
-
-						if (promoMger.verifPromoInscriteATest(codePromo, idTest)) {
+					if (!(matchDateDebut.matches()) || !(matchDateFin.matches())) {
+						request.getSession().setAttribute("messageValidation",
+								"Veuillez entrer une date au format correct: Jour-Mois-Année.");
+						url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
+					} else {
+						if (!(matchHeureDebut.matches()) || !(matchHeureFin.matches())) {
 
 							request.getSession().setAttribute("messageValidation",
-									"Un ou plusieurs membre(s) de la promotion est(sont) déjà inscrit(s) à ce test");
+									"Veuillez entrer une heure au format correct: Heure:Minute.");
 							url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 
 						} else {
-							promoMger.inscrirePromoATest(codePromo, idTest, dateDebutValidite, dateFinValidite,
-									heureDebutValidite, heureFinValidite);
-							request.getSession().setAttribute("messageValidation", "Requête exécutée");
-							url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
 
+							PromotionManager promoMger = PromotionManager.getMger();
+							try {
+
+								if (promoMger.verifPromoInscriteATest(codePromo, idTest)) {
+
+									request.getSession().setAttribute("messageValidation",
+											"Un ou plusieurs membre(s) de la promotion est(sont) déjà inscrit(s) à ce test");
+									url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
+
+								} else {
+									promoMger.inscrirePromoATest(codePromo, idTest, dateDebutValidite, dateFinValidite,
+											heureDebutValidite, heureFinValidite);
+									request.getSession().setAttribute("messageValidation", "Requête exécutée");
+									url = request.getContextPath() + "/collaborateur/inscription?action=promotest";
+
+								}
+							} catch (BLLException e) {
+								e.printStackTrace();
+
+								request.getSession().setAttribute("erreur", e.getMessage());
+								url = request.getContextPath() + "/erreur";
+							}
 						}
-					} catch (BLLException e) {
-						e.printStackTrace();
-
-						request.getSession().setAttribute("erreur", e.getMessage());
-						url = request.getContextPath() + "/erreur";
 					}
+
+					break;
 				}
 			}
 
-			break;
 		case "stagiaire":
 
 			int idProfil = Integer.parseInt(request.getParameter("type"));
@@ -175,16 +192,9 @@ public class InscriptionServlet extends HttpServlet {
 				String dateFinValidite = request.getParameter("dateFinValidite");
 				String heureDebutValidite = request.getParameter("HeureDebutValidite");
 				String heureFinValidite = request.getParameter("HeureFinValidite");
-				
-				
-				
-				
+
 				// verif validité dates
-				
-				
-				
-				
-				
+
 				UtilisateurManager userMger = UtilisateurManager.getMger();
 				try {
 
@@ -203,7 +213,7 @@ public class InscriptionServlet extends HttpServlet {
 
 					}
 				} catch (BLLException e) {
-					
+
 					request.getSession().setAttribute("erreur", e.getMessage());
 					url = request.getContextPath() + "/erreur";
 				}
@@ -223,7 +233,7 @@ public class InscriptionServlet extends HttpServlet {
 					Utilisateur candidat = UtilMger.selectUser(idUtil);
 					Promotion p = new Promotion();
 					p.setId(codePromo);
-					((Candidat)candidat).setPromotion(p);
+					((Candidat) candidat).setPromotion(p);
 					UtilMger.updateUser(candidat);
 					request.getSession().setAttribute("messageValidation", "Requête exécutée");
 					url = request.getContextPath() + "/collaborateur/inscription?action=stagiairepromo";
@@ -232,8 +242,7 @@ public class InscriptionServlet extends HttpServlet {
 					request.getSession().setAttribute("erreur", e.getMessage());
 					url = request.getContextPath() + "/erreur";
 				}
-						
-				
+
 			}
 
 			break;

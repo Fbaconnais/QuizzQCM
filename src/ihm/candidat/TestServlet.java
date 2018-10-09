@@ -15,7 +15,7 @@ import bll.QuestionTirageManager;
 import bo.QuestionTirage;
 
 @WebServlet("/test")
-public class Test extends HttpServlet {
+public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 
@@ -24,6 +24,8 @@ public class Test extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<QuestionTirage> listeQuestionsTirages;
+		Integer tpsEcoule;
+		EpreuveManager epreuveMger = EpreuveManager.getMger();
 		QuestionTirageManager questionTirageMger = QuestionTirageManager.getMger();
 		int id = Integer.parseInt(request.getParameter("id"));
 
@@ -33,7 +35,9 @@ public class Test extends HttpServlet {
 				questionTirageMger.genererTest(id);
 				listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
 			}
+			tpsEcoule = epreuveMger.selectEpreuve(id).getTempsEcoule();
 			request.setAttribute("idEpreuve", id);
+			request.setAttribute("tpsEcoule", tpsEcoule);
 			request.getSession().setAttribute("listeQuestionsTirages", listeQuestionsTirages);
 			request.getRequestDispatcher("/WEB-INF/jsp/candidat/test.jsp").forward(request, response);
 		} catch (BLLException e) {

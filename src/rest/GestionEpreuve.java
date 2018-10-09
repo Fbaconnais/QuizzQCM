@@ -36,7 +36,7 @@ public class GestionEpreuve {
 		Integer tpsEcoule=null;
 		try {
 			epreuve = epreuveMger.selectEpreuve(idEpreuve);
-			epreuve.getTempsEcoule();
+			tpsEcoule = epreuve.getTempsEcoule();
 			epreuveMger.updateEpreuve(epreuve);
 		} catch (BLLException e) {
 			throw new RestException(e.getMessage(), e);

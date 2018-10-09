@@ -65,6 +65,8 @@
 	<script>
 	var path= "${baseURL}"; 
 	var idEpreuve = "${requestScope.idEpreuve}";
+	var tpsEcoule = "${requestScope.tpsEcoule}";
+	console.log(tpsEcoule);
 	</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/Test.js"></script>
 	<%@include file="../finBody.html"%>
