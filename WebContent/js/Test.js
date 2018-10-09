@@ -40,6 +40,7 @@
     	var json = JSON.parse(xml);
 		var props = [];
 		var txt;
+		var marquage = '<input type="checkbox" id="marquageQ'+json.question.idQuestion+'" class="" onclick="activerMarquage('+json.question.idQuestion+')" ><p>Marquer la question</p><br>';
 		var idEpreuve;
 		console.log(json);
 		txt = json.question.enonce
@@ -53,8 +54,10 @@
 					txt = '<input type="checkbox" id="'+proposition.idProposition+'" onClick="gestionPropositionCandidat('+proposition.idProposition+','+json.question.idQuestion+','+idEpreuve.value+')"> <p>'+proposition.enonce +'</p><br>';
 			}
 			console.log(proposition);
+			
 			props.push(txt);
 		}
+		props.push(marquage);
 		document.getElementById("propositions").innerHTML = props.join("");
     }
     
@@ -205,3 +208,7 @@
     	xhr.open("POST", path+'epreuve/'+idEpreuve+'/close', true);
     	xhr.send();
     }
+    
+//    function activerMarquage(idQuestion) {
+//    	
+//    }

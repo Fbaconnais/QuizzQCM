@@ -38,7 +38,7 @@
 				<li class="list-inline-item">
 					<div class="ecart">
 						<button type="button" class="btn btn-primary"
-							onClick="recuperationQuestion(${questionTirage.question.idQuestion},${requestScope.idEpreuve})">${questionTirage.numordre}</button>
+							onClick="recuperationQuestion(${questionTirage.question.idQuestion},${requestScope.idEpreuve})" id="button'.${questionTirage.question.idQuestion}.'">${questionTirage.numordre}</button>
 					</div>
 				</li>
 			</c:forEach>
