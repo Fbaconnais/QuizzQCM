@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import bll.BLLException;
 import bll.EpreuveManager;
 import bll.QuestionTirageManager;
+import bo.Epreuve;
 import bo.QuestionTirage;
 
 @WebServlet("/test")
@@ -26,14 +27,19 @@ public class TestServlet extends HttpServlet {
 		EpreuveManager epreuveMger = EpreuveManager.getMger();
 		QuestionTirageManager questionTirageMger = QuestionTirageManager.getMger();
 		int id = Integer.parseInt(request.getParameter("id"));
-
+		Epreuve epreuve;	
 			try {
 				listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
 				if (listeQuestionsTirages.size() == 0) {
 					questionTirageMger.genererTest(id);
 					listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
+				} 
+				epreuve = epreuveMger.selectEpreuve(id);
+				tpsEcoule = epreuve.getTempsEcoule();
+				if (epreuve.getEtat() != "EC") {
+					epreuve.setEtat("EC");
 				}
-				tpsEcoule = epreuveMger.selectEpreuve(id).getTempsEcoule();
+				epreuveMger.updateEpreuve(epreuve);
 				request.setAttribute("idEpreuve", id);
 				request.setAttribute("tpsEcoule", tpsEcoule);
 				request.getSession().setAttribute("listeQuestionsTirages", listeQuestionsTirages);

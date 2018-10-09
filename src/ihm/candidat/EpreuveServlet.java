@@ -24,7 +24,7 @@ public class EpreuveServlet extends HttpServlet{
 		EpreuveManager EpreuveMger = EpreuveManager.getMger();
 		try {
 			int id = ((Utilisateur)request.getSession().getAttribute("user")).getIdUtilisateur(); 
-			listeEpreuves = EpreuveMger.selectAllEpreuvesByIDUser(id);
+			listeEpreuves = EpreuveMger.selectAllByIDEtDate(id);
 			request.getSession().setAttribute("listeEpreuves", listeEpreuves);
 			request.getRequestDispatcher("/WEB-INF/jsp/candidat/choixEpreuve.jsp").forward(request, response);
 		} catch (BLLException e) {

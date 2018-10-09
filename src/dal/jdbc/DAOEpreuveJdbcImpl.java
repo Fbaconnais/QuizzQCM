@@ -36,6 +36,11 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur) WHERE u.idUtilisateur=?";
 
+	String selectAllByIDEtDate = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.logo_langage," + "t.libelle," + "t.description," + "t.duree,"
+			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
+			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur) WHERE (u.idUtilisateur=?) AND (e.dateDedutValidite < GETDATE()) AND (e.dateFinValidite > GETDATE()) AND (e.etat != 'T')";
+	
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
 	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur, logo_langage) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
 	String update = "UPDATE Epreuve SET dateDedutValidite=?, dateFinValidite=?, tempsEcoule=?, etat=?, note_obtenue=?, niveau_obtenu=?, idTest=?, idUtilisateur=? WHERE idEpreuve=?";
@@ -286,5 +291,38 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				throw new DALException("Erreur fermeture de connection", e);
 			}
 		}
+	}
+	
+	public List<Epreuve> selectAllByIDEtDate(int idUtilisateur) throws DALException {
+		ResultSet rs = null;
+		PreparedStatement rqt = null;
+		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
+		Epreuve epreuve = null;
+		Test test = null;
+		
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(selectAllByIDEtDate);
+			rqt.setInt(1, idUtilisateur);
+			rs = rqt.executeQuery();
+			while(rs.next()){
+				DAOTest DAOtest = DAOFactory.getDAOTest();
+				test = new Test();
+				epreuve = new Epreuve();
+				test = DAOtest.selectOne(rs.getInt("idTest"));
+				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
+				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
+				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
+				epreuve.setEtat(rs.getString("etat"));
+				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
+				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
+				epreuve.setTest(test);
+				listeEpreuves.add(epreuve);
+			}
+			
+		} catch (SQLException e) {
+			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
+		}
+		return listeEpreuves;
 	}
 }

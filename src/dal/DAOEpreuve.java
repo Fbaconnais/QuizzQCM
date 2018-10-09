@@ -8,4 +8,5 @@ public interface DAOEpreuve extends DAOGeneric<Epreuve> {
 		public int getIdTestViaIdEpreuve(int idEpreuve)throws DALException;
 		public List<Epreuve> selectAllByIDProfil(int id) throws DALException;
 		public void cloturerEpreuve(int idEpreuve) throws DALException;
+		public List<Epreuve> selectAllByIDEtDate(int id) throws DALException;
 }

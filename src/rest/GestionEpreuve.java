@@ -73,5 +73,4 @@ public class GestionEpreuve {
 		return true;
 	}
 	
-	
 }

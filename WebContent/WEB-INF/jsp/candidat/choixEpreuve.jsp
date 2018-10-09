@@ -24,9 +24,9 @@
 		<c:otherwise>
 					<%int compteurLigne = 0; %>
 			<c:forEach var="epreuve" items="${sessionScope.listeEpreuves}">
-<%if (compteurLigne%4 == 0) {
+	<%if (compteurLigne%4 == 0) {
 	out.write("<div class=\"row\">");
-}%>
+	}%>
 			<div class="col-lg-3 col-md-4 col-xs-6">
 				<div class="card" >
 					<img class="card-img-top"
@@ -41,8 +41,17 @@
 							<li class="list-group-item">Date de fin:
 								${epreuve.dateFinValidite }</li>
 						</ul>
-						<br> <button type="button" onclick="confirmerChoixEpreuve(${epreuve.idEpreuve})"
-							class="btn btn-primary">Participer à l'épreuve</button>
+						<c:choose>
+							<c:when test="${epreuve.etat == 'EA'}">
+								<br> <button type="button" onclick="confirmerChoixEpreuve(${epreuve.idEpreuve})"
+								class="btn btn-primary">Participer à l'épreuve</button>
+							</c:when>
+							<c:otherwise>
+								<br> <button type="button" onclick="confirmerChoixEpreuve(${epreuve.idEpreuve})"
+								class="btn btn-primary">Reprendre l'épreuve</button>
+							</c:otherwise>
+						</c:choose>
+						
 					</div>
 				</div>
 				</div>

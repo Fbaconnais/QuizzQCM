@@ -86,4 +86,14 @@ public class EpreuveManager {
 			throw new BLLException(e.getMessage(), e);
 		}
 	}
+	
+	public List<Epreuve> selectAllByIDEtDate(int id) throws BLLException {
+		List<Epreuve> listeEpreuves = null;
+		try {
+			listeEpreuves = DAO.selectAllByIDEtDate(id);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		return listeEpreuves;
+	}
 }
