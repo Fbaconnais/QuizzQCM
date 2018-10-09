@@ -69,20 +69,20 @@
 				<br>
 				<div class="form-row">
 					<label for="dateDebutValidite" class="col col-lg-3">Date
-						debut validite</label> <input type="text"
-						class="form-control col col-lg-3" name="dateDebutValidite"
-						placeholder="/!\ Format Obligatoire : DD-MM-YYYY /!\" required><label
-						for="HeureDebutValidite" class="offset-lg-2"> Heure :</label> <input
+						debut validite (attention au format)</label> <input type="text"
+						class="form-control col col-lg-4" name="dateDebutValidite"
+						placeholder="/!\ JJ-MM-AAAA /!\" required><label
+						for="HeureDebutValidite" class="offset-lg-1"> Heure :</label> <input
 						type="text" class="form-control col col-lg-2 offset-lg-1"
 						name="HeureDebutValidite" placeholder="/!\ HH:MM /!\" required>
 				</div>
 				<br>
 				<div class="form-row">
 					<label for="dateFinValidite" class="col col-lg-3">Date fin
-						validite</label> <input type="text" class="form-control col col-lg-3"
+						validite attention au format)</label> <input type="text" class="form-control col col-lg-4"
 						name="dateFinValidite" id="date2" required
-						placeholder="/!\ Format Obligatoire : DD-MM-YYYY /!\"> <label
-						for="HeureFinValidite" class="offset-lg-2"> Heure :</label> <input
+						placeholder="/!\ JJ-MM-AAAA /!\"> <label
+						for="HeureFinValidite" class="offset-lg-1"> Heure :</label> <input
 						type="text" class="form-control col col-lg-2 offset-lg-1"
 						name="HeureFinValidite" placeholder="/!\ HH:MM /!\"  required>
 				</div>
