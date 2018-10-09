@@ -82,6 +82,16 @@ public class InscriptionServlet extends HttpServlet {
 					String dateFinValidite = request.getParameter("dateFinValidite");
 					String heureDebutValidite = request.getParameter("HeureDebutValidite");
 					String heureFinValidite = request.getParameter("HeureFinValidite");
+					
+					
+					
+
+					// verif validité dates
+					
+					
+					
+					
+					
 					PromotionManager promoMger = PromotionManager.getMger();
 					try {
 
@@ -165,6 +175,16 @@ public class InscriptionServlet extends HttpServlet {
 				String dateFinValidite = request.getParameter("dateFinValidite");
 				String heureDebutValidite = request.getParameter("HeureDebutValidite");
 				String heureFinValidite = request.getParameter("HeureFinValidite");
+				
+				
+				
+				
+				// verif validité dates
+				
+				
+				
+				
+				
 				UtilisateurManager userMger = UtilisateurManager.getMger();
 				try {
 
