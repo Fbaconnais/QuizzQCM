@@ -12,6 +12,7 @@
 <body>
 	<%@include file="../debutBody.html"%>
 
+<c:set var="baseURL" value="${pageContext.request.contextPath}/rest/" />
 	<div class="container text-center">
 		<h1 class="display-4">Epreuves</h1>
 		<hr>
@@ -40,7 +41,7 @@
 							<li class="list-group-item">Date de fin:
 								${epreuve.dateFinValidite }</li>
 						</ul>
-						<br> <button onclick=""
+						<br> <button type="button" onclick="confirmerChoixEpreuve(${epreuve.idEpreuve})"
 							class="btn btn-primary">Participer à l'épreuve</button>
 					</div>
 				</div>
@@ -57,8 +58,9 @@
 		</c:otherwise>
 	</c:choose>
 	<script>
-	var idEpreuve = "${idEpreuve}"
+	var path= "${baseURL}";
 	</script>
 	<%@include file="../finBody.html"%>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ChoixEpreuve.js"></script>
 </body>
 </html>
