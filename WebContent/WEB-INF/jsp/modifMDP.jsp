@@ -63,7 +63,7 @@
 		<br>
 		<div class="form-row">
 			<a href="${pageContext.request.contextPath}/login"  class="btn btn-primary btn-lg btn-block"
-				 >Revenir à mon accueil</a>
+				 >Revenir à mon espace personnel</a>
 		</div>
 	</div>
 
