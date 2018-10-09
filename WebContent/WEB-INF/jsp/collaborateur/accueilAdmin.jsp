@@ -31,7 +31,11 @@
 	<div class="row justify-content-lg-center">
 		<div class="col col-lg-10 offset-lg-1" id="results"></div>
 	</div>
-
+	<br>
+	<div class="row justify-content-lg-center">
+		<div class="col col-lg-10 offset-lg-1"><a href="${pageContext.request.contextPath}/collaborateur"
+			class="btn btn-primary btn-lg btn-block"> Revenir à l'accueil admin </a></div>
+	</div>
 
 	<script>
 		function createXHR() {
@@ -85,7 +89,7 @@
 			props
 					.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="annuler" class="btn btn-primary btn-mb btn-block" onClick="gestionPerso()"></div>');
 			props
-					.push('<div class="col col-lg-6"><input type="button" value="Valider" onClick="addBDD()" class="btn btn-primary btn-mb btn-block"></div></div>')
+					.push('<div class="col col-lg-6"><input type="button" value="Valider" onClick="addBDD()" class="btn btn-primary btn-mb btn-block"></div></div>');
 			document.getElementById("results").innerHTML = props.join("");
 
 		}
@@ -125,8 +129,6 @@
 							echec(xhr.status, xhr.responseText);
 					}
 				};
-				var input = document.getElementById('nom');
-				var nommail = input.value;
 				xhr
 						.open(
 								"PUT",
@@ -175,13 +177,13 @@
 								+ '" class="btn-primary btn-mb btn-block" onClick="afficherColl('
 								+ json[x].idUtilisateur + ')"></div>');
 				props
-						.push('<input type="hidden" id="prenom'+json[0].idUtilisateur+'" value="'+json[0].prenom+'">');
+						.push('<input type="hidden" id="prenom'+json[x].idUtilisateur+'" value="'+json[x].prenom+'">');
 				props
-						.push('<input type="hidden" id="nom'+json[0].idUtilisateur+'" value="'+json[0].nom+'">');
+						.push('<input type="hidden" id="nom'+json[x].idUtilisateur+'" value="'+json[x].nom+'">');
 				props
-						.push('<input type="hidden" id="email'+json[0].idUtilisateur+'" value="'+json[0].email+'">');
+						.push('<input type="hidden" id="email'+json[x].idUtilisateur+'" value="'+json[x].email+'">');
 				props
-						.push('<input type="hidden" id="pro'+json[0].idUtilisateur+'" value="'+json[0].profil.id+'">');
+						.push('<input type="hidden" id="pro'+json[x].idUtilisateur+'" value="'+json[x].profil.id+'">');
 			}
 			document.getElementById("results").innerHTML = props.join("");
 
@@ -194,7 +196,7 @@
 			var profil = document.getElementById('pro' + id).value;
 			var props = [];
 			props
-					.push('<div class="form-row"><label for="name" class="col col-lg-3"> Nom </label>');
+					.push('<div class="form-row"><label for="nom" class="col col-lg-3"> Nom </label>');
 			props
 					.push('<input type="text" class="col col-lg-8 offset-lg-1" name="nom" id="nom" value="'+nom+'" required ></div><br>');
 			props
@@ -230,8 +232,80 @@
 				props.push(' selected ');
 			}
 			props.push('>Administrateur</option></select></div><br>');
+			props.push('<div class="form-row"><div class="col col-lg-6"><input type="button" value="Supprimer" class="btn btn-primary btn-mb btn-block" onClick="deleteBDD('+id+')"></div>');
+	props.push('<div class="col col-lg-6"><input type="button" value="Modifier" onClick="updateBDD('+id+')" class="btn btn-primary btn-mb btn-block"></div></div>');
+			
+			
+			
 			document.getElementById("results").innerHTML = props.join("");
 		}
+		
+		function deleteBDD(id){
+			var xhr = createXHR();
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						succes("Requete exécutée");
+					}
+
+					else {
+						echec(xhr.status,
+								"Echec de la suppresion");
+					}
+				}
+			};
+
+			xhr.open("DELETE",
+					"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"+ id, true);
+			xhr.send(null);
+		}
+		
+		function updateBDD(id){
+			var xhr = createXHR();
+			var nom = document.getElementById("nom").value;
+			var prenom = document.getElementById("prenom").value;
+			var email = document.getElementById("email").value;
+			var profil = document.getElementById("role").value;
+			var expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
+			var message = "";
+			if (nom == null || nom === undefined) {
+				message += "Saisissez un nom - ";
+			}
+			if (prenom == null || prenom === undefined) {
+				message += "Saisissez un prenom - ";
+			}
+			if (email == null || email === undefined) {
+				message += "Saisissez un email - ";
+			} else if (!(expressionReguliere.test(email))) {
+				message += "L'adresse email n'est pas valide";
+			}
+			if (message != "") {
+				echec(1, message);
+			} else {
+				data = "&nom=" + encodeURIComponent(nom) + "&prenom="
+						+ encodeURIComponent(prenom) + "&email="
+						+ encodeURIComponent(email) + "&profil="
+						+ encodeURIComponent(profil);
+
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4) {
+						if (xhr.status == 200)
+							succes("Collaborateur modifié");
+						else
+							echec(xhr.status, xhr.responseText);
+					}
+				};
+				xhr
+						.open(
+								"PUT",
+								"<c:out value="${pageContext.request.contextPath}"/>/rest/users/" + id,
+								true);
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-type",
+						"application/x-www-form-urlencoded");
+				xhr.send(data);
+		}}
 
 		function consulterLogs() {
 			document.getElementById("results").innerHTML = "<h1>en construction</h1>";
