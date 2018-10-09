@@ -18,8 +18,6 @@ import bo.QuestionTirage;
 public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
-
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -29,19 +27,24 @@ public class TestServlet extends HttpServlet {
 		QuestionTirageManager questionTirageMger = QuestionTirageManager.getMger();
 		int id = Integer.parseInt(request.getParameter("id"));
 
-		try {
-			listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
-			if (listeQuestionsTirages.size() == 0) {
-				questionTirageMger.genererTest(id);
+			try {
 				listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
+				if (listeQuestionsTirages.size() == 0) {
+					questionTirageMger.genererTest(id);
+					listeQuestionsTirages = questionTirageMger.getQuestionsViaIdEpreuve(id);
+				}
+				tpsEcoule = epreuveMger.selectEpreuve(id).getTempsEcoule();
+				request.setAttribute("idEpreuve", id);
+				request.setAttribute("tpsEcoule", tpsEcoule);
+				request.getSession().setAttribute("listeQuestionsTirages", listeQuestionsTirages);
+				request.getRequestDispatcher("/WEB-INF/jsp/candidat/test.jsp").forward(request, response);
+			} catch (BLLException e) {
+				e.printStackTrace();
 			}
-			tpsEcoule = epreuveMger.selectEpreuve(id).getTempsEcoule();
-			request.setAttribute("idEpreuve", id);
-			request.setAttribute("tpsEcoule", tpsEcoule);
-			request.getSession().setAttribute("listeQuestionsTirages", listeQuestionsTirages);
-			request.getRequestDispatcher("/WEB-INF/jsp/candidat/test.jsp").forward(request, response);
-		} catch (BLLException e) {
-			e.printStackTrace();
 		}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 }

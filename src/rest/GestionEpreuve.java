@@ -1,6 +1,7 @@
 package rest;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -42,5 +43,18 @@ public class GestionEpreuve {
 			throw new RestException(e.getMessage(), e);
 		}
 		return tpsEcoule;
+	}
+	
+	@POST
+	@Path("/{id}/close")
+	public Boolean cloturerEpreuve(@PathParam("id") int idEpreuve) throws RestException {
+		EpreuveManager epreuveMger = EpreuveManager.getMger();
+		try {
+			epreuveMger.cloturerEpreuve(idEpreuve);
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		return true;
+		
 	}
 }

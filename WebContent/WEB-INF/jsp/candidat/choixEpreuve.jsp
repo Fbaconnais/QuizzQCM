@@ -40,8 +40,8 @@
 							<li class="list-group-item">Date de fin:
 								${epreuve.dateFinValidite }</li>
 						</ul>
-						<br> <a href="/QuizzQCM/test?id=${epreuve.idEpreuve}"
-							class="btn btn-primary">Participer à l'épreuve</a>
+						<br> <button onclick=""
+							class="btn btn-primary">Participer à l'épreuve</button>
 					</div>
 				</div>
 				</div>
@@ -56,6 +56,9 @@
 
 		</c:otherwise>
 	</c:choose>
+	<script>
+	var idEpreuve = "${idEpreuve}"
+	</script>
 	<%@include file="../finBody.html"%>
 </body>
 </html>

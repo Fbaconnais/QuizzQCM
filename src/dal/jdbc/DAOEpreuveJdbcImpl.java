@@ -1,5 +1,6 @@
 package dal.jdbc;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import dal.DAOTest;
 
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	private Connection conn = null;
+	private String CloturerTest = "{call CloturerEpreuve(?)}";
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
 			+ "e.note_obtenue," + "e.tempsEcoule," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.logo_langage," + "t.duree,"
 			+ "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email"
@@ -263,5 +265,26 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			}
 		}
 		return idTest;
+	}
+	
+	public void cloturerEpreuve(int idEpreuve) throws DALException {
+		CallableStatement call = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			call = conn.prepareCall(CloturerTest);
+			
+			call.setInt(1, idEpreuve);
+			call.executeUpdate();
+			
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL - Clôture de l'épreuve " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
 	}
 }

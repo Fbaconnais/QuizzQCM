@@ -50,9 +50,9 @@ public class EpreuveManager {
 
 	}
 
-	public List<Epreuve>  selectAllEpreuves() throws BLLException {
+	public List<Epreuve> selectAllEpreuves() throws BLLException {
 		List<Epreuve> listeEpreuves = null;
-		
+
 		try {
 			listeEpreuves = DAO.selectAll();
 		} catch (DALException e) {
@@ -69,5 +69,13 @@ public class EpreuveManager {
 			throw new BLLException(e.getMessage(), e);
 		}
 		return listeEpreuves;
+	}
+
+	public void cloturerEpreuve(int idEpreuve) throws BLLException {
+		try {
+			DAO.cloturerEpreuve(idEpreuve);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
 	}
 }

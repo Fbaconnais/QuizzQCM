@@ -1,6 +1,5 @@
 
 	onload = function(){
-//		verifTimer();
 		console.log(tpsEcoule);
 		if (tpsEcoule != undefined) {
 			rebour(tpsEcoule);
@@ -64,7 +63,7 @@
     	var nbQrep;
     	var boutonFin;
     	txt = 'Êtes-vous sûr de vouloir valider votre test?';
-    	boutonFin = '<button type=button onClick="">Terminer le test</button>';
+    	boutonFin = '<button type=button onClick="'+cloturerEpreuve(idEpreuve)+'">Terminer le test</button>';
     	document.getElementById("test").innerHTML = txt;
     	document.getElementById("propositions").innerHTML = boutonFin;
     	
@@ -136,6 +135,7 @@
     	setTimeout(updateTimer(restant), 5000);
     			}else{
     	alert("Fin du test, vos résultats ont été enregistrés et vous pourrez les consulter d'ici quelques minutes. Cordialement, la direction.");
+    	cloturerEpreuve(idEpreuve);
     	
     			}
     	}
@@ -170,3 +170,38 @@
         	xhr.open("PUT", path+'epreuve/'+idEpreuve+'/'+i+'/timer', true);
         	xhr.send();
     	}
+    
+    function cloturerEpreuve(idEpreuve) {
+    	var xhr;
+    	
+    	try {
+    		xhr = new ActiveXObject('Msxml2.XMLHTTP');
+    		}
+    	catch (e)
+    		{
+    			try {
+    				xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    				}
+    				catch (e2)
+    					{
+    						try {
+    							xhr = new XMLHttpRequest();
+    							}
+    						catch (e3) { xhr = false; }
+    					}
+    		}
+	  
+    	xhr.onreadystatechange = function() {
+    		if(xhr.readyState == 4) {
+    			if(xhr.status == 200){
+    				var link = ("/QuizzQCM/FinEpreuveServlet?action=redirect");
+    				document.location.href = link;
+    			}
+    			else
+    				echec(xhr.status, "Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
+    		}
+    	};
+	 
+    	xhr.open("POST", path+'epreuve/'+idEpreuve+'/close', true);
+    	xhr.send();
+    }
