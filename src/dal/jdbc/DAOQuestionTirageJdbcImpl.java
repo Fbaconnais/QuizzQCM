@@ -71,7 +71,7 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				throw new DALException("Erreur fermeture de connection", e);
+				throw new DALException("Erreur fermeture de connexion", e);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				throw new DALException("Erreur fermeture de connection", e);
+				throw new DALException("Erreur fermeture de connexion", e);
 			}
 		}
 
@@ -132,7 +132,7 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				throw new DALException("Erreur fermeture de connection", e);
+				throw new DALException("Erreur fermeture de connexion", e);
 			}
 		}
 	}

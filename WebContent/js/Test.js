@@ -20,7 +20,6 @@
     	           catch (e3) {  xhr = false;   }
     	         }
     	    }
-    	  
     	    xhr.onreadystatechange  = function() 
     	    { 
     	       if(xhr.readyState  == 4)
@@ -31,7 +30,6 @@
     	        	console.log("Erreur de statut!");
     	        }
     	    }; 
-    	 
     	   xhr.open("GET", path+'question/'+idQuestion+'/'+idEpreuve+'/get',  true); 
     	   xhr.send(); 
     }
@@ -73,13 +71,11 @@
     	txt = 'Êtes-vous sûr de vouloir valider votre test?';
     	boutonFin = '<button type=button onClick="'+cloturerEpreuve(idEpreuve)+'">Terminer le test</button>';
     	document.getElementById("test").innerHTML = txt;
-    	document.getElementById("propositions").innerHTML = boutonFin;
-    	
+    	document.getElementById("propositions").innerHTML = boutonFin;	
     }
     
     function gestionPropositionCandidat(idProposition, idQuestion, idEpreuve){
     	var xhr;
-    	
     	try {
     		xhr = new ActiveXObject('Msxml2.XMLHTTP');
     		}
@@ -96,17 +92,14 @@
     						catch (e3) { xhr = false; }
     					}
     		}
-	  
     	xhr.onreadystatechange = function() {
     		if(xhr.readyState == 4) {
-    			if(xhr.status == 200){
-    				
+    			if(xhr.status == 200){	
     			}
     			else
     				echec(xhr.status, "Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
     		}
     	};
-	 
     	xhr.open("GET", path+'reponse/'+idProposition+'/'+idQuestion+'/'+idEpreuve+'/gestion', true);
     	xhr.send();
     }
@@ -140,12 +133,13 @@
     	document.getElementById("compteRebour_affiche").innerHTML = '<button type="button" class="btn btn-primary">'+heure+':'+minutes+':'+secondes+'</button>';
     	var restant = tps-1;
     	setTimeout("rebour("+restant+")", 1000);
-    	setTimeout(updateTimer(restant), 5000);
-    			}else{
+		if (( restant % 60) == 0) {
+			updateTimer(restant);
+			}
+    	}else{
     	alert("Fin du test, vos résultats ont été enregistrés et vous pourrez les consulter d'ici quelques minutes. Cordialement, la direction.");
     	cloturerEpreuve(idEpreuve);
-    	
-    			}
+    		}
     	}
     
     function updateTimer(i) {
@@ -181,7 +175,6 @@
     
     function cloturerEpreuve(idEpreuve) {
     	var xhr;
-    	
     	try {
     		xhr = new ActiveXObject('Msxml2.XMLHTTP');
     		}
@@ -198,7 +191,6 @@
     						catch (e3) { xhr = false; }
     					}
     		}
-	  
     	xhr.onreadystatechange = function() {
     		if(xhr.readyState == 4) {
     			if(xhr.status == 200){
@@ -209,14 +201,12 @@
     				echec(xhr.status, "Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
     		}
     	};
-	 
     	xhr.open("POST", path+'epreuve/'+idEpreuve+'/close', true);
     	xhr.send();
     }
     
     function activerMarquage(idQuestion, idEpreuve) {
     	var xhr;
-    	
     	try {
     		xhr = new ActiveXObject('Msxml2.XMLHTTP');
     		}
@@ -236,13 +226,11 @@
     	xhr.onreadystatechange = function() {
     		if(xhr.readyState == 4) {
     			if(xhr.status == 200){
-    				
     			}
     			else
     				echec(xhr.status, "Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
     		}
     	};
-	 
     	xhr.open("PUT", path+'questionTirage/'+idQuestion+'/'+idEpreuve+'/marquage', true);
     	xhr.send();
     }

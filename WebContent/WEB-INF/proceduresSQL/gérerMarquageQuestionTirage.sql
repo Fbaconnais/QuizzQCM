@@ -15,11 +15,11 @@ CREATE PROCEDURE gererMarquage
 					BEGIN
 						IF @estMarquee = 'TRUE'
 							BEGIN
-							UPDATE Question_Tirage SET estMarquee='FALSE'
+							UPDATE Question_Tirage SET estMarquee=~estMarquee WHERE (idQuestion = @idQuestion) AND (idEpreuve = @idEpreuve)
 							END
 						ELSE
 							BEGIN
-							UPDATE Question_Tirage SET estMarquee='TRUE'
+							UPDATE Question_Tirage SET estMarquee=~estMarquee WHERE (idQuestion = @idQuestion) AND (idEpreuve = @idEpreuve)
 							END
 						END 
 		
