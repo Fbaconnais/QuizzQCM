@@ -23,8 +23,6 @@ import dal.DAOFactory;
 import dal.DAOUtilisateur;
 
 public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
-
-	private Connection conn = null;
 	String selectOne = "Select " + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email,"
 			+ "p.codeProfil,p.libelle as plibelle," + "u.codePromo"
 			+ " from UTILISATEUR u join PROFIL p on (u.codeProfil = p.codeProfil) " + " where u.idUtilisateur=?";
@@ -53,6 +51,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 	public Utilisateur add(Utilisateur data) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(add, Statement.RETURN_GENERATED_KEYS);
@@ -92,6 +92,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Utilisateur user = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectOne);
@@ -136,6 +138,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 	public void remove(int id) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(remove);
@@ -155,6 +159,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 
 	public void update(Utilisateur data) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(update);
@@ -187,6 +193,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		String message = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(authentification);
@@ -207,6 +215,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Utilisateur user = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectUserByEmail);
@@ -254,6 +264,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		Profil profil = null;
 		List<Utilisateur> liste = new ArrayList<Utilisateur>();
 		Promotion promo = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectUsersByCodePromo);
@@ -290,6 +302,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	@Override
 	public void updatePassword(String email, String password) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(setPassword);
@@ -316,6 +330,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		ResultSet rs = null;
 		Candidat user = null;
 		List<Utilisateur> liste = new ArrayList<Utilisateur>();
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectUsersByNameAndMail);
@@ -350,6 +366,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Boolean result = false;
+		Connection conn = null;
 
 		try {
 			conn = ConnectionProvider.getCnx();
@@ -378,6 +395,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 	public void inscrireCandidatAEpreuve(int idTest, int idUtilisateur, Timestamp dateDebutValid, Timestamp dateFinVald)
 			throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(inscrireCandidatATest);
@@ -407,6 +426,8 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		ResultSet rs = null;
 		List<Collaborateur> liste = new ArrayList<Collaborateur>();
 		Collaborateur user = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.createStatement();

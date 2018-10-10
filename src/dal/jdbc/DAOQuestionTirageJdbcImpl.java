@@ -19,7 +19,6 @@ import dal.DAOQuestion;
 import dal.DAOQuestionTirage;
 
 public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
-	private Connection conn = null;
 	private String generationTest = "{call genererTest(?,?)}";
 	private String gererMarquage = "{call gererMarquage(?,?)}";
 	private String getQuestionsDansLordre = "SELECT * FROM QUESTION_TIRAGE WHERE idEpreuve=? ORDER BY numordre ASC ";
@@ -56,7 +55,8 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 	@Override
 	public void generationTest(int idTest, int idEpreuve) throws DALException {
 		CallableStatement call = null;
-
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			call = conn.prepareCall(generationTest);
@@ -84,6 +84,8 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 		Question question = null;
 		QuestionTirage questionTirage = null;
 		List<QuestionTirage> questionsTirage = new ArrayList<QuestionTirage>();
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(getQuestionsDansLordre);
@@ -117,7 +119,8 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 
 	public void marquageQuestion(int idQuestion, int idEpreuve) throws DALException{
 		CallableStatement call = null;
-
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			call = conn.prepareCall(gererMarquage);

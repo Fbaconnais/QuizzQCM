@@ -14,7 +14,6 @@ import dal.DALException;
 import dal.DAOReponseTirage;
 
 public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
-	private Connection conn = null;
 	private String gestionReponse = "{call gererReponseTirage(?,?,?)}";
 	private String selectAllByIDEpreuve = "SELECT * FROM Reponse_Tirage WHERE (idEpreuve=?)";
 	private String selectAllByIDQuestionIDEpreuve = "SELECT * FROM Reponse_Tirage WHERE (idQuestion =?) AND (idEpreuve=?)";
@@ -52,7 +51,8 @@ public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 	@Override
 	public void gererReponseTirage(int idProposition, int idQuestion, int idEpreuve) throws DALException{
 		CallableStatement call = null;
-
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			call = conn.prepareCall(gestionReponse);
@@ -80,6 +80,8 @@ public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 		List<ReponseTirage> listeReponses = new ArrayList<ReponseTirage>();
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectAllByIDQuestionIDEpreuve);
@@ -111,6 +113,8 @@ public class DAOReponseTirageJdbcImpl implements DAOReponseTirage{
 		List<ReponseTirage> listeReponses = new ArrayList<ReponseTirage>();
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectAllByIDEpreuve);

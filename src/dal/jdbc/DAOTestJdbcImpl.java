@@ -14,7 +14,6 @@ import dal.DALException;
 import dal.DAOTest;
 
 public class DAOTestJdbcImpl implements DAOTest {
-	private Connection conn = null;
 	String selectOne = "SELECT * FROM TEST WHERE idTest=?";
 	String selectAll = "SELECT * FROM TEST";
 	
@@ -30,6 +29,8 @@ public class DAOTestJdbcImpl implements DAOTest {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Test test = null;
+		Connection conn = null;
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectOne);
@@ -66,6 +67,8 @@ public class DAOTestJdbcImpl implements DAOTest {
 		ResultSet rs = null;
 		List<Test> liste = new ArrayList<Test>();
 		Test test = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.createStatement();

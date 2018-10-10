@@ -1,7 +1,7 @@
 
 	onload = function(){
 		console.log(tpsEcoule);
-		if (tpsEcoule != undefined) {
+		if (tpsEcoule != 0) {
 			rebour(tpsEcoule);
 		} else {
 			rebour(3600);
@@ -39,7 +39,7 @@
 		var props = [];
 		var txt;
 		var marquageCheck = '<input type="checkbox" onclick="activerMarquage('+json.question.idQuestion+','+json.questiontirage.epreuve.idEpreuve+')" checked>Marquer la question<br>';
-		var marquageNonCheck = '<input type="checkbox" onclick="activerMarquage('+json.question.idQuestion+')">Marquer la question<br>';
+		var marquageNonCheck = '<input type="checkbox" onclick="activerMarquage('+json.question.idQuestion+','+json.questiontirage.epreuve.idEpreuve+')">Marquer la question<br>';
 		var idEpreuve;
 		console.log(json);
 		if (json.questiontirage.estMarquee == true) {
@@ -226,6 +226,13 @@
     	xhr.onreadystatechange = function() {
     		if(xhr.readyState == 4) {
     			if(xhr.status == 200){
+    				var str = document.getElementById("button"+idQuestion).innerHTML;
+    				console.log(str);
+    				if (str.includes('class="btn btn-warning"')) {
+    					var replace = str.replace('class="btn btn-primary"','class="btn btn-warning"');
+    				} else {
+    					var replace = str.replace('class="btn btn-warning"','class="btn btn-primary"');
+    				}
     			}
     			else
     				echec(xhr.status, "Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");

@@ -21,8 +21,6 @@ import dal.DAOTest;
 import dal.DAOTheme;
 
 public class DAOSectionTestJdbcImpl implements DAOSectionTest {
-	private Connection conn = null;
-
 	String selectThemeViaIdTest = "SELECT nbQuestionsATirer,idTheme FROM SECTION_TEST where idTest=?";
 	String selectSectionTestViaIdTestAndIdTheme = "SELECT nbQuestionATirer FROM SECTION_TEST where (idTest=? AND idTheme=?)";
 
@@ -64,6 +62,8 @@ public class DAOSectionTestJdbcImpl implements DAOSectionTest {
 		Test test = null;
 		List<SectionTest> liste = new ArrayList<SectionTest>();
 		SectionTest sectionTest = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectThemeViaIdTest);
@@ -100,6 +100,8 @@ public class DAOSectionTestJdbcImpl implements DAOSectionTest {
 		Theme theme = null;
 		Test test = null;
 		SectionTest sectionTest = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectThemeViaIdTest);

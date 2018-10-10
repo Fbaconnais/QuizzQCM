@@ -12,8 +12,9 @@ public class GestionQuestionTirage {
 
 	@PUT
 	@Path("/{idQuestion}/{idEpreuve}/marquage")
-	public void gererMarquage(@PathParam("idQuestion") int idQuestion, @PathParam("idEpreuve") int idEpreuve) throws BLLException {
+	public Boolean gererMarquage(@PathParam("idQuestion") int idQuestion, @PathParam("idEpreuve") int idEpreuve) throws BLLException {
 	QuestionTirageManager qtMger = QuestionTirageManager.getMger();
 	qtMger.marquageQuestion(idQuestion, idEpreuve);
+	return true;
 	}
 }

@@ -17,8 +17,6 @@ import dal.DALException;
 import dal.DAOTheme;
 
 public class DAOThemeJdbcImpl implements DAOTheme {
-
-	private Connection conn = null;
 	String selectOne = "SELECT libelle FROM THEME WHERE idTheme=?";
 	
 	@Override
@@ -32,6 +30,8 @@ public class DAOThemeJdbcImpl implements DAOTheme {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Theme theme = null;
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectOne);

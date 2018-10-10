@@ -15,7 +15,6 @@ import dal.DALException;
 import dal.DAOQuestion;
 
 public class DAOQuestionJdbcImpl implements DAOQuestion {
-	private Connection conn = null;
 	private String selectAllByIDQuestion = "SELECT * FROM Proposition WHERE idQuestion=?";
 	private String selectOne = "SELECT " + "q.idQuestion," + "q.enonce," + "q.media," + "q.type_media," + "q.points,"
 			+ "t.idTheme," + "t.libelle " + "FROM Question q JOIN Theme t on (q.idTheme = t.idTheme) "
@@ -34,6 +33,7 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		List<Proposition> listePropositions = null;
+		Connection conn = null;
 
 		try {
 			conn = ConnectionProvider.getCnx();
@@ -94,7 +94,8 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 		List<Proposition> propositions = new ArrayList<Proposition>();
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
-
+		Connection conn = null;
+		
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectAllByIDQuestion);
