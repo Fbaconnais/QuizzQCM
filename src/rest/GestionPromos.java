@@ -18,7 +18,7 @@ public class GestionPromos {
 	
 	
 	@GET
-	@Path("/all")
+	@Path("/")
 	public List<Promotion> getAllPromos() throws BLLException{
 		PromotionManager PMger = PromotionManager.getMger();
 		List<Promotion> liste = PMger.selectAllPromos();

@@ -1,4 +1,4 @@
-jQuery("input[name='promo']").on("input", function() {
+jQuery("input[name='promo']").on("keyup", function() {
 	var xhr = createXHR();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
