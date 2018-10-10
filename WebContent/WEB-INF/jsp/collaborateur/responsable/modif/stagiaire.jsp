@@ -27,11 +27,11 @@
 						Accueil Responsable </a></li>
 
 				<li class="nav-item active"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion
+					href="${pageContext.request.contextPath}/collaborateur/responsable/accinscription">Gestion
 						des inscriptions<span class="sr-only">(current)</span>
 				</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
+					href="${pageContext.request.contextPath}/collaborateur/responsable/resultats">Consultation
 						des resultats</a></li>
 
 			</ul>

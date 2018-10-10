@@ -29,14 +29,19 @@ public class CollaborateurFilter implements Filter {
 		if (((HttpServletRequest) req).getSession().getAttribute("profilCon") == null
 				|| ((HttpServletRequest) req).getSession().getAttribute("profilCon").equals("erreur")) {
 			((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
-			((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/login");
+			((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() + "/login");
 		} else {
-			String profil = (String) ((HttpServletRequest) req).getSession().getAttribute("profilCon");
-			if (profil.equals("stagiaire") || profil.equals("candidat libre")) {
-				((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
-				((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/candidat");
+			if (((HttpServletRequest) req).getSession().getAttribute("user") == null) {
+				((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() + "/login");
 			} else {
-				chain.doFilter(((HttpServletRequest) req), (HttpServletResponse) resp);
+				String profil = (String) ((HttpServletRequest) req).getSession().getAttribute("profilCon");
+				if (profil.equals("stagiaire") || profil.equals("candidat libre")) {
+					((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
+					((HttpServletResponse) resp)
+							.sendRedirect(((HttpServletRequest) req).getContextPath() + "/candidat");
+				} else {
+					chain.doFilter(((HttpServletRequest) req), (HttpServletResponse) resp);
+				}
 			}
 		}
 

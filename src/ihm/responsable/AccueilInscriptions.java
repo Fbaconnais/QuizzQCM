@@ -14,7 +14,7 @@ import dal.DAOFactory;
 import dal.DAOPromotion;
 import dal.DAOUtilisateur;
 
-@WebServlet("/collaborateur/inscriptions")
+@WebServlet("/collaborateur/responsable/accinscription")
 public class AccueilInscriptions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -22,14 +22,7 @@ public class AccueilInscriptions extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.getSession().setAttribute("messageValidation", null);
-
-		String url;
-		if (request.getSession().getAttribute("user") == null) {
-			url = "/login";
-		} else {
-			url = "/WEB-INF/jsp/collaborateur/responsable/accueilinscription.jsp";
-		}
-		request.getRequestDispatcher(url).forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/responsable/accueilinscription.jsp").forward(request, response);
 	}
 
 	@Override
