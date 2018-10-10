@@ -13,13 +13,9 @@ import bo.Candidat;
 import bo.Collaborateur;
 import bo.Profil;
 import bo.Promotion;
-import bo.SectionTest;
-import bo.Test;
-import bo.Theme;
 import bo.Utilisateur;
 import dal.ConnectionProvider;
 import dal.DALException;
-import dal.DAOFactory;
 import dal.DAOUtilisateur;
 
 public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {

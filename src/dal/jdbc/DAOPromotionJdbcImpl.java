@@ -24,7 +24,7 @@ import dal.DAOUtilisateur;
 
 public class DAOPromotionJdbcImpl implements DAOPromotion {
 
-	Connection conn;
+	
 	private String add = "INSERT INTO PROMOTION (codePromo,libelle) VALUES (?,?)";
 	private String remove = "DELETE FROM PROMOTION where codePromo=?";
 	private String update = "UPDATE PROMOTION SET libelle=? where codePromo=?";
@@ -38,6 +38,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 	@Override
 	public Promotion add(Promotion data) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(add);
@@ -65,6 +66,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 
 	@Override
 	public List<Promotion> selectAll() throws DALException {
+		Connection conn = null;
 		Statement rqt = null;
 		ResultSet rs = null;
 
@@ -103,6 +105,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 	@Override
 	public void update(Promotion data) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(update);
@@ -126,6 +129,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 	@Override
 	public void removePromo(String codePromo) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
 		List<Utilisateur> liste = new ArrayList<Utilisateur>();
 		DAOUtilisateur DAOUser = DAOFactory.getDAOUtilisateur();
 		try {
@@ -157,6 +161,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Promotion promo = null;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectOne);
@@ -184,6 +189,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 	public void inscrirePromoATest(String codePromo, int idTest, Timestamp dateDebut, Timestamp dateFin)
 			throws DALException {
 		CallableStatement call = null;
+		Connection conn = null;
 
 		try {
 			conn = ConnectionProvider.getCnx();
@@ -212,6 +218,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		Boolean result = false;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			DAOUtilisateur DAOUtil = DAOFactory.getDAOUtilisateur();
@@ -255,6 +262,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 		ResultSet rs = null;
 		Promotion promo = null;
 		List<Promotion> liste = new ArrayList<Promotion>();
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(recherchePromo);

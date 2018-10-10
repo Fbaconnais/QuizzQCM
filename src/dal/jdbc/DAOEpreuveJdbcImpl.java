@@ -25,7 +25,7 @@ import dal.DAOTest;
 import dal.DAOUtilisateur;
 
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
-	private Connection conn = null;
+	
 	private String CloturerTest = "{call CloturerEpreuve(?)}";
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
 			+ "e.note_obtenue," + "e.tempsEcoule," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description,"
@@ -63,6 +63,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 
 	public Epreuve add(Epreuve data) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(add, Statement.RETURN_GENERATED_KEYS);
@@ -97,6 +98,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		Epreuve epreuve = null;
 		Test test = null;
 		Candidat user = null;
+		Connection conn = null;
 
 		try {
 			conn = ConnectionProvider.getCnx();
@@ -125,7 +127,17 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
-				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
+				switch (rs.getString("niveau_obtenu").toUpperCase().trim()) {
+				case "A":
+					epreuve.setNiveauCandidat("Acquis");
+					break;
+				case "ECA":
+					epreuve.setNiveauCandidat("En cours d'acquisition");
+					break;
+				case "NA":
+					epreuve.setNiveauCandidat("Non acquis");
+					break;
+				}
 				epreuve.setTest(test);
 				epreuve.setCandidat(user);
 			}
@@ -148,7 +160,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
 		Epreuve epreuve = null;
 		Test test = null;
-
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			stmt = conn.createStatement();
@@ -180,7 +192,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
 		Epreuve epreuve = null;
 		Test test = null;
-
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectAllByIDProfil);
@@ -209,6 +221,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 
 	public void remove(int id) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(remove);
@@ -228,6 +241,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 
 	public void update(Epreuve data) throws DALException {
 		PreparedStatement rqt = null;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(update);
@@ -257,6 +271,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		int idTest = 0;
+		Connection conn = null;
 
 		try {
 			conn = ConnectionProvider.getCnx();
@@ -282,6 +297,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 
 	public void cloturerEpreuve(int idEpreuve) throws DALException {
 		CallableStatement call = null;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			call = conn.prepareCall(CloturerTest);
@@ -307,6 +323,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
 		Epreuve epreuve = null;
 		Test test = null;
+		Connection conn = null;
 
 		try {
 			conn = ConnectionProvider.getCnx();
@@ -342,6 +359,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		Epreuve epreuve = null;
 		Test test = null;
 		Candidat cand = null;
+		Connection conn = null;
 
 		try {
 			conn = ConnectionProvider.getCnx();

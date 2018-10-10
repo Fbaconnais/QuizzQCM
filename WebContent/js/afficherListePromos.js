@@ -21,14 +21,13 @@ jQuery("input[name='promo']").on("input", function() {
 function afficherPromos(xml) {
 
 	var json = JSON.parse(xml);
-	console.log(json);
 	var props = [];
 	var x;
 	for (x = 0; x < json.length; x++) {
 		props
 				.push('<button onClick="afficherTestsPromo(\'' 
 						+ json[x].id 
-						+ '\')" class="btn btn-primary btn-mb btn-block" name="promo" id="promo" value="'
+						+ '\')" class="btn btn-primary btn-mb btn-block" name="codepromo" id="codepromo" value="'
 						+ json[x].id + '">' + json[x].id + '</button><br>');
 	}
 	document.getElementById("results").innerHTML = props.join("");
