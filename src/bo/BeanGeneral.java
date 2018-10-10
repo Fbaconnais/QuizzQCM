@@ -15,6 +15,7 @@ public class BeanGeneral {
 	private Epreuve epreuve;
 	private List<Test> tests;
 	private List<Epreuve> epreuves;
+	private QuestionTirage questiontirage;
 	
 	public BeanGeneral() {
 	}
@@ -81,6 +82,14 @@ public class BeanGeneral {
 
 	public void setEpreuve(Epreuve epreuve) {
 		this.epreuve = epreuve;
+	}
+
+	public QuestionTirage getQuestiontirage() {
+		return questiontirage;
+	}
+
+	public void setQuestiontirage(QuestionTirage questiontirage) {
+		this.questiontirage = questiontirage;
 	}
 	
 	

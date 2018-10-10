@@ -52,4 +52,11 @@ public class QuestionTirageManager {
 		return liste;
 	}
 
+	public void marquageQuestion(int idQuestion, int idEpreuve) throws BLLException {
+		try {
+			DAOQuestionTirage.marquageQuestion(idQuestion, idEpreuve);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+	}
 }

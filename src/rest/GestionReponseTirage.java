@@ -12,7 +12,7 @@ public class GestionReponseTirage {
 	
 	@GET
 	@Path("/{idProposition}/{idQuestion}/{idEpreuve}/gestion")
-	public void gérerReponseTirage(@PathParam("idProposition") int idProposition,@PathParam("idQuestion") int idQuestion,@PathParam("idEpreuve") int idEpreuve) throws BLLException{
+	public void gererReponseTirage(@PathParam("idProposition") int idProposition,@PathParam("idQuestion") int idQuestion,@PathParam("idEpreuve") int idEpreuve) throws BLLException{
 		ReponseTirageManager Mger = ReponseTirageManager.getMger();
 		Mger.gérerReponseTirage(idProposition, idQuestion, idEpreuve);
 	}

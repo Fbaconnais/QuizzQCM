@@ -13,6 +13,7 @@ public class QuestionTirage implements Serializable{
 	private int numordre;
 	private Epreuve epreuve;
 	private Question question;
+	
 	public boolean isEstMarquee() {
 		return estMarquee;
 	}

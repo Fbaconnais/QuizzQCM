@@ -40,9 +40,15 @@
     	var json = JSON.parse(xml);
 		var props = [];
 		var txt;
-		var marquage = '<input type="checkbox" id="marquageQ'+json.question.idQuestion+'" class="" onclick="activerMarquage('+json.question.idQuestion+')" ><p>Marquer la question</p><br>';
+		var marquageCheck = '<input type="checkbox" onclick="activerMarquage('+json.question.idQuestion+','+json.questiontirage.epreuve.idEpreuve+')" checked>Marquer la question<br>';
+		var marquageNonCheck = '<input type="checkbox" onclick="activerMarquage('+json.question.idQuestion+')">Marquer la question<br>';
 		var idEpreuve;
 		console.log(json);
+		if (json.questiontirage.estMarquee == true) {
+			document.getElementById("marquage").innerHTML = marquageCheck;
+		} else {
+			document.getElementById("marquage").innerHTML = marquageNonCheck;
+		}
 		txt = json.question.enonce
     	document.getElementById("test").innerHTML = txt;
 		idEpreuve = document.getElementById("epreuve");
@@ -57,7 +63,6 @@
 			
 			props.push(txt);
 		}
-		props.push(marquage);
 		document.getElementById("propositions").innerHTML = props.join("");
     }
     
@@ -209,6 +214,35 @@
     	xhr.send();
     }
     
-//    function activerMarquage(idQuestion) {
-//    	
-//    }
+    function activerMarquage(idQuestion, idEpreuve) {
+    	var xhr;
+    	
+    	try {
+    		xhr = new ActiveXObject('Msxml2.XMLHTTP');
+    		}
+    	catch (e)
+    		{
+    			try {
+    				xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    				}
+    				catch (e2)
+    					{
+    						try {
+    							xhr = new XMLHttpRequest();
+    							}
+    						catch (e3) { xhr = false; }
+    					}
+    		}
+    	xhr.onreadystatechange = function() {
+    		if(xhr.readyState == 4) {
+    			if(xhr.status == 200){
+    				
+    			}
+    			else
+    				echec(xhr.status, "Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
+    		}
+    	};
+	 
+    	xhr.open("PUT", path+'questionTirage/'+idQuestion+'/'+idEpreuve+'/marquage', true);
+    	xhr.send();
+    }

@@ -11,10 +11,12 @@ import javax.ws.rs.PathParam;
 
 import bll.BLLException;
 import bll.QuestionManager;
+import bll.QuestionTirageManager;
 import bll.ReponseTirageManager;
 import bo.BeanGeneral;
 import bo.Proposition;
 import bo.Question;
+import bo.QuestionTirage;
 import bo.ReponseTirage;
 
 @Path("/question")
@@ -22,37 +24,43 @@ public class GestionQuestion {
 
 	@GET
 	@Path("/{idQuestion}/{idEpreuve}/get")
-	public BeanGeneral selectQuestionPropsReponses(@PathParam("idQuestion") int idQuestion,@PathParam("idEpreuve") int idEpreuve) throws BLLException {
+	public BeanGeneral selectQuestionPropsReponses(@PathParam("idQuestion") int idQuestion,
+			@PathParam("idEpreuve") int idEpreuve) throws BLLException {
 		BeanGeneral bean = new BeanGeneral();
 		Question question = new Question();
 		List<ReponseTirage> listeReponses;
 		QuestionManager qMger = QuestionManager.getMger();
 		ReponseTirageManager rMger = ReponseTirageManager.getMger();
+		QuestionTirageManager qtMger = QuestionTirageManager.getMger();
 		listeReponses = rMger.selectAllByIDQuestionIDEpreuve(idQuestion, idEpreuve);
 		question = qMger.selectQuestion(idQuestion);
 		bean.setQuestion(question);
 		Map<Integer, ReponseTirage> reponsetirages = new HashMap<>();
-		//reponsetirages.put(idQuestion, listeReponses);
-		
-		for(ReponseTirage rp : listeReponses) {
-			reponsetirages.put(rp.getIdProposition(),rp);
+		List<QuestionTirage> questiontirages = new ArrayList<QuestionTirage>();
+		questiontirages = qtMger.getQuestionsViaIdEpreuve(idEpreuve);
+		QuestionTirage questionT = null;
+
+		for (QuestionTirage qt : questiontirages) {
+			if (qt.getQuestion().getIdQuestion() == idQuestion) {
+				questionT = qt;
+				bean.setQuestiontirage(questionT);
+			}
 		}
-		
-		
+
+		for (ReponseTirage rp : listeReponses) {
+			reponsetirages.put(rp.getIdProposition(), rp);
+		}
 		bean.setReponsetirages(reponsetirages);
 		return bean;
 	}
-
 
 	public List<Question> getAllQuestion() {
 
 		return null;
 	};
 
-
 	public void addQuestion(@PathParam("data") Question data) {
 	};
-
 
 	public void deleteQuestion(@PathParam("id") int id) {
 
@@ -66,5 +74,5 @@ public class GestionQuestion {
 		listeProps = qMger.getPropositionsByIDQuestion(id);
 		return listeProps;
 	}
-	
+
 }

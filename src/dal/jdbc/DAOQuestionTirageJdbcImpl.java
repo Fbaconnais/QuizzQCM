@@ -21,9 +21,9 @@ import dal.DAOQuestionTirage;
 public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 	private Connection conn = null;
 	private String generationTest = "{call genererTest(?,?)}";
+	private String gererMarquage = "{call gererMarquage(?,?)}";
 	private String getQuestionsDansLordre = "SELECT * FROM QUESTION_TIRAGE WHERE idEpreuve=? ORDER BY numordre ASC ";
-	
-	
+
 	@Override
 	public QuestionTirage add(QuestionTirage data) throws DALException {
 		// TODO Auto-generated method stub
@@ -50,22 +50,20 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 
 	@Override
 	public void update(QuestionTirage data) throws DALException {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void generationTest(int idTest,int idEpreuve) throws DALException {
+	public void generationTest(int idTest, int idEpreuve) throws DALException {
 		CallableStatement call = null;
-		
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			call = conn.prepareCall(generationTest);
-			
+
 			call.setInt(1, idTest);
 			call.setInt(2, idEpreuve);
 			call.executeUpdate();
-			
 
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL- generation test " + e.getMessage() + e.getStackTrace().toString(), e);
@@ -113,9 +111,29 @@ public class DAOQuestionTirageJdbcImpl implements DAOQuestionTirage {
 				throw new DALException("Erreur fermeture de connection", e);
 			}
 		}
-		
+
 		return questionsTirage;
 	}
 
-}
+	public void marquageQuestion(int idQuestion, int idEpreuve) throws DALException{
+		CallableStatement call = null;
 
+		try {
+			conn = ConnectionProvider.getCnx();
+			call = conn.prepareCall(gererMarquage);
+
+			call.setInt(1, idQuestion);
+			call.setInt(2, idEpreuve);
+			call.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- generation test " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+	}
+}

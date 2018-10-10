@@ -4,7 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/ButtonTest.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/CSS/ButtonTest.css">
 <head>
 <meta charset="UTF-8">
 <%@include file="../entete.jsp"%>
@@ -35,30 +36,38 @@
 		<ul class="nav navbar-nav list-inline">
 			<c:forEach var="questionTirage"
 				items="${sessionScope.listeQuestionsTirages}">
-				<li class="list-inline-item">
+				<li class="list-inline-item"><c:choose>
+						<c:when test="${questionTirage.estMarquee == 'true'}">
+							<div class="ecart">
+								<button type="button" class="btn btn-warning"
+									onClick="recuperationQuestion(${questionTirage.question.idQuestion},${requestScope.idEpreuve})"
+									id="button'.${questionTirage.question.idQuestion}.'">${questionTirage.numordre}</button>
+							</div>
+						</c:when>
+						<c:when test="${questionTirage.estMarquee == 'false'}">
 					<div class="ecart">
-						<button type="button" class="btn btn-primary"
-							onClick="recuperationQuestion(${questionTirage.question.idQuestion},${requestScope.idEpreuve})" id="button'.${questionTirage.question.idQuestion}.'">${questionTirage.numordre}</button>
-					</div>
-				</li>
+								<button type="button" class="btn btn-primary"
+									onClick="recuperationQuestion(${questionTirage.question.idQuestion},${requestScope.idEpreuve})"
+									id="button'.${questionTirage.question.idQuestion}.'">${questionTirage.numordre}</button>
+							</div>
+							</c:when>
+					</c:choose></li>
 			</c:forEach>
 			<li>
-			<div class="ecart">
-				<button type="button" class="btn btn-primary" onClick="recapTest()">
-					Fin</a>
-					</div>
+				<div class="ecart">
+					<button type="button" class="btn btn-danger" onClick="recapTest()">
+						Fin</button>
+				</div>
 			</li>
 
 			<li id="compteRebour_affiche" style="float: right;">
-						<div class="ecart">
-						
-						</div>
+				<div class="ecart"></div>
 			</li>
-				
+
 		</ul>
 
 	</nav>
-
+	<div id="marquage"></div>
 	<p id="test" class="cadre"></p>
 	<div id="propositions"></div>
 	<div id="timer"></div>
@@ -68,6 +77,7 @@
 	var tpsEcoule = "${requestScope.tpsEcoule}";
 	console.log(tpsEcoule);
 	</script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/Test.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/Test.js"></script>
 	<%@include file="../finBody.html"%>
 </html>
