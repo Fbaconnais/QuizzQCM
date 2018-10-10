@@ -2,6 +2,7 @@ package bll;
 
 import java.util.List;
 
+import bo.BeanGeneral;
 import bo.Epreuve;
 import dal.DALException;
 import dal.DAOEpreuve;
@@ -106,5 +107,16 @@ public class EpreuveManager {
 		}
 		return liste;
 		
+	}
+	public BeanGeneral selectEpreuvesTermineesParPromo(String codePromo) throws BLLException {
+		BeanGeneral Rowan_Atkinson = new BeanGeneral();
+		
+		try {
+			Rowan_Atkinson = DAO.getEpreuvesTermineesParPromo(codePromo);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		
+		return Rowan_Atkinson;
 	}
 }

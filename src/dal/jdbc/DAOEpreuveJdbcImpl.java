@@ -7,53 +7,52 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import bo.BeanGeneral;
 import bo.Candidat;
 import bo.Epreuve;
 import bo.Promotion;
 import bo.Test;
+import bo.Utilisateur;
 import dal.ConnectionProvider;
 import dal.DALException;
 import dal.DAOEpreuve;
 import dal.DAOFactory;
 import dal.DAOTest;
+import dal.DAOUtilisateur;
 
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	private Connection conn = null;
 	private String CloturerTest = "{call CloturerEpreuve(?)}";
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.tempsEcoule," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description," + "t.logo_langage," + "t.duree,"
-			+ "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email"
+			+ "e.note_obtenue," + "e.tempsEcoule," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description,"
+			+ "t.logo_langage," + "t.duree," + "u.idUtilisateur," + "u.nom," + "u.prenom," + "u.email"
 			+ " FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)" + "where e.idEpreuve=?";
 	String selectAll = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.logo_langage," + "t.description," + "t.duree,"
-			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.logo_langage," + "t.description,"
+			+ "t.duree," + "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur)";
-	
+
 	String selectAllByIDProfil = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.logo_langage," + "t.libelle," + "t.description," + "t.duree,"
-			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.logo_langage," + "t.libelle," + "t.description,"
+			+ "t.duree," + "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur) WHERE u.idUtilisateur=?";
 
 	String selectAllByIDEtDate = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
-			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.logo_langage," + "t.libelle," + "t.description," + "t.duree,"
-			+ "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
+			+ "e.note_obtenue," + "e.niveau_obtenu," + "t.idTest," + "t.logo_langage," + "t.libelle," + "t.description,"
+			+ "t.duree," + "u.nom," + "u.prenom," + "u.email " + "FROM EPREUVE e join TEST t on (e.idTest = t.idTest)"
 			+ "join Utilisateur u on (e.idUtilisateur = u.idUtilisateur) WHERE (u.idUtilisateur=?) AND (e.dateDedutValidite < GETDATE()) AND (e.dateFinValidite > GETDATE()) AND (e.etat != 'T')";
-	
+
 	String remove = "DELETE FROM Epreuve WHERE idEpreuve = ?";
 	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur, logo_langage) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
 	String update = "UPDATE Epreuve SET dateDedutValidite=?, dateFinValidite=?, tempsEcoule=?, etat=?, note_obtenue=?, niveau_obtenu=?, idTest=?, idUtilisateur=? WHERE idEpreuve=?";
 	String selectIdTestViaIdEpreuve = "SELECT idTest FROM EPREUVE where idEpreuve=?";
-	String selectEpreuvesCandidat = "SELECT e.idEpreuve,e.note_obtenue,e.niveau_obtenu,u.nom,u.prenom,u.codePromo,t.description,t.logo_langage FROM EPREUVE e JOIN UTILISATEUR u ON (e.idUtilisateur = u.idUtilisateur) JOIN TEST t ON (e.idTest = t.idTest) WHERE e.idUtilisateur=? AND e.etat='T'";
+	String selectEpreuvesCandidat = "SELECT e.idEpreuve,e.note_obtenue,e.niveau_obtenu,u.nom,u.prenom,u.codePromo,t.idTest,t.description,t.logo_langage FROM EPREUVE e JOIN UTILISATEUR u ON (e.idUtilisateur = u.idUtilisateur) JOIN TEST t ON (e.idTest = t.idTest) WHERE e.idUtilisateur=? AND e.etat='T'";
 
-	
-	
-	
-	
-	
-	
 	private void closeConnection(Connection conn) throws DALException {
 		try {
 			conn.close();
@@ -61,7 +60,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			throw new DALException("ERREUR DAL- Fermeture connection", e);
 		}
 	}
-	
+
 	public Epreuve add(Epreuve data) throws DALException {
 		PreparedStatement rqt = null;
 		try {
@@ -149,12 +148,12 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
 		Epreuve epreuve = null;
 		Test test = null;
-		
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(selectAll);
-			while(rs.next()){
+			while (rs.next()) {
 				DAOTest DAOtest = DAOFactory.getDAOTest();
 				test = new Test();
 				epreuve = new Epreuve();
@@ -168,26 +167,26 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setTest(test);
 				listeEpreuves.add(epreuve);
 			}
-			
+
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
 		}
 		return listeEpreuves;
 	}
-	
+
 	public List<Epreuve> selectAllByIDProfil(int id) throws DALException {
 		ResultSet rs = null;
 		PreparedStatement rqt = null;
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
 		Epreuve epreuve = null;
 		Test test = null;
-		
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectAllByIDProfil);
 			rqt.setInt(1, id);
 			rs = rqt.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				DAOTest DAOtest = DAOFactory.getDAOTest();
 				test = new Test();
 				epreuve = new Epreuve();
@@ -201,7 +200,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setTest(test);
 				listeEpreuves.add(epreuve);
 			}
-			
+
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
 		}
@@ -265,11 +264,12 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			rqt.setInt(1, idEpreuve);
 			rs = rqt.executeQuery();
 			if (rs.next()) {
-		
+
 				idTest = rs.getInt("idTest");
 			}
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL- getIdTestViaIdEpreuve " + e.getMessage() + e.getStackTrace().toString(), e);
+			throw new DALException("ERREUR DAL- getIdTestViaIdEpreuve " + e.getMessage() + e.getStackTrace().toString(),
+					e);
 		} finally {
 			try {
 				conn.close();
@@ -279,19 +279,19 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		}
 		return idTest;
 	}
-	
+
 	public void cloturerEpreuve(int idEpreuve) throws DALException {
 		CallableStatement call = null;
 		try {
 			conn = ConnectionProvider.getCnx();
 			call = conn.prepareCall(CloturerTest);
-			
+
 			call.setInt(1, idEpreuve);
 			call.executeUpdate();
-			
 
 		} catch (SQLException e) {
-			throw new DALException("ERREUR DAL - Clôture de l'épreuve " + e.getMessage() + e.getStackTrace().toString(), e);
+			throw new DALException("ERREUR DAL - Clôture de l'épreuve " + e.getMessage() + e.getStackTrace().toString(),
+					e);
 		} finally {
 			try {
 				conn.close();
@@ -300,20 +300,20 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			}
 		}
 	}
-	
+
 	public List<Epreuve> selectAllByIDEtDate(int idUtilisateur) throws DALException {
 		ResultSet rs = null;
 		PreparedStatement rqt = null;
 		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
 		Epreuve epreuve = null;
 		Test test = null;
-		
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			rqt = conn.prepareStatement(selectAllByIDEtDate);
 			rqt.setInt(1, idUtilisateur);
 			rs = rqt.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				DAOTest DAOtest = DAOFactory.getDAOTest();
 				test = new Test();
 				epreuve = new Epreuve();
@@ -327,14 +327,12 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setTest(test);
 				listeEpreuves.add(epreuve);
 			}
-			
+
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
 		}
 		return listeEpreuves;
 	}
-
-
 
 	@Override
 	public List<Epreuve> getEpreuvesTermineesParCandidat(int idCandidat) throws DALException {
@@ -344,31 +342,31 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 		Epreuve epreuve = null;
 		Test test = null;
 		Candidat cand = null;
-		
+
 		try {
 			conn = ConnectionProvider.getCnx();
 			stmt = conn.prepareStatement(selectEpreuvesCandidat);
 			stmt.setInt(1, idCandidat);
 			rs = stmt.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 
 				test = new Test();
 				epreuve = new Epreuve();
 				cand = new Candidat();
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setNoteCandidat(((int)(rs.getFloat("note_obtenue")*100))/100);
+				epreuve.setNoteCandidat(((int) (rs.getFloat("note_obtenue") * 100)) / 100);
 				switch (rs.getString("niveau_obtenu").toUpperCase().trim()) {
-				case "A" :
+				case "A":
 					epreuve.setNiveauCandidat("Acquis");
 					break;
-				case "ECA" :
+				case "ECA":
 					epreuve.setNiveauCandidat("En cours d'acquisition");
 					break;
-				case "NA" :
+				case "NA":
 					epreuve.setNiveauCandidat("Non acquis");
 					break;
 				}
-				
+
 				test.setDescription(rs.getString("description"));
 				test.setLogoLangage(rs.getString("logo_langage"));
 				cand.setNom(rs.getString("nom"));
@@ -378,10 +376,35 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setCandidat(cand);
 				listeEpreuves.add(epreuve);
 			}
-			
+
 		} catch (SQLException e) {
 			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
 		}
 		return listeEpreuves;
+	}
+
+	@Override
+	public BeanGeneral getEpreuvesTermineesParPromo(String codePromo) throws DALException {
+		DAOUtilisateur DAOUtil = DAOFactory.getDAOUtilisateur();
+		List<Utilisateur> listeCandidats = DAOUtil.getUsersByCodePromo(codePromo);
+		Map<Integer, List<Epreuve>> dicoResultat = new HashMap<Integer, List<Epreuve>>();
+		for (Utilisateur user : listeCandidats) {
+			List<Epreuve> listeepreuves = getEpreuvesTermineesParCandidat(user.getIdUtilisateur());
+			for (Epreuve epreuve : listeepreuves) {
+				epreuve = selectOne(epreuve.getIdEpreuve());
+				if (dicoResultat.get(epreuve.getTest().getIdTest()) == null) {
+					List<Epreuve> newListeEpreuve = new ArrayList<Epreuve>();
+					newListeEpreuve.add(epreuve);
+					dicoResultat.put(epreuve.getTest().getIdTest(), newListeEpreuve);
+				} else {
+					dicoResultat.get(epreuve.getTest().getIdTest()).add(epreuve);
+				}
+
+			}
+
+		}
+		BeanGeneral retour = new BeanGeneral();
+		retour.setMapIdTestResultatPromo(dicoResultat);
+		return retour;
 	}
 }

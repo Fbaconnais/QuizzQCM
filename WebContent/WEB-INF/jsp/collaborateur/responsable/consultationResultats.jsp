@@ -76,6 +76,8 @@
 		var path = "${baseURL}";
 	</script>
 	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/affichageTests.js"></script>
+	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/js/createXHR.js"></script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/js/afficherListeCandidats.js"></script>
@@ -83,8 +85,7 @@
 		src="${pageContext.request.contextPath}/js/afficherListePromos.js"></script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/js/succesreponse.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/js/affichageTests.js"></script>
+	
 
 
 

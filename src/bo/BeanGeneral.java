@@ -16,6 +16,8 @@ public class BeanGeneral {
 	private List<Test> tests;
 	private List<Epreuve> epreuves;
 	private QuestionTirage questiontirage;
+	private Map<Integer,List<Epreuve>> mapIdTestResultatPromo;
+
 	
 	public BeanGeneral() {
 	}
@@ -26,6 +28,17 @@ public class BeanGeneral {
 
 	public List<Test> getTests() {
 		return tests;
+	}
+
+	
+
+
+	public Map<Integer, List<Epreuve>> getMapIdTestResultatPromo() {
+		return mapIdTestResultatPromo;
+	}
+
+	public void setMapIdTestResultatPromo(Map<Integer, List<Epreuve>> mapIdTestResultatPromo) {
+		this.mapIdTestResultatPromo = mapIdTestResultatPromo;
 	}
 
 	public List<Epreuve> getEpreuves() {

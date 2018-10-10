@@ -263,7 +263,7 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 			rs = rqt.executeQuery();
 			while (rs.next()) {
 				promo = new Promotion();
-				promo.setId(rs.getString("codePromo"));
+				promo.setId(rs.getString("codePromo").trim());
 				promo.setLibelle(rs.getString("libelle"));
 				liste.add(promo);
 			}

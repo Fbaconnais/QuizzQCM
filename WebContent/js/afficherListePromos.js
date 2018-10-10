@@ -26,9 +26,9 @@ function afficherPromos(xml) {
 	var x;
 	for (x = 0; x < json.length; x++) {
 		props
-				.push('<button onClick="afficherTestsPromo('
-						+ json[x].id
-						+ ')" class="form-row btn btn-primary btn-mb btn-block" name="promo" id="promo" value="'
+				.push('<button onClick="afficherTestsPromo(\'' 
+						+ json[x].id 
+						+ '\')" class="btn btn-primary btn-mb btn-block" name="promo" id="promo" value="'
 						+ json[x].id + '">' + json[x].id + '</button><br>');
 	}
 	document.getElementById("results").innerHTML = props.join("");

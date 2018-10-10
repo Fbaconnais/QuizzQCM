@@ -87,4 +87,18 @@ public class GestionEpreuve {
 		return Rowan_Atkinson;
 	}
 	
+	@GET
+	@Path("/promos/{id}")
+	public BeanGeneral recupEpreuvesPromo(@PathParam("id") String codePromo) throws RestException {
+		BeanGeneral Rowan_Atkinson = new BeanGeneral();
+		EpreuveManager epreuveMger = EpreuveManager.getMger();
+
+		try {
+			Rowan_Atkinson = epreuveMger.selectEpreuvesTermineesParPromo(codePromo);
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		return Rowan_Atkinson;
+	}
+	
 }

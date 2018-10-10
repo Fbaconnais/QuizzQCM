@@ -1,6 +1,29 @@
 function afficherTestsPromo(id) {
-
+	console.log(id);
+	var xhr = createXHR();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200)
+				afficherListeTestPromo(this.response);
+			else
+				echec(xhr.status, xhr.responseText);
+		}
+	};
+	xhr.open("GET", path + "/rest/epreuve/promos/" + id, true);
+	xhr.setRequestHeader("Accept", "application/json");
+	xhr.send();
+	
 }
+
+function afficherListeTestPromo(xml) {
+	var json = JSON.parse(xml);
+	var props = [];
+	var props2 = [];
+
+	
+}
+
+
 
 function afficherTestsUtil(id) {
 	var xhr = createXHR();
@@ -19,7 +42,6 @@ function afficherTestsUtil(id) {
 
 function afficherListeTestUtil(xml) {
 	var json = JSON.parse(xml);
-	console.log(json);
 	var props = [];
 	var props2 = [];
 
