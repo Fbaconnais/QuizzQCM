@@ -26,7 +26,7 @@
 	<div id="succes"></div>
 	<div id="echec"></div>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-bran	d">Questions: </a>
+		<a class="navbar-brand">Questions: </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -41,14 +41,14 @@
 							<div class="ecart">
 								<button type="button" class="btn btn-warning"
 									onClick="recuperationQuestion(${questionTirage.question.idQuestion},${requestScope.idEpreuve})"
-									id="button'.${questionTirage.question.idQuestion}.'">${questionTirage.numordre}</button>
+									id="button${questionTirage.question.idQuestion}" value="pasMarquee">${questionTirage.numordre}</button>
 							</div>
 						</c:when>
 						<c:when test="${questionTirage.estMarquee == 'false'}">
 					<div class="ecart">
 								<button type="button" class="btn btn-primary"
 									onClick="recuperationQuestion(${questionTirage.question.idQuestion},${requestScope.idEpreuve})"
-									id="button'.${questionTirage.question.idQuestion}.'">${questionTirage.numordre}</button>
+									id="button${questionTirage.question.idQuestion}" value="marquee">${questionTirage.numordre}</button>
 							</div>
 							</c:when>
 					</c:choose></li>

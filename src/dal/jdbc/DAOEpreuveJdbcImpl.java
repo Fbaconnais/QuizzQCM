@@ -25,7 +25,7 @@ import dal.DAOTest;
 import dal.DAOUtilisateur;
 
 public class DAOEpreuveJdbcImpl implements DAOEpreuve {
-	
+
 	private String CloturerTest = "{call CloturerEpreuve(?)}";
 	String selectOne = "SELECT " + "e.idEpreuve," + "e.dateDedutValidite," + "e.dateFinValidite," + "e.etat,"
 			+ "e.note_obtenue," + "e.tempsEcoule," + "e.niveau_obtenu," + "t.idTest," + "t.libelle," + "t.description,"
@@ -127,19 +127,23 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
-				switch (rs.getString("niveau_obtenu").toUpperCase().trim()) {
-				case "A":
-					epreuve.setNiveauCandidat("Acquis");
-					break;
-				case "ECA":
-					epreuve.setNiveauCandidat("En cours d'acquisition");
-					break;
-				case "NA":
-					epreuve.setNiveauCandidat("Non acquis");
-					break;
+
+				if (rs.getString("niveau_obtenu") != null) {
+					switch (rs.getString("niveau_obtenu").toUpperCase().trim()) {
+					case "A":
+						epreuve.setNiveauCandidat("Acquis");
+						break;
+					case "ECA":
+						epreuve.setNiveauCandidat("En cours d'acquisition");
+						break;
+					case "NA":
+						epreuve.setNiveauCandidat("Non acquis");
+						break;
+					}
 				}
 				epreuve.setTest(test);
 				epreuve.setCandidat(user);
+
 			}
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL- select one " + e.getMessage() + e.getStackTrace().toString(), e);
