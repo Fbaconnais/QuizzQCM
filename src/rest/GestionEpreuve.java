@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 
 import bll.BLLException;
 import bll.EpreuveManager;
+import bo.BeanGeneral;
 import bo.Epreuve;
 
 @Path("/epreuve")
@@ -71,6 +72,19 @@ public class GestionEpreuve {
 		}
 		
 		return true;
+	}
+	@GET
+	@Path("/candidat/{id}")
+	public BeanGeneral recupEpreuvesCandidat(@PathParam("id") int idCandidat) throws RestException {
+		BeanGeneral Rowan_Atkinson = new BeanGeneral();
+		EpreuveManager epreuveMger = EpreuveManager.getMger();
+
+		try {
+			Rowan_Atkinson.setEpreuves(epreuveMger.selectEpreuvesTermineesCandidat(idCandidat));
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		return Rowan_Atkinson;
 	}
 	
 }

@@ -86,7 +86,7 @@
 						type="text" class="form-control col col-lg-2 offset-lg-1"
 						name="HeureFinValidite" placeholder="/!\ HH:MM /!\" required>
 				</div>
-			
+
 				<input type="hidden" id="actionajout" name="actionajout"
 					value="candidattest"> <br>
 				<div id="results"></div>
@@ -96,21 +96,9 @@
 	</div>
 	</div>
 	</div>
-
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/createXHR.js"></script>
 	<script type="text/javascript">
-	
-		function createXHR() {
-			if (window.XMLHttpRequest) {
-				xhr = new XMLHttpRequest();
-			} else if (window.ActiveXObject) //  Internet Explorer
-			{
-				xhr = new ActiveXObject("Msxml2.XMLHTTP");
-			}
-
-			return xhr;
-
-		}
-
 		jQuery("input[name='nom']").on(
 				"input",
 				function() {
@@ -127,8 +115,8 @@
 					var input = document.getElementById('nom');
 					var nommail = input.value;
 					xhr.open("GET",
-							"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
-									+ nommail + "/all", true);
+							"<c:out value="${pageContext.request.contextPath}"/>/rest/users/recherche/"
+									+ nommail, true);
 					xhr.send();
 
 				});

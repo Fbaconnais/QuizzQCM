@@ -96,5 +96,18 @@ public class PromotionManager {
 		
 		return test;
 	}
-
+	public List<Promotion> recherchePromoViaNom(String codePromo) throws BLLException{
+		List<Promotion> liste = null;
+		
+		
+		try {
+			liste = DAO.recherchePromos(codePromo);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		
+		
+		return liste;
+		
+	}
 }

@@ -42,10 +42,6 @@
 		<br> <br>
 		<h1>Modification d'un candidat</h1>
 		<br>
-		<c:if test="${sessionScope.messageValidation != null }">
-			<h2 style="color: red;">${sessionScope.messageValidation}</h2>
-			<br>
-		</c:if>
 		<div id="succes" style="color: green"></div>
 		<div id="echec" style="color: red"></div>
 		<br>
@@ -64,19 +60,10 @@
 
 	</div>
 
-
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/createXHR.js"></script>
 	<script type="text/javascript">
-		function createXHR() {
-			if (window.XMLHttpRequest) {
-				xhr = new XMLHttpRequest();
-			} else if (window.ActiveXObject) //  Internet Explorer
-			{
-				xhr = new ActiveXObject("Msxml2.XMLHTTP");
-			}
-
-			return xhr;
-
-		}
+	
 
 		jQuery("input[name='nom']").on(
 				"input",
@@ -93,8 +80,8 @@
 					var input = document.getElementById('nom');
 					var nommail = input.value;
 					xhr.open("GET",
-							"<c:out value="${pageContext.request.contextPath}"/>/rest/users/"
-									+ nommail + "/all", true);
+							"<c:out value="${pageContext.request.contextPath}"/>/rest/users/recherche/"
+									+ nommail, true);
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.send();
 

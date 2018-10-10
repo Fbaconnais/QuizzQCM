@@ -427,7 +427,7 @@ public class DAOUtilisateurJdbcImpl implements DAOUtilisateur {
 		} catch (SQLException e) {
 			throw new DALException("ERREUR DAL- select all collabos " + e.getMessage() + e.getStackTrace().toString(), e);
 		} finally {
-			try {
+			try { 
 				conn.close();
 			} catch (SQLException e) {
 				throw new DALException("Erreur fermeture de connection", e);

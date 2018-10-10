@@ -51,5 +51,16 @@ public class GestionPromos {
 		
 		return true;
 	}
-	
+	@GET
+	@Path("/{codePromo}")
+	public List<Promotion> getAllPromos(@PathParam("codePromo") String codePromo) throws RestException{
+		PromotionManager PMger = PromotionManager.getMger();
+		List<Promotion> liste = null;
+		try {
+			liste = PMger.recherchePromoViaNom(codePromo);
+		} catch (BLLException e) {
+			throw new RestException(e.getMessage(), e);
+		}
+		return liste;
+	}
 }
