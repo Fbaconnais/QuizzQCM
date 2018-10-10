@@ -25,9 +25,9 @@
 						Accueil Responsable </a></li>
 
 				<li class="nav-item active"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/inscriptions">Gestion des inscriptions<span
+					href="${pageContext.request.contextPath}/collaborateur/responsable/accinscription">Gestion des inscriptions<span
 						class="sr-only">(current)</span></a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur/resultats">Consultation
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur/responsable/resultats">Consultation
 						des resultats</a></li>
 
 			</ul>
@@ -48,7 +48,7 @@
 			<br>
 			<br>
 			<form method="post"
-				action="${pageContext.request.contextPath}/collaborateur/inscription">
+				action="${pageContext.request.contextPath}/collaborateur/responsable/inscription">
 
 				<div class="form-row">
 					<label for="nom" class="col col-lg-3">Nom </label> <input type="text"

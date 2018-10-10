@@ -25,11 +25,11 @@
 						Accueil Formateur <span class="sr-only">(current)</span>
 				</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="collaborateur/questions">Gestion
+				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/questions">Gestion
 						questions</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/themes">Gestion
+				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/themes">Gestion
 						thèmes</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/tests">Gestion
+				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/tests">Gestion
 						tests</a></li>
 			</ul>
 		</div>

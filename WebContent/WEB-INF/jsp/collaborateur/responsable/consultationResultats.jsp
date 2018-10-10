@@ -25,9 +25,9 @@
 				</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="inscriptions">Gestion des inscriptions</a></li>
+					href="${pageContext.request.contextPath}/collaborateur/responsable/accinscription">Gestion des inscriptions</a></li>
 				<li class="nav-item active"><a class="nav-link"
-					href="resultats">Consultation des resultats<span class="sr-only">(current)</span></a></li>
+					href="${pageContext.request.contextPath}/collaborateur/responsable/resultats">Consultation des resultats<span class="sr-only">(current)</span></a></li>
 
 			</ul>
 		</div>

@@ -25,9 +25,9 @@
 				</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="collaborateur/inscriptions">Gestion des inscriptions</a></li>
+					href="collaborateur/responsable/accinscription">Gestion des inscriptions</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="collaborateur/resultats">Consultation des resultats</a></li>
+					href="collaborateur/responsable/resultats">Consultation des resultats</a></li>
 
 			</ul>
 		</div>
@@ -35,9 +35,9 @@
 	<%@include file="./debutBody.jsp"%>
 	<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
 		<br> <a
-			href="${pageContext.request.contextPath}/collaborateur/inscriptions"
+			href="${pageContext.request.contextPath}/collaborateur/responsable/accinscription"
 			class="btn btn-primary btn-lg btn-block">Inscriptions</a> <a
-			href="${pageContext.request.contextPath}/collaborateur/resultats"
+			href="${pageContext.request.contextPath}/collaborateur/responsable/resultats"
 			class="btn btn-primary btn-lg btn-block">Consultation de résultats</a>
 	</div>
 	</div>
