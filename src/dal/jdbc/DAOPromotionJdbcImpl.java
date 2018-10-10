@@ -32,7 +32,9 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 	private String selectAll = "Select * from PROMOTION ORDER BY codePromo";
 	private String inscrirePromoATest = "{call inscrirePromoATest(?,?,?,?)}";
 	private String VerifPromoDejaInscriteATest = "SELECT * FROM EPREUVE WHERE (idTest=? AND idUtilisateur=?)";
-
+	private String recherchePromo = "SELECT codePromo,libelle FROM PROMOTION WHERE codePromo LIKE ?";
+	
+	
 	@Override
 	public Promotion add(Promotion data) throws DALException {
 		PreparedStatement rqt = null;
@@ -245,6 +247,38 @@ public class DAOPromotionJdbcImpl implements DAOPromotion {
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<Promotion> recherchePromos(String codePromo) throws DALException {
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		Promotion promo = null;
+		List<Promotion> liste = new ArrayList<Promotion>();
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(recherchePromo);
+			String req = "%" + codePromo + "%";
+			rqt.setString(1, req);
+			rs = rqt.executeQuery();
+			while (rs.next()) {
+				promo = new Promotion();
+				promo.setId(rs.getString("codePromo"));
+				promo.setLibelle(rs.getString("libelle"));
+				liste.add(promo);
+			}
+
+		} catch (SQLException e) {
+			throw new DALException(
+					"ERREUR DAL- recherche promo par nom" + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return liste;
 	}
 
 }

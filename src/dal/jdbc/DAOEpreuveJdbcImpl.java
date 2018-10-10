@@ -11,6 +11,7 @@ import java.util.List;
 
 import bo.Candidat;
 import bo.Epreuve;
+import bo.Promotion;
 import bo.Test;
 import dal.ConnectionProvider;
 import dal.DALException;
@@ -45,6 +46,13 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 	String add = "INSERT INTO Epreuve (dateDedutValidite, dateFinValidite, tempsEcoule, etat, note_obtenue, niveau_obtenu, idTest, idUtilisateur, logo_langage) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
 	String update = "UPDATE Epreuve SET dateDedutValidite=?, dateFinValidite=?, tempsEcoule=?, etat=?, note_obtenue=?, niveau_obtenu=?, idTest=?, idUtilisateur=? WHERE idEpreuve=?";
 	String selectIdTestViaIdEpreuve = "SELECT idTest FROM EPREUVE where idEpreuve=?";
+	String selectEpreuvesCandidat = "SELECT e.idEpreuve,e.note_obtenue,e.niveau_obtenu,u.nom,u.prenom,u.codePromo,t.description,t.logo_langage FROM EPREUVE e JOIN UTILISATEUR u ON (e.idUtilisateur = u.idUtilisateur) JOIN TEST t ON (e.idTest = t.idTest) WHERE e.idUtilisateur=? AND e.etat='T'";
+
+	
+	
+	
+	
+	
 	
 	private void closeConnection(Connection conn) throws DALException {
 		try {
@@ -317,6 +325,57 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
 				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
 				epreuve.setTest(test);
+				listeEpreuves.add(epreuve);
+			}
+			
+		} catch (SQLException e) {
+			throw new DALException("Erreur DAL- select all" + e.getMessage() + e.getStackTrace().toString(), e);
+		}
+		return listeEpreuves;
+	}
+
+
+
+	@Override
+	public List<Epreuve> getEpreuvesTermineesParCandidat(int idCandidat) throws DALException {
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		List<Epreuve> listeEpreuves = new ArrayList<Epreuve>();
+		Epreuve epreuve = null;
+		Test test = null;
+		Candidat cand = null;
+		
+		try {
+			conn = ConnectionProvider.getCnx();
+			stmt = conn.prepareStatement(selectEpreuvesCandidat);
+			stmt.setInt(1, idCandidat);
+			rs = stmt.executeQuery();
+			while(rs.next()){
+
+				test = new Test();
+				epreuve = new Epreuve();
+				cand = new Candidat();
+				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
+				epreuve.setNoteCandidat(((int)(rs.getFloat("note_obtenue")*100))/100);
+				switch (rs.getString("niveau_obtenu").toUpperCase().trim()) {
+				case "A" :
+					epreuve.setNiveauCandidat("Acquis");
+					break;
+				case "ECA" :
+					epreuve.setNiveauCandidat("En cours d'acquisition");
+					break;
+				case "NA" :
+					epreuve.setNiveauCandidat("Non acquis");
+					break;
+				}
+				
+				test.setDescription(rs.getString("description"));
+				test.setLogoLangage(rs.getString("logo_langage"));
+				cand.setNom(rs.getString("nom"));
+				cand.setPrenom(rs.getString("prenom"));
+				cand.setPromotion(new Promotion(rs.getString("codePromo"), ""));
+				epreuve.setTest(test);
+				epreuve.setCandidat(cand);
 				listeEpreuves.add(epreuve);
 			}
 			

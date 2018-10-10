@@ -96,4 +96,15 @@ public class EpreuveManager {
 		}
 		return listeEpreuves;
 	}
+	public List<Epreuve> selectEpreuvesTermineesCandidat(int idCandidat) throws BLLException {
+		List<Epreuve> liste = null;
+		
+		try {
+			liste=DAO.getEpreuvesTermineesParCandidat(idCandidat);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		return liste;
+		
+	}
 }

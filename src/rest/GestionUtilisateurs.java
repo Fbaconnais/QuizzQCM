@@ -26,14 +26,24 @@ import bo.Utilisateur;
 public class GestionUtilisateurs {
 
 	@GET
-	@Path("/{nommail}/all")
+	@Path("/recherche/{nommail}")
 	public List<Utilisateur> getAllCandidats(@PathParam("nommail") String nommail) throws BLLException {
-		UtilisateurManager UMger = UtilisateurManager.getMger();
-		List<Utilisateur> liste = new ArrayList<Utilisateur>();
-		liste = UMger.getCandidatViaMailEtNom(nommail);
-		return liste;
-	};
-	
+			UtilisateurManager UMger = UtilisateurManager.getMger();
+			List<Utilisateur> liste = new ArrayList<Utilisateur>();
+			liste = UMger.getCandidatViaMailEtNom(nommail);
+			return liste;
+		
+	}
+	@GET
+	@Path("/recherche/")
+	public List<Utilisateur> getListeCandidats() throws BLLException {
+			UtilisateurManager UMger = UtilisateurManager.getMger();
+			List<Utilisateur> liste = new ArrayList<Utilisateur>();
+			liste = UMger.getCandidatViaMailEtNom("");
+			return liste;
+		
+	}
+
 	@GET
 	@Path("/{id}")
 	public BeanGeneral getOne(@PathParam("id") int id) throws RestException {
@@ -50,14 +60,14 @@ public class GestionUtilisateurs {
 		} catch (BLLException e) {
 			throw new RestException(e.getMessage(), e);
 		}
-		
+
 		BeanGeneral retour = new BeanGeneral();
 		retour.setUtilisateur(u);
 		retour.setPromotions(liste);
 		retour.setEpreuves(listeEpreuve);
 		return retour;
 	}
-	
+
 	@DELETE
 	@Path("/{id}")
 	public Boolean deleteUser(@PathParam("id") int id) throws RestException {
@@ -66,14 +76,16 @@ public class GestionUtilisateurs {
 			UMger.removeUser(id);
 		} catch (BLLException e) {
 			throw new RestException(e.getMessage(), e);
-		
-		}	
+
+		}
 		return true;
 	}
-	
+
 	@PUT
 	@Path("/{id}")
-	public Boolean modifUser(@PathParam("id") int id,@FormParam("nom") String nom, @FormParam("prenom") String prenom, @FormParam("email") String email, @FormParam("profil") String idProfil, @FormParam("promo") String codePromo) throws RestException{
+	public Boolean modifUser(@PathParam("id") int id, @FormParam("nom") String nom, @FormParam("prenom") String prenom,
+			@FormParam("email") String email, @FormParam("profil") String idProfil,
+			@FormParam("promo") String codePromo) throws RestException {
 		Utilisateur u = new Candidat();
 		Promotion p = new Promotion();
 		Profil pro = new Profil();
@@ -81,7 +93,7 @@ public class GestionUtilisateurs {
 		pro.setId(idpro);
 		p.setId(codePromo);
 		u.setProfil(pro);
-		((Candidat)u).setPromotion(p);
+		((Candidat) u).setPromotion(p);
 		u.setIdUtilisateur(id);
 		u.setNom(nom);
 		u.setPrenom(prenom);
@@ -92,15 +104,14 @@ public class GestionUtilisateurs {
 		} catch (BLLException e) {
 			throw new RestException(e.getMessage(), e);
 		}
-		
-		
-		
+
 		return true;
 	}
 
 	@PUT
 	@Path("/modifMDP/{email}")
-	public Boolean updateMDP(@PathParam("email") String email,@FormParam("oldpw") String oldpw, @FormParam("newpw") String newpw) throws RestException {
+	public Boolean updateMDP(@PathParam("email") String email, @FormParam("oldpw") String oldpw,
+			@FormParam("newpw") String newpw) throws RestException {
 		Boolean retour = false;
 		UtilisateurManager UMger = UtilisateurManager.getMger();
 		oldpw = org.apache.commons.codec.digest.DigestUtils.sha256Hex(oldpw);
@@ -109,20 +120,21 @@ public class GestionUtilisateurs {
 			String message = UMger.authentification(email, oldpw);
 			if (message != null) {
 				UMger.setPassword(email, newpw);
-				retour = true;		
+				retour = true;
 			}
 		} catch (BLLException e) {
 			throw new RestException(e.getMessage(), e);
 		}
-		
-		
+
 		return retour;
 	}
+
 	@PUT
 	@Path("/new/")
-	public Boolean addnewUser(@FormParam("nom") String nom, @FormParam("prenom") String prenom, @FormParam("email") String email, @FormParam("profil") String idProfil) throws RestException{
+	public Boolean addnewUser(@FormParam("nom") String nom, @FormParam("prenom") String prenom,
+			@FormParam("email") String email, @FormParam("profil") String idProfil) throws RestException {
 		Utilisateur u = new Collaborateur();
-	
+
 		Profil pro = new Profil();
 		int idpro = Integer.parseInt(idProfil);
 		pro.setId(idpro);
@@ -139,12 +151,10 @@ public class GestionUtilisateurs {
 		} catch (BLLException e) {
 			throw new RestException(e.getMessage(), e);
 		}
-		
-		
-		
+
 		return true;
 	}
-	
+
 	@GET
 	@Path("/collaborateurs/")
 	public List<Collaborateur> getAllCollaborateurs() throws RestException {
@@ -157,7 +167,5 @@ public class GestionUtilisateurs {
 		}
 		return liste;
 	};
-	
-	
-	
+
 }

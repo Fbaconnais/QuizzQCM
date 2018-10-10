@@ -77,18 +77,9 @@
 	</div>
 	</div>
 	</div>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/createXHR.js"></script>
 	<script type="text/javascript">
-	function createXHR() {
-		if (window.XMLHttpRequest) {
-			xhr = new XMLHttpRequest();
-		} else if (window.ActiveXObject) //  Internet Explorer
-		{
-			xhr = new ActiveXObject("Msxml2.XMLHTTP");
-		}
-
-		return xhr;
-
-	}
 	
 	
 jQuery("input[name='nom']").on("input", function() {
@@ -107,7 +98,7 @@ jQuery("input[name='nom']").on("input", function() {
     }; 
     var input = document.getElementById('nom');
     var nommail = input.value;
-    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/users/"+nommail+"/all",  true); 
+    xhr.open("GET", "<c:out value="${pageContext.request.contextPath}"/>/rest/users/recherche/"+nommail,  true); 
 	   xhr.send();
     
 });
