@@ -69,7 +69,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 			rqt = conn.prepareStatement(add, Statement.RETURN_GENERATED_KEYS);
 			rqt.setTimestamp(1, data.getDateDebutValidite());
 			rqt.setTimestamp(2, data.getDateFinValidite());
-			rqt.setInt(3, data.getTempsEcoule());
+			rqt.setInt(3, data.getTest().getDuree());
 			rqt.setString(4, data.getEtat());
 			rqt.setFloat(5, data.getNoteCandidat());
 			rqt.setString(6, data.getNiveauCandidat());
