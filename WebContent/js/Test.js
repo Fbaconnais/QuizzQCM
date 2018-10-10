@@ -87,7 +87,6 @@ function traitementQuestion(xml) {
 
 function recapTest() {
 	var txt;
-	var nbQrep;
 	var boutonFin;
 	txt = 'Êtes-vous sûr de vouloir valider votre test?';
 	boutonFin = '<button type=button onClick="' + cloturerEpreuve(idEpreuve)
