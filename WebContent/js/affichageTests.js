@@ -19,7 +19,6 @@ function afficherListeTestPromo(xml) {
 	var props = [];
 	var props2 = [];
 	var codePromo = '' + document.getElementById("codepromo").value;
-	console.log(codePromo);
 	props2.push('<h2>Résultats pour : ' + codePromo + '</h2>');
 	var resultats = json.mapIdTestResultatPromo;
 
@@ -92,7 +91,6 @@ function afficherTestsUtil(id) {
 				echec(xhr.status, xhr.responseText);
 		}
 	};
-	console.log(id);
 	xhr.open("GET", path + "/rest/epreuve/candidat/" + id, true);
 	xhr.setRequestHeader("Accept", "application/json");
 	xhr.send();
@@ -100,7 +98,6 @@ function afficherTestsUtil(id) {
 
 function afficherListeTestUtil(xml) {
 	var json = JSON.parse(xml);
-	console.log(json);
 	var props = [];
 	var props2 = [];
 	if (json.epreuves.length > 0) {
@@ -110,8 +107,6 @@ function afficherListeTestUtil(xml) {
 
 		var x;
 		for (x = 0; x < json.epreuves.length; x++) {
-			console.log(x);
-			console.log(x % 4);
 			if (x % 4 == 0) {
 				props.push('<div class="row">');
 			}

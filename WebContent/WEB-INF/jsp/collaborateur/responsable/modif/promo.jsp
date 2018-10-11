@@ -92,7 +92,6 @@
 
 		function afficherPromos(xml) {
 			var json = JSON.parse(xml);
-			console.log(json);
 			var props = [];
 			var x;
 			for (x = 0; x < json.length; x++) {
@@ -124,7 +123,6 @@
 
 		function deletePromo() {
 			var codePromo = document.getElementById("codePromo").value;
-			console.log(codePromo);
 			var xhr = createXHR();
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4) {
@@ -152,8 +150,6 @@
 		function modifyPromo() {
 			var codePromo = document.getElementById("codePromo").value;
 			var libPromo = document.getElementById("libPromo").value;
-			console.log(libPromo);
-			console.log(codePromo);
 			var xhr = createXHR();
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4) {

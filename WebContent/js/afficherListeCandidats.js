@@ -13,7 +13,6 @@ jQuery("input[name='nom']").on("input", function() {
 	};
 	var input = document.getElementById('nom');
 	var nommail = input.value;
-	console.log(nommail);
 	xhr.open("GET", path + "/rest/users/recherche/" + nommail, true);
 	xhr.setRequestHeader("Accept", "application/json");
 	xhr.send();
@@ -23,7 +22,6 @@ jQuery("input[name='nom']").on("input", function() {
 function afficherCandidats(xml) {
 	var json = JSON.parse(xml);
 	var props = [];
-	console.log(json);
 	var x;
 	props.push('<div class="col col-lg-9 offset-lg-3">')
 	for (x = 0; x < json.length; x++) {
