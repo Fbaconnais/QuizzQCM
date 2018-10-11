@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,8 +123,13 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				user.setEmail(rs.getString("email"));
 
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
+				Timestamp datedeb =  rs.getTimestamp("dateDedutValidite");
+				Timestamp datedebsansms = new Timestamp(((long)datedeb.getTime()/1000)*1000);
+				Timestamp datefin = rs.getTimestamp("dateFinValidite");
+				Timestamp datefinsansms = new Timestamp(((long)datefin.getTime()/1000)*1000);
+				
+				epreuve.setDateDebutValidite(datedebsansms);
+				epreuve.setDateFinValidite(datefinsansms);
 				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
@@ -175,8 +181,13 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve = new Epreuve();
 				test = DAOtest.selectOne(rs.getInt("idTest"));
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
+				Timestamp datedeb =  rs.getTimestamp("dateDedutValidite");
+				Timestamp datedebsansms = new Timestamp(((long)datedeb.getTime()/1000)*1000);
+				Timestamp datefin = rs.getTimestamp("dateFinValidite");
+				Timestamp datefinsansms = new Timestamp(((long)datefin.getTime()/1000)*1000);
+				
+				epreuve.setDateDebutValidite(datedebsansms);
+				epreuve.setDateFinValidite(datefinsansms);
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
 				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
@@ -208,8 +219,13 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve = new Epreuve();
 				test = DAOtest.selectOne(rs.getInt("idTest"));
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
+				Timestamp datedeb =  rs.getTimestamp("dateDedutValidite");
+				Timestamp datedebsansms = new Timestamp(((long)datedeb.getTime()/1000)*1000);
+				Timestamp datefin = rs.getTimestamp("dateFinValidite");
+				Timestamp datefinsansms = new Timestamp(((long)datefin.getTime()/1000)*1000);
+				
+				epreuve.setDateDebutValidite(datedebsansms);
+				epreuve.setDateFinValidite(datefinsansms);
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
 				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
@@ -340,8 +356,13 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve = new Epreuve();
 				test = DAOtest.selectOne(rs.getInt("idTest"));
 				epreuve.setIdEpreuve(rs.getInt("idEpreuve"));
-				epreuve.setDateDebutValidite(rs.getTimestamp("dateDedutValidite"));
-				epreuve.setDateFinValidite(rs.getTimestamp("dateFinValidite"));
+				Timestamp datedeb =  rs.getTimestamp("dateDedutValidite");
+				Timestamp datedebsansms = new Timestamp(((long)datedeb.getTime()/1000)*1000);
+				Timestamp datefin = rs.getTimestamp("dateFinValidite");
+				Timestamp datefinsansms = new Timestamp(((long)datefin.getTime()/1000)*1000);
+				
+				epreuve.setDateDebutValidite(datedebsansms);
+				epreuve.setDateFinValidite(datefinsansms);
 				epreuve.setEtat(rs.getString("etat"));
 				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
 				epreuve.setNiveauCandidat(rs.getString("niveau_obtenu"));
