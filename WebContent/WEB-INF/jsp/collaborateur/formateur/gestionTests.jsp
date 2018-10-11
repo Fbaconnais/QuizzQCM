@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <%@include file="../entete.jsp"%>
-<title>Gestion Tests</title>
+<title>Gestion des tests</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">

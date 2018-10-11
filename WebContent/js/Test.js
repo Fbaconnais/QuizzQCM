@@ -1,5 +1,4 @@
 onload = function() {
-	console.log(tpsEcoule);
 	if (tpsEcoule != 0) {
 		rebour(tpsEcoule);
 	} else {
@@ -27,8 +26,9 @@ function recuperationQuestion(idQuestion) {
 		if (xhr.readyState == 4) {
 			if (xhr.status == 200)
 				traitementQuestion(this.response);
-			else
-				console.log("Erreur de statut!");
+			else {
+				echec(xhr.status, "");
+			}
 		}
 	};
 	xhr.open("GET", path + 'question/' + idQuestion + '/' + idEpreuve + '/get',
@@ -51,7 +51,6 @@ function traitementQuestion(xml) {
 			+ json.questiontirage.epreuve.idEpreuve
 			+ ')">Marquer la question<br>';
 	var idEpreuve;
-	console.log(json);
 	if (json.questiontirage.estMarquee == true) {
 		document.getElementById("marquage").innerHTML = marquageCheck;
 	} else {
@@ -60,7 +59,6 @@ function traitementQuestion(xml) {
 	txt = json.question.enonce
 	document.getElementById("test").innerHTML = txt;
 	idEpreuve = document.getElementById("epreuve");
-	console.log(idEpreuve.value);
 	$.each(json.question.propositions,
 			function(k, v) {
 				if (json.reponsetirages[v.idProposition] != undefined) {
@@ -78,7 +76,6 @@ function traitementQuestion(xml) {
 							+ idEpreuve.value + ')">  ' + v.enonce
 							+ '<br>';
 				}
-				console.log(v);
 				props.push(txt);
 			})
 
@@ -121,10 +118,10 @@ function gestionPropositionCandidat(idProposition, idQuestion, idEpreuve) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			if (xhr.status == 200) {
-			} else
-				echec(
-						xhr.status,
-						"Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
+				
+			} else {
+				echec(xhr.status, "");
+			}
 		}
 	};
 	xhr.open("GET", path + 'reponse/' + idProposition + '/' + idQuestion + '/'
@@ -190,11 +187,10 @@ function updateTimer(i) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			if (xhr.status == 200) {
-				succes("Temps mis à jour.")
-			} else
-				echec(
-						xhr.status,
-						"Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
+				succes("")
+			} else {
+				echec( xhr.status, "");
+			}
 		}
 	};
 	xhr.open("PUT", path + 'epreuve/' + idEpreuve + '/' + i + '/timer', true);
@@ -222,10 +218,9 @@ function cloturerEpreuve(idEpreuve) {
 			if (xhr.status == 200) {
 				var link = ("/QuizzQCM/candidat/FinEpreuveServlet?action=redirect");
 				document.location.href = link;
-			} else
-				echec(
-						xhr.status,
-						"Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
+			} else {
+				echec(xhr.status, "");
+			}
 		}
 	};
 	xhr.open("POST", path + 'epreuve/' + idEpreuve + '/close', true);
@@ -252,7 +247,6 @@ function activerMarquage(idQuestion, idEpreuve) {
 		if (xhr.readyState == 4) {
 			if (xhr.status == 200) {
 				
-				console.log()
 				var button = document.getElementById("button"+idQuestion).value;
 				if ($("#button"+idQuestion).hasClass("btn-primary")){
 					$("#button"+idQuestion).removeClass("btn-primary").addClass("btn-warning");
@@ -262,7 +256,7 @@ function activerMarquage(idQuestion, idEpreuve) {
 
 				
 			} else {
-				echec(xhr.status, "Erreur de statut. Veuillez contacter l'administrateur. Merci. Vraiment. Ca me fait plaisir.");
+				echec(xhr.status, "");
 			}
 		}
 	};
