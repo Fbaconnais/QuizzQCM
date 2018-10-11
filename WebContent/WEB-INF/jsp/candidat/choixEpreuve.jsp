@@ -34,7 +34,7 @@
 	<div class="container text-center">
 		<h1 class="display-4">Epreuves</h1>
 		<hr>
-	</div>
+	
 	<c:choose>
 		<c:when test="${empty sessionScope.listeEpreuves }">
 			<div class="row">Aucune épreuve n'est programmée pour vous</div>
@@ -84,6 +84,7 @@
 
 		</c:otherwise>
 	</c:choose>
+	</div>
 	<script>
 	var path= "${baseURL}";
 	</script>

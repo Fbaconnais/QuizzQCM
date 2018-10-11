@@ -88,9 +88,16 @@ function traitementQuestion(xml) {
 function recapTest() {
 	var txt;
 	var boutonFin;
+	if(window.event.stopPropagation()){
+		window.event.stopPropagation();
+	}
+	else{
+		window.event.cancelBubble = true;
+	}
+	
+	
 	txt = 'Êtes-vous sûr de vouloir valider votre test?';
-	boutonFin = '<button type=button onClick="' + cloturerEpreuve(idEpreuve)
-			+ '">Terminer le test</button>';
+	boutonFin = '<button type=button class="btn btn-danger" onClick="cloturerEpreuve('+idEpreuve+')">Terminer le test</button>';
 	document.getElementById("test").innerHTML = txt;
 	document.getElementById("propositions").innerHTML = boutonFin;
 }

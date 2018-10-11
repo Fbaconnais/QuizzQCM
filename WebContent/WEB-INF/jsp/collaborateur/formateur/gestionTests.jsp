@@ -40,13 +40,23 @@
 	<%@include file="../debutBody.jsp"%>
 <div class="col col-lg-7 justify-content-lg-center offset-lg-1">
 		<br>
+		<h3>Gestion des tests</h3>
 		<br>
-		<h3> Gestion des tests</h3>
+		<button onclick="newTest()"
+			class="btn btn-primary btn-lg btn-block">Creer un nouveau
+			test</button>
+		<button onclick="listeTests()"
+			class="btn btn-primary btn-lg btn-block">Editer/supprimer
+			un test</button>
+		<br>
+		<div id="succes" style="color: green"></div>
+		<div id="echec" style="color: red"></div>
+
 	</div>
 	</div>
+	<br>
 	<div class=row>
-	<!-- body !-->
-	
+		<div id="results" class="col col-lg-10 offset-lg-1"></div>
 	</div>
 
 
@@ -56,7 +66,11 @@
 
 
 
-
-
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/createXHR.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/gestionTests.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/succesreponse.js"></script>
 	<%@include file="../finBody.html"%>
 </html>

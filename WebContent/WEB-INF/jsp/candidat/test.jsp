@@ -54,6 +54,7 @@
 			aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
+				<div class="ecart">
 		<ul class="nav navbar-nav list-inline">
 			<c:forEach var="questionTirage"
 				items="${sessionScope.listeQuestionsTirages}">
@@ -78,17 +79,17 @@
 			</c:forEach>
 			<li>
 				<div class="ecart">
-					<button type="button" class="btn btn-danger" onClick="recapTest()">
+					<button type="button" class="btn btn-danger" onClick="recapTest(this)">
 						Fin</button>
 				</div>
 			</li>
 
 			<li id="compteRebour_affiche" style="float: right;">
-				<div class="ecart"></div>
+		
 			</li>
 
 		</ul>
-
+		</div>
 	</nav>
 	
 	<div id="marquage"></div>
