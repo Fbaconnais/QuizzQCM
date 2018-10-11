@@ -84,7 +84,7 @@ public class GestionQuestion {
 					if (listePropositions[y] != null && listePropositions[y] != "") {
 						Proposition p = new Proposition();
 						p.setEnonce(listePropositions[y]);
-						if (cochee[y] == "false") {
+						if (cochee[y].equals("false")) {
 							p.setEstBonne(false);
 						} else {
 							p.setEstBonne(true);
