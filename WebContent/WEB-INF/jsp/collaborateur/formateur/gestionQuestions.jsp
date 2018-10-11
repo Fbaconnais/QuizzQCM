@@ -10,6 +10,7 @@
 <title>Gestion questions</title>
 </head>
 <body>
+
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarsExample08" aria-controls="navbarsExample08"
@@ -57,6 +58,19 @@
 	</div>
 	</div>
 	<br>
+	<div class="row" id="themesAafficher" style="display: none">
+		<
+		<div class="form-group">
+			<label for="exampleFormControlSelect2">Example multiple
+				select</label> <select multiple class="form-control"
+				id="exampleFormControlSelect2">
+				<c:forEach var="theme" items="${requestScope.themes}">
+					<option value="${theme.idTheme}">${theme.libelle}</option>
+				</c:forEach>
+			</select>
+		</div>
+
+	</div>
 	<div class=row>
 		<div id="results" class="col col-lg-10 offset-lg-1"></div>
 	</div>

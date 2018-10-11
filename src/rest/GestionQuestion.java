@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
@@ -59,12 +60,15 @@ public class GestionQuestion {
 		return null;
 	};
 
-	public void addQuestion(@PathParam("data") Question data) {
-	};
+	
+	@PUT
+	@Path("")
+	public void addQuestion() {
+	}
 
 	public void deleteQuestion(@PathParam("id") int id) {
 
-	};
+	}
 
 	@GET
 	@Path("/{id}/getProps")

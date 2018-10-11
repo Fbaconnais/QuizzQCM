@@ -17,6 +17,7 @@ public class BeanGeneral {
 	private List<Epreuve> epreuves;
 	private QuestionTirage questiontirage;
 	private Map<Integer,List<Epreuve>> mapIdTestResultatPromo;
+	private List<Theme> themes;
 
 	
 	public BeanGeneral() {
@@ -32,6 +33,14 @@ public class BeanGeneral {
 
 	
 
+
+	public List<Theme> getThemes() {
+		return themes;
+	}
+
+	public void setThemes(List<Theme> themes) {
+		this.themes = themes;
+	}
 
 	public Map<Integer, List<Epreuve>> getMapIdTestResultatPromo() {
 		return mapIdTestResultatPromo;

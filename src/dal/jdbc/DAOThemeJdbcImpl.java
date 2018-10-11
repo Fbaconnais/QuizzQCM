@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import bo.Candidat;
@@ -18,6 +20,7 @@ import dal.DAOTheme;
 
 public class DAOThemeJdbcImpl implements DAOTheme {
 	String selectOne = "SELECT libelle FROM THEME WHERE idTheme=?";
+	String selectAll = "SELECT * FROM THEME";
 	
 	@Override
 	public Theme add(Theme data) throws DALException {
@@ -58,8 +61,34 @@ public class DAOThemeJdbcImpl implements DAOTheme {
 
 	@Override
 	public List<Theme> selectAll() throws DALException {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = null;
+		Statement rqt = null;
+		ResultSet rs = null;
+
+		List<Theme> liste = new ArrayList<Theme>();
+		Theme theme = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.createStatement();
+			rs = rqt.executeQuery(selectAll);
+			while (rs.next()) {
+
+				theme = new Theme();
+				theme.setIdTheme(rs.getInt("idTheme"));
+				theme.setLibelle(rs.getString("libelle"));
+				liste.add(theme);
+			}
+
+		} catch (SQLException e) {
+			throw new DALException("ERREUR DAL- select all themes " + e.getMessage() + e.getStackTrace().toString(), e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Erreur fermeture de connection", e);
+			}
+		}
+		return liste;
 	}
 
 	@Override
