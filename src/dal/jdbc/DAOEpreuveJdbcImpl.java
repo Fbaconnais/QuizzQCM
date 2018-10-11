@@ -132,7 +132,7 @@ public class DAOEpreuveJdbcImpl implements DAOEpreuve {
 				epreuve.setDateFinValidite(datefinsansms);
 				epreuve.setTempsEcoule(rs.getInt("tempsEcoule"));
 				epreuve.setEtat(rs.getString("etat"));
-				epreuve.setNoteCandidat(rs.getFloat("note_obtenue"));
+				epreuve.setNoteCandidat(((int)rs.getFloat("note_obtenue")*100)/100);
 
 				if (rs.getString("niveau_obtenu") != null) {
 					switch (rs.getString("niveau_obtenu").toUpperCase().trim()) {
