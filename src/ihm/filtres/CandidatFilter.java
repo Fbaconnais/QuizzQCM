@@ -13,15 +13,14 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE,
-		DispatcherType.ERROR }, urlPatterns = {"/candidat","/candidat/", "/candidat/*" })
-public class CandidatFilter implements Filter{
+		DispatcherType.ERROR }, urlPatterns = { "/candidat", "/candidat/", "/candidat/*" })
+public class CandidatFilter implements Filter {
 
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -30,22 +29,26 @@ public class CandidatFilter implements Filter{
 		if (((HttpServletRequest) req).getSession().getAttribute("profilCon") == null
 				|| ((HttpServletRequest) req).getSession().getAttribute("profilCon").equals("erreur")) {
 			((HttpServletRequest) req).getSession().setAttribute("musique", "alarme");
-			((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/login");
+			((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() + "/login");
 		} else {
-			String profil = (String) ((HttpServletRequest) req).getSession().getAttribute("profilCon");
-			if (!((profil.equals("stagiaire") || profil.equals("candidat libre")))) {
-				((HttpServletResponse) resp).sendRedirect("login");
+			if (((HttpServletRequest) req).getSession().getAttribute("user") == null) {
+				((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() + "/login");
 			} else {
-				chain.doFilter(((HttpServletRequest) req), ((HttpServletResponse) resp));
+				String profil = (String) ((HttpServletRequest) req).getSession().getAttribute("profilCon");
+				if (!((profil.equals("stagiaire") || profil.equals("candidat libre")))) {
+					((HttpServletResponse) resp).sendRedirect(((HttpServletRequest) req).getContextPath() +"/login");
+				} else {
+					chain.doFilter(((HttpServletRequest) req), ((HttpServletResponse) resp));
+				}
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

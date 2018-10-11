@@ -6,7 +6,7 @@
 		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		type="javax.sql.DataSource"
 		
-		url="jdbc:sqlserver://localhost;databasename=QCM_DB"
+		url="jdbc:sqlserver://10.27.137.24;databasename=QCM_DB"
 		username="sa"
 		password="Pa$$w0rd"
 		
