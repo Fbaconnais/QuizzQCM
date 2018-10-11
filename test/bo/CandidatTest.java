@@ -1,16 +1,42 @@
 package bo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CandidatTest {
-
+	
+	public static Candidat candidat;
+	public static Promotion promotion;
+	public static Profil profil;
+	
+	@BeforeClass
+	public static void before() {
+		candidat = new Candidat();
+		promotion = new Promotion();
+		profil = new Profil();
+		promotion.setId("promoTest");
+		promotion.setLibelle("libellePromoTest");
+		profil.setId(1);
+		profil.setLibelle("libelleProfilTest");
+		candidat.setIdUtilisateur(2);
+		candidat.setEmail("test@email");
+		candidat.setNom("nomTest");
+		candidat.setPrenom("prenomTest");
+		candidat.setPassword("passwordTest");
+		candidat.setProfil(profil);
+		candidat.setPromotion(promotion);
+		
+	}
 	
 
 	@Test
 	public void testGetPromotion() {
-		fail("Not yet implemented");
+		Promotion expected = promotion;
+		Promotion actual = promotion;
+		Assert.assertEquals(expected, actual);
 	}
 
 	@Test
