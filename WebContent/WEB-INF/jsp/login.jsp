@@ -39,6 +39,13 @@
 							<br>
 							<br>
 						</c:if>
+						<c:if test="${sessionScope.profilCon == \"connecte\"}">
+							<div class="row justify-content-lg-center">
+								<h2 style="color: red">Cet utilisateur est déjà connecté, si ce n'est pas vous merci de contacter l'administrateur</h2>
+							</div>
+							<br>
+							<br>
+						</c:if>
 						<div class="row justify-content-lg-center">
 							<div class="form-group col-lg-8 ">
 								<label for="username-email">E-mail</label> <input
