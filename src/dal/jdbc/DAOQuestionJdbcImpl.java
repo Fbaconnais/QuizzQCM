@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +20,39 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 	private String selectOne = "SELECT " + "q.idQuestion," + "q.enonce," + "q.media," + "q.type_media," + "q.points,"
 			+ "t.idTheme," + "t.libelle " + "FROM Question q JOIN Theme t on (q.idTheme = t.idTheme) "
 			+ "WHERE idQuestion=?";
-	
+	private String add = "INSERT INTO QUESTION (enonce,points,idTheme) VALUES (?,?,?)";
 	
 	
 	
 	@Override
 	public Question add(Question data) throws DALException {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement rqt = null;
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getCnx();
+			rqt = conn.prepareStatement(add, Statement.RETURN_GENERATED_KEYS);
+			rqt.setString(1, data.getEnonce());
+			rqt.setInt(2, data.getPoints());
+			rqt.setInt(3, data.getTheme().getIdTheme());
+			int nbRows = rqt.executeUpdate();
+			if (nbRows == 1) {
+				ResultSet rs = rqt.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					data.setIdQuestion(id);
+					;
+				}
+			}
+		} catch (SQLException e) {
+			throw new DALException("Erreur DAL-add", e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException();
+			}
+		}
+		return data;
 	}
 
 	@Override
