@@ -21,12 +21,13 @@
 			id="navbarsExample08">
 			<ul class="navbar-nav">
 				<li class="nav-item "><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur"> Accueil Formateur 
-				</a></li>
+					href="${pageContext.request.contextPath}/collaborateur">
+						Accueil Formateur </a></li>
 
 				<li class="nav-item active"><a class="nav-link"
 					href="${pageContext.request.contextPath}/collaborateur/formateur/questions">Gestion
-						questions<span class="sr-only">(current)</span></a></li>
+						questions<span class="sr-only">(current)</span>
+				</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${pageContext.request.contextPath}/collaborateur/formateur/themes">Gestion
 						thèmes</a></li>
@@ -39,16 +40,25 @@
 
 	<%@include file="../debutBody.jsp"%>
 
-<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
+	<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
 		<br>
+		<h3>Gestion des questions</h3>
 		<br>
-		
-		<h3> Gestion des questions</h3>
+		<button onclick="newQuestion()"
+			class="btn btn-primary btn-lg btn-block">Creer une nouvelle
+			question</button>
+		<button onclick="listeQuestion()"
+			class="btn btn-primary btn-lg btn-block">Editer/supprimer
+			une question</button>
+		<br>
+		<div id="succes" style="color: green"></div>
+		<div id="echec" style="color: red"></div>
+
 	</div>
 	</div>
+	<br>
 	<div class=row>
-	<!-- body !-->
-	
+		<div id="results" class="col col-lg-10 offset-lg-1"></div>
 	</div>
 
 
@@ -58,6 +68,11 @@
 
 
 
-
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/createXHR.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/gestionQuestions.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/js/succesreponse.js"></script>
 	<%@include file="../finBody.html"%>
 </html>

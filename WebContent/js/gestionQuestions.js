@@ -1,0 +1,20 @@
+function newQuestion(){
+	var props = [];
+	props.push('<p><h3> Enoncé de la question</h3></p><div class="form-row"><input type="text" class="form-control col col-lg-12 col-md-12 col-xs-12 " id="enonce" placeholder="enoncé de la question"></div><br><br>');
+	props.push('<div class="row"><h4> Propositions (vous n\'êtes pas obligé d\'en remplir 5, cocher la(les) bonne(s) réponses)</h4></div><br>');
+	var x;
+	for (x=1;x<6;x++){
+	props.push('<div class="form-row"><label for="prop'+x+'" class="col col-lg-2 col-md-2 col-xs-3 col-form-label"> Proposition '+x+'</label>');
+	props.push('<input type="checkbox" id="cbox'+x+'" class="form-control col col-lg-1 col-md-1 col-xs-1"><input type="text" name="prop'+x+'" placeholder="proposition '+x+'" id="prop'+x+'" class="col col-lg-9 col-md-9 col-xs-8"></div><br>');
+	}
+	props.push('<div class="form-row"><label for="points'+x+'" class="col col-lg-4 col-md-4 col-xs-3 col-form-label"> Points pour cette question</label>');
+	props.push('<input type="text" name="points'+x+'" placeholder="points" id="points'+x+'" class="col col-lg-3 col-md-3 col-xs-3"></div><br>');
+	
+	props.push('<div class="form-row"><input type="button" value="Valider la question" class="btn btn-success btn-mb btn-block" onClick="checkPropositions()"></div>');
+	document.getElementById("results").innerHTML = props.join("");
+}
+
+function checkPropositions(){
+	
+	
+}
