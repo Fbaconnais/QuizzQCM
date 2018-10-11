@@ -15,7 +15,7 @@ import bll.QuestionTirageManager;
 import bo.Epreuve;
 import bo.QuestionTirage;
 
-@WebServlet("/test")
+@WebServlet("/candidat/test")
 public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

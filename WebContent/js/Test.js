@@ -68,15 +68,15 @@ function traitementQuestion(xml) {
 							+ '" onClick="gestionPropositionCandidat('
 							+ v.idProposition + ','
 							+ json.question.idQuestion + ','
-							+ idEpreuve.value + ')" checked> <p>' + v.enonce
-							+ '</p><br>';
+							+ idEpreuve.value + ')" checked>  ' + v.enonce
+							+ '<br>';
 				} else {
 					txt = '<input type="checkbox" id="' + v.idProposition
 							+ '" onClick="gestionPropositionCandidat('
 							+ v.idProposition + ','
 							+ json.question.idQuestion + ','
-							+ idEpreuve.value + ')"> <p>' + v.enonce
-							+ '</p><br>';
+							+ idEpreuve.value + ')">  ' + v.enonce
+							+ '<br>';
 				}
 				console.log(v);
 				props.push(txt);
@@ -213,7 +213,7 @@ function cloturerEpreuve(idEpreuve) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			if (xhr.status == 200) {
-				var link = ("/QuizzQCM/FinEpreuveServlet?action=redirect");
+				var link = ("/QuizzQCM/candidat/FinEpreuveServlet?action=redirect");
 				document.location.href = link;
 			} else
 				echec(

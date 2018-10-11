@@ -22,11 +22,11 @@
 		<div class="collapse navbar-collapse justify-content-md-center"
 			id="navbarsExample08">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="collaborateur">
-						Espace Candidat <span class="sr-only">(current)</span>
+				<li class="nav-item "><a class="nav-link" href="${pageContext.request.contextPath}/candidat">
+						Espace Candidat 
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/questions">Choix des épreuves</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/themes">Consultation des résultats</a></li>
+				<li class="nav-item active"><a class="nav-link" href="${pageContext.request.contextPath}/candidat/epreuve">Choix des épreuves<span class="sr-only">(current)</span></a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/candidat/consultation">Consultation des résultats</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -44,6 +44,8 @@
 	</c:if>
 	<div id="succes"></div>
 	<div id="echec"></div>
+	</div>
+	<div class = "row">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand">Questions: </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -88,10 +90,19 @@
 		</ul>
 
 	</nav>
+	
 	<div id="marquage"></div>
-	<p id="test" class="cadre"></p>
+	</div>
+	<div class="row justify-content-center">
+	<h3 id="test" class="cadre"></h3>
+	</div>
+	<div class="row">
+	<div class="col col-lg-8 col-md-10 col-xs-12 offset-lg-4 offset-md-2 ">
 	<div id="propositions"></div>
+	</div>
+	</div>
 	<div id="timer"></div>
+	</div>
 	<script>
 	var path= "${baseURL}"; 
 	var idEpreuve = "${requestScope.idEpreuve}";

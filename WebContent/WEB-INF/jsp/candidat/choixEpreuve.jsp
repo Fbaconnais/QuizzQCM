@@ -20,11 +20,11 @@
 		<div class="collapse navbar-collapse justify-content-md-center"
 			id="navbarsExample08">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="collaborateur">
-						Espace Candidat <span class="sr-only">(current)</span>
+				<li class="nav-item "><a class="nav-link" href="${pageContext.request.contextPath}/candidat">
+						Espace Candidat 
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/questions">Choix des épreuves</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/themes">Consultation des résultats</a></li>
+				<li class="nav-item active"><a class="nav-link" href="${pageContext.request.contextPath}/candidat/epreuve">Choix des épreuves<span class="sr-only">(current)</span></a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/candidat/consultation">Consultation des résultats</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -46,7 +46,7 @@
 	out.write("<div class=\"row\">");
 	}%>
 			<div class="col-lg-3 col-md-4 col-xs-6">
-				<div class="card" >
+				<div class="card" style="width:275px;">
 					<img class="card-img-top"
 						src="${pageContext.request.contextPath}${epreuve.test.logoLangage }"
 						alt="Logo du langage de programmation">

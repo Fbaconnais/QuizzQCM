@@ -14,7 +14,7 @@
 <title>QCM - Accueil candidat</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarsExample08" aria-controls="navbarsExample08"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -24,29 +24,30 @@
 		<div class="collapse navbar-collapse justify-content-md-center"
 			id="navbarsExample08">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="collaborateur">
-						Espace Candidat <span class="sr-only">(current)</span>
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/candidat"> Espace
+						Candidat <span class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/questions">Choix des épreuves</a></li>
-				<li class="nav-item"><a class="nav-link" href="collaborateur/formateur/themes">Consultation des résultats</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/candidat/epreuve">Choix
+						des épreuves</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/candidat/consultation">Consultation
+						des résultats</a></li>
 			</ul>
 		</div>
 	</nav>
 	<%@include file="./debutbody.jsp"%>
 	<br>
-	<div class="row">
-		<a href="${pageContext.request.contextPath}/deconnection"><button>Déconnexion</button></a>
-	</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<a href="${pageContext.request.contextPath}/candidat/epreuve"><button class="orange-circle-button">
-						Mes<br />epreuves<br />
-						<span class="orange-circle-greater-than">></span>
-					</button></a>
-
-			</div>
-		</div>
+	<div class="col col-lg-9">
+		<br> <br>
+		<h1>Accueil candidat</h1>
+		<br> <a class="btn btn-primary btn-mb btn-block"
+			href="${pageContext.request.contextPath}/candidat/epreuve"> Mes
+			epreuves</a>
+			<br> <a class="btn btn-primary btn-mb btn-block"
+			href="${pageContext.request.contextPath}/candidat/consultation"> Mes
+			resultats</a>
 	</div>
 
 

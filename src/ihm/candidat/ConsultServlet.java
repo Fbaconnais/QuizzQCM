@@ -17,4 +17,9 @@ public class ConsultServlet extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/jsp/candidat/consultation.jsp").forward(request, response);
 
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		super.doPost(req, resp);
+	}
 }

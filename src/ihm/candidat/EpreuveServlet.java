@@ -14,7 +14,7 @@ import bll.EpreuveManager;
 import bo.Utilisateur;
 
 
-@WebServlet("/epreuve")
+@WebServlet("/candidat/epreuve")
 public class EpreuveServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	private List<bo.Epreuve> listeEpreuves;
