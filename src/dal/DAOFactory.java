@@ -2,6 +2,7 @@ package dal;
 
 import dal.jdbc.DAOEpreuveJdbcImpl;
 import dal.jdbc.DAOPromotionJdbcImpl;
+import dal.jdbc.DAOPropositionJdbcImpl;
 import dal.jdbc.DAOQuestionJdbcImpl;
 import dal.jdbc.DAOQuestionTirageJdbcImpl;
 import dal.jdbc.DAOReponseTirageJdbcImpl;
@@ -30,7 +31,9 @@ public class DAOFactory {
 	public static DAOSectionTest getDAOSectionTest() {
 		return new DAOSectionTestJdbcImpl();
 	}
-	
+	public static DAOProposition getDAOProposition() {
+		return new DAOPropositionJdbcImpl();
+	}
 	public static DAOQuestionTirage getDAOQuestionTirage() {
 		return new DAOQuestionTirageJdbcImpl();
 	}

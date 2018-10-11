@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import bll.BLLException;
+import bll.PropositionManager;
 import bll.QuestionManager;
 import bll.QuestionTirageManager;
 import bll.ReponseTirageManager;
@@ -19,6 +21,7 @@ import bo.Proposition;
 import bo.Question;
 import bo.QuestionTirage;
 import bo.ReponseTirage;
+import bo.Theme;
 
 @Path("/question")
 public class GestionQuestion {
@@ -60,10 +63,45 @@ public class GestionQuestion {
 		return null;
 	};
 
-	
 	@PUT
-	@Path("")
-	public void addQuestion() {
+	@Path("/add/")
+	public Boolean addQuestion(@FormParam("enonce") String enonce, @FormParam("propositions") String propositions,
+			@FormParam("bonnesReponses") String reponses, @FormParam("themes") String themes,
+			@FormParam("points") String points) throws RestException {
+		String listePropositions[] = propositions.split("---");
+		String cochee[] = reponses.split("---");
+		String listethemes[] = themes.split("---");
+		QuestionManager QMger = QuestionManager.getMger();
+		for (int x = 0; x < listethemes.length; x++) {
+			Question q = new Question();
+			q.setEnonce(enonce);
+			q.setPoints(Integer.parseInt(points));
+			q.setTheme(new Theme(Integer.parseInt(listethemes[x]), ""));
+			try {
+				q = QMger.addQuestion(q);
+				for (int y = 0; y < listePropositions.length; y++) {
+					PropositionManager PropMger = PropositionManager.getMger();
+					if (listePropositions[y] != null && listePropositions[y] != "") {
+						Proposition p = new Proposition();
+						p.setEnonce(listePropositions[y]);
+						if (cochee[y] == "false") {
+							p.setEstBonne(false);
+						} else {
+							p.setEstBonne(true);
+						}
+						p.setIdQuestion(q.getIdQuestion());
+
+						PropMger.addProposition(p);
+
+					}
+				}
+			} catch (BLLException e) {
+				throw new RestException(e.getMessage(), e);
+			}
+
+		}
+
+		return true;
 	}
 
 	public void deleteQuestion(@PathParam("id") int id) {

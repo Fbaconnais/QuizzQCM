@@ -39,4 +39,13 @@ public class QuestionManager {
 		}
 		return listePropositions;
 	}
+	public Question addQuestion(Question q) throws BLLException {
+		
+		try {
+			q = DAOQuestion.add(q);
+		} catch (DALException e) {
+			throw new BLLException(e.getMessage(), e);
+		}
+		return q;
+	}
 }

@@ -19,7 +19,10 @@ public class DAOQuestionJdbcImpl implements DAOQuestion {
 	private String selectOne = "SELECT " + "q.idQuestion," + "q.enonce," + "q.media," + "q.type_media," + "q.points,"
 			+ "t.idTheme," + "t.libelle " + "FROM Question q JOIN Theme t on (q.idTheme = t.idTheme) "
 			+ "WHERE idQuestion=?";
-
+	
+	
+	
+	
 	@Override
 	public Question add(Question data) throws DALException {
 		// TODO Auto-generated method stub

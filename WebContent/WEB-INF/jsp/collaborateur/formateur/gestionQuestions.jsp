@@ -10,7 +10,7 @@
 <title>Gestion questions</title>
 </head>
 <body>
-
+	<c:set var="baseURL" value="${pageContext.request.contextPath}" />
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarsExample08" aria-controls="navbarsExample08"
@@ -58,19 +58,24 @@
 	</div>
 	</div>
 	<br>
-	<div class="row" id="themesAafficher" style="display: none">
-		<
-		<div class="form-group">
-			<label for="exampleFormControlSelect2">Example multiple
-				select</label> <select multiple class="form-control"
-				id="exampleFormControlSelect2">
-				<c:forEach var="theme" items="${requestScope.themes}">
-					<option value="${theme.idTheme}">${theme.libelle}</option>
-				</c:forEach>
-			</select>
+	<div class="row" id="themesAafficher" style="display: none;">
+		<div class="row">
+			<h3>Selectionner un ou plusieurs thèmes dans la liste</h3>
 		</div>
-
+		<br>
+		<div class="row">
+			<div class="form-group" class="col col-lg-6 col-md-6 col-xs-8">
+				<label for="listeThemes">Thèmes</label> <select multiple
+					class="form-control" id="listeThemes"
+					class="col col-lg-6 col-md-6 col-xs-8">
+					<c:forEach var="theme" items="${requestScope.themes}">
+						<option value="${theme.idTheme}">${theme.libelle}</option>
+					</c:forEach>
+				</select>
+			</div>
+		</div>
 	</div>
+	<br>
 	<div class=row>
 		<div id="results" class="col col-lg-10 offset-lg-1"></div>
 	</div>
@@ -79,8 +84,9 @@
 
 
 
-
-
+	<script>
+		var path = "${baseURL}";
+	</script>
 
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/js/createXHR.js"></script>
