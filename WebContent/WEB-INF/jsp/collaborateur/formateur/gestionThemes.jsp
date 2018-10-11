@@ -6,8 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@include file="./entete.jsp"%>
-<title>QCM - Accueil Responsable</title>
+<%@include file="../entete.jsp"%>
+<title>Gestion Themes</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -20,31 +20,43 @@
 		<div class="collapse navbar-collapse justify-content-md-center"
 			id="navbarsExample08">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur"> Accueil Responsable <span class="sr-only">(current)</span>
+				<li class="nav-item "><a class="nav-link"
+					href="${pageContext.request.contextPath}/collaborateur"> Accueil Formateur 
 				</a></li>
 
+				<li class="nav-item "><a class="nav-link"
+					href="${pageContext.request.contextPath}/collaborateur/formateur/questions">Gestion
+						questions</a></li>
+				<li class="nav-item  active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/collaborateur/formateur/themes">Gestion
+						thèmes<span class="sr-only">(current)</span></a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/responsable/accinscription">Gestion des inscriptions</a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}/collaborateur/responsable/resultats">Consultation des resultats</a></li>
-
+					href="${pageContext.request.contextPath}/collaborateur/formateur/tests">Gestion
+						tests</a></li>
 			</ul>
 		</div>
 	</nav>
-	<%@include file="./debutBody.jsp"%>
+
+	<%@include file="../debutBody.jsp"%>
 	<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
-		<br> <a
-			href="${pageContext.request.contextPath}/collaborateur/responsable/accinscription"
-			class="btn btn-primary btn-lg btn-block">Inscriptions</a> <a
-			href="${pageContext.request.contextPath}/collaborateur/responsable/resultats"
-			class="btn btn-primary btn-lg btn-block">Consultation de résultats</a>
+		<br>
+		<br>
+		<h3> Gestion des thèmes</h3>
 	</div>
 	</div>
+	<div class=row>
+	<!-- body !-->
+	
 	</div>
 
 
 
 
-	<%@include file="./finBody.html"%>
+
+
+
+
+
+
+	<%@include file="../finBody.html"%>
 </html>

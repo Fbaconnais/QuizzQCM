@@ -17,7 +17,7 @@ public class gestionQuestionsServlet extends HttpServlet {
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-    	request.getRequestDispatcher("/WEB-INF/jsp/formateur/gestionQuestions.jsp").forward(request, response);
+    	request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/formateur/gestionQuestions.jsp").forward(request, response);
 	}
 
     @Override

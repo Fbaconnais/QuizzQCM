@@ -17,7 +17,7 @@ public class gestionThemesServlet extends HttpServlet {
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-    	request.getRequestDispatcher("/WEB-INF/jsp/formateur/gestionThemes.jsp").forward(request, response);
+    	request.getRequestDispatcher("/WEB-INF/jsp/collaborateur/formateur/gestionThemes.jsp").forward(request, response);
 	}
 
 	@Override

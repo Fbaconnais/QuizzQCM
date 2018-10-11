@@ -21,7 +21,7 @@
 		<div class="collapse navbar-collapse justify-content-md-center"
 			id="navbarsExample08">
 			<ul class="navbar-nav">
-				<li class="nav-item active"><a class="nav-link" href="collaborateur">
+				<li class="nav-item active"><a class="nav-link" href="${pageContext.request.contextPath}/collaborateur">
 						Accueil Formateur <span class="sr-only">(current)</span>
 				</a></li>
 
@@ -36,7 +36,16 @@
 	</nav>
 
 	<%@include file="./debutBody.jsp"%>
-
+	<div class="col col-lg-7 justify-content-lg-center offset-lg-1">
+		<br> <a
+			href="${pageContext.request.contextPath}/collaborateur/formateur/questions"
+			class="btn btn-primary btn-lg btn-block">Gestion des questions</a> <a
+			href="${pageContext.request.contextPath}/collaborateur/formateur/themes"
+			class="btn btn-primary btn-lg btn-block">Gestion des thèmes</a>
+			<a
+			href="${pageContext.request.contextPath}/collaborateur/formateur/tests"
+			class="btn btn-primary btn-lg btn-block">Gestion des tests</a>
+	</div>
 	
 		
 	
